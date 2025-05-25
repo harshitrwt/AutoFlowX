@@ -30,7 +30,9 @@ export const HeroSection = () => {
           <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold text-gray-900 mb-6 leading-tight">
             Build Production-Ready
             <br />
-            <span className="text-gradient">CI/CD Pipelines</span>
+            <span className="bg-gradient-to-r from-blue-600 to-blue-800 bg-clip-text text-transparent">
+              CI/CD Pipelines
+            </span>
             <br />
             in Minutes
           </h1>
@@ -45,7 +47,7 @@ export const HeroSection = () => {
             <Button 
               onClick={scrollToGenerator}
               size="lg"
-              className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-4 text-lg font-semibold shadow-professional-lg hover-lift"
+              className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-4 text-lg font-semibold shadow-lg hover:shadow-xl transition-all duration-200 hover:-translate-y-1"
             >
               Start Building Pipeline
               <ArrowRight className="w-5 h-5 ml-2" />
@@ -53,32 +55,41 @@ export const HeroSection = () => {
             <Button 
               variant="outline"
               size="lg"
-              className="border-2 border-gray-300 text-gray-700 hover:bg-gray-50 px-8 py-4 text-lg font-semibold hover-lift"
+              className="border-2 border-gray-300 text-gray-700 hover:bg-gray-50 px-8 py-4 text-lg font-semibold transition-all duration-200 hover:-translate-y-1"
             >
               View Examples
             </Button>
           </div>
 
           {/* Feature Highlights */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-16">
-            <div className="flex items-center justify-center space-x-3 text-gray-700">
-              <CheckCircle className="w-5 h-5 text-green-500" />
-              <span className="font-medium">Multi-tech stack support</span>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
+            <div className="flex flex-col items-center space-y-3 text-center">
+              <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center">
+                <CheckCircle className="w-6 h-6 text-green-600" />
+              </div>
+              <span className="font-semibold text-gray-800">Multi-tech stack support</span>
+              <span className="text-sm text-gray-600">Support for React, Node.js, Python and more</span>
             </div>
-            <div className="flex items-center justify-center space-x-3 text-gray-700">
-              <Code className="w-5 h-5 text-blue-500" />
-              <span className="font-medium">Intelligent configuration</span>
+            <div className="flex flex-col items-center space-y-3 text-center">
+              <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center">
+                <Code className="w-6 h-6 text-blue-600" />
+              </div>
+              <span className="font-semibold text-gray-800">Intelligent configuration</span>
+              <span className="text-sm text-gray-600">Auto-detects your project structure</span>
             </div>
-            <div className="flex items-center justify-center space-x-3 text-gray-700">
-              <Shield className="w-5 h-5 text-purple-500" />
-              <span className="font-medium">Production-ready security</span>
+            <div className="flex flex-col items-center space-y-3 text-center">
+              <div className="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center">
+                <Shield className="w-6 h-6 text-purple-600" />
+              </div>
+              <span className="font-semibold text-gray-800">Production-ready security</span>
+              <span className="text-sm text-gray-600">Built-in security scanning and best practices</span>
             </div>
           </div>
         </div>
 
         {/* Professional Tech Stack Visualization */}
-        <div className="relative mx-auto max-w-5xl">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+        <div className="relative mx-auto max-w-6xl">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             {[
               { name: 'React', color: 'bg-blue-500', icon: '⚛️' },
               { name: 'Node.js', color: 'bg-green-500', icon: '🟢' },
@@ -91,49 +102,23 @@ export const HeroSection = () => {
             ].map((tech, index) => (
               <div 
                 key={tech.name}
-                className={`${tech.color} text-white rounded-lg p-6 shadow-professional hover-lift transform transition-all duration-300 hover:scale-105`}
+                className={`${tech.color} text-white rounded-xl p-4 shadow-lg transition-all duration-300 hover:scale-105 hover:shadow-xl`}
                 style={{ 
                   animationDelay: `${index * 100}ms`,
                   animation: `fadeInUp 0.6s ease-out forwards`
                 }}
               >
                 <div className="text-center">
-                  <div className="text-2xl mb-2">{tech.icon}</div>
+                  <div className="text-xl mb-2">{tech.icon}</div>
                   <div className="font-semibold text-sm">{tech.name}</div>
                 </div>
               </div>
             ))}
           </div>
-          
-          {/* Connecting Lines */}
-          <div className="absolute inset-0 pointer-events-none overflow-hidden">
-            <svg className="w-full h-full">
-              <defs>
-                <linearGradient id="lineGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                  <stop offset="0%" stopColor="#3b82f6" stopOpacity="0.3" />
-                  <stop offset="100%" stopColor="#1d4ed8" stopOpacity="0.1" />
-                </linearGradient>
-              </defs>
-              <path 
-                d="M50,50 Q150,25 250,50 T450,50" 
-                stroke="url(#lineGradient)" 
-                strokeWidth="2" 
-                fill="none"
-                strokeDasharray="5,5"
-              />
-              <path 
-                d="M50,150 Q150,125 250,150 T450,150" 
-                stroke="url(#lineGradient)" 
-                strokeWidth="2" 
-                fill="none"
-                strokeDasharray="5,5"
-              />
-            </svg>
-          </div>
         </div>
       </div>
 
-      <style jsx>{`
+      <style>{`
         @keyframes fadeInUp {
           from {
             opacity: 0;

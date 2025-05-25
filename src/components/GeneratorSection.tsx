@@ -55,23 +55,27 @@ export const GeneratorSection = () => {
   };
 
   return (
-    <section id="generator" className="px-6 py-20">
+    <section id="generator" className="px-6 py-20 bg-white">
       <div className="max-w-7xl mx-auto">
         <div className="text-center mb-12">
-          <h2 className="text-4xl font-bold text-white mb-4">ADVANCED PIPELINE GENERATOR</h2>
-          <p className="text-gray-300 text-lg max-w-3xl mx-auto">
+          <h2 className="text-4xl font-bold text-gray-900 mb-4">ADVANCED PIPELINE GENERATOR</h2>
+          <p className="text-gray-600 text-lg max-w-3xl mx-auto">
             Create production-ready CI/CD pipelines tailored to your exact tech stack. 
             Select multiple technologies and get optimized workflows with best practices built-in.
           </p>
         </div>
 
-        <div className="grid lg:grid-cols-2 gap-8">
-          <MultiStepForm 
-            config={config} 
-            setConfig={setConfig}
-            onGenerate={handleGenerate}
-          />
-          <EnhancedYamlPreview workflow={generatedWorkflow} />
+        <div className="grid lg:grid-cols-5 gap-8">
+          <div className="lg:col-span-2">
+            <MultiStepForm 
+              config={config} 
+              setConfig={setConfig}
+              onGenerate={handleGenerate}
+            />
+          </div>
+          <div className="lg:col-span-3">
+            <EnhancedYamlPreview workflow={generatedWorkflow} />
+          </div>
         </div>
       </div>
     </section>
