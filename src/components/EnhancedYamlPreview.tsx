@@ -62,7 +62,7 @@ export const EnhancedYamlPreview: React.FC<EnhancedYamlPreviewProps> = ({ workfl
     return (
       <pre className="text-sm font-mono">
         {lines.map((line, index) => {
-          let highlightedLine = line;
+          let highlightedLine: React.ReactNode;
           
           // Simple syntax highlighting
           if (line.trim().endsWith(':') && !line.includes('|') && !line.includes('>')) {
