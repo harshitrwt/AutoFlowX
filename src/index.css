@@ -125,5 +125,78 @@
   .shadow-professional-lg {
     box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
   }
+
+  /* Animation Classes */
+  .animate-fade-up {
+    animation: fadeUp 0.8s ease-out forwards;
+    opacity: 0;
+    transform: translateY(30px);
+  }
+
+  .animate-fade-left {
+    animation: fadeLeft 0.8s ease-out forwards;
+    opacity: 0;
+    transform: translateX(-30px);
+  }
+
+  .animate-fade-right {
+    animation: fadeRight 0.8s ease-out forwards;
+    opacity: 0;
+    transform: translateX(30px);
+  }
+
+  .animate-fade-in {
+    animation: fadeIn 0.8s ease-out forwards;
+    opacity: 0;
+  }
+
+  .animate-scale-in {
+    animation: scaleIn 0.6s ease-out forwards;
+    opacity: 0;
+    transform: scale(0.9);
+  }
+
+  /* Delayed animations */
+  .animate-delay-100 { animation-delay: 0.1s; }
+  .animate-delay-200 { animation-delay: 0.2s; }
+  .animate-delay-300 { animation-delay: 0.3s; }
+  .animate-delay-400 { animation-delay: 0.4s; }
+  .animate-delay-500 { animation-delay: 0.5s; }
+  .animate-delay-600 { animation-delay: 0.6s; }
+  .animate-delay-700 { animation-delay: 0.7s; }
+  .animate-delay-800 { animation-delay: 0.8s; }
 }
 
+@keyframes fadeUp {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeLeft {
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes fadeRight {
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes fadeIn {
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes scaleIn {
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}

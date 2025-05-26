@@ -55,27 +55,30 @@ export const GeneratorSection = () => {
   };
 
   return (
-    <section id="generator" className="px-4 sm:px-6 py-12 sm:py-20 bg-white dark:bg-gray-900 min-h-screen">
+    <section id="generator" className="px-4 sm:px-6 py-8 sm:py-12 lg:py-20 bg-white dark:bg-gray-900 min-h-screen">
       <div className="max-w-7xl mx-auto">
-        <div className="text-center mb-8 sm:mb-12">
-          <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white mb-4">ADVANCED PIPELINE GENERATOR</h2>
-          <p className="text-gray-600 dark:text-gray-400 text-base sm:text-lg max-w-3xl mx-auto">
+        <div className="text-center mb-6 sm:mb-8 lg:mb-12">
+          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900 dark:text-white mb-3 sm:mb-4">ADVANCED PIPELINE GENERATOR</h2>
+          <p className="text-gray-600 dark:text-gray-400 text-sm sm:text-base lg:text-lg max-w-3xl mx-auto px-2">
             Create production-ready CI/CD pipelines tailored to your exact tech stack. 
             Select multiple technologies and get optimized workflows with best practices built-in.
           </p>
         </div>
 
-        {/* Mobile-first layout: Form on top, preview below */}
-        <div className="space-y-8 lg:space-y-0 lg:grid lg:grid-cols-5 lg:gap-8">
-          <div className="lg:col-span-3 order-1 lg:order-1">
+        {/* Mobile-first responsive layout */}
+        <div className="flex flex-col lg:grid lg:grid-cols-5 gap-4 sm:gap-6 lg:gap-8">
+          {/* Form Section - Full width on mobile, 3/5 on desktop */}
+          <div className="w-full lg:col-span-3 order-1">
             <MultiStepForm 
               config={config} 
               setConfig={setConfig}
               onGenerate={handleGenerate}
             />
           </div>
-          <div className="lg:col-span-2 order-2 lg:order-2">
-            <div className="sticky top-24">
+          
+          {/* Preview Section - Full width on mobile, 2/5 on desktop */}
+          <div className="w-full lg:col-span-2 order-2">
+            <div className="lg:sticky lg:top-24">
               <EnhancedYamlPreview workflow={generatedWorkflow} />
             </div>
           </div>

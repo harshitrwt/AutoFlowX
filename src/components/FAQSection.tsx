@@ -1,9 +1,11 @@
 
 import React, { useState } from 'react';
 import { ChevronDown, ChevronUp } from 'lucide-react';
+import { useScrollAnimation } from '@/hooks/useScrollAnimation';
 
 export const FAQSection = () => {
   const [openFAQ, setOpenFAQ] = useState<number | null>(null);
+  const titleAnimation = useScrollAnimation({ threshold: 0.2, triggerOnce: true });
 
   const faqs = [
     {
@@ -32,6 +34,8 @@ export const FAQSection = () => {
     }
   ];
 
+  const faqAnimations = faqs.map(() => useScrollAnimation({ threshold: 0.3, triggerOnce: true }));
+
   const toggleFAQ = (index: number) => {
     setOpenFAQ(openFAQ === index ? null : index);
   };
@@ -39,42 +43,44 @@ export const FAQSection = () => {
   return (
     <section id="faq" className="py-12 sm:py-20 bg-gray-50 dark:bg-gray-800">
       <div className="max-w-4xl mx-auto px-4 sm:px-6">
-        <div className="text-center mb-12 sm:mb-16">
-          <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white mb-4">Frequently Asked Questions</h2>
-          <p className="text-gray-600 dark:text-gray-300 text-base sm:text-lg">
+        <div ref={titleAnimation.ref} className="text-center mb-12 sm:mb-16">
+          <h2 className={`text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white mb-4 ${titleAnimation.isVisible ? 'animate-fade-up' : 'opacity-0'}`}>Frequently Asked Questions</h2>
+          <p className={`text-gray-600 dark:text-gray-300 text-base sm:text-lg ${titleAnimation.isVisible ? 'animate-fade-up animate-delay-200' : 'opacity-0'}`}>
             Everything you need to know about our CI/CD pipeline generator
           </p>
         </div>
 
         <div className="space-y-4">
           {faqs.map((faq, index) => (
-            <div 
-              key={index} 
-              className="bg-white dark:bg-gray-900 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden transition-all duration-300 hover:shadow-md"
-            >
-              <button
-                onClick={() => toggleFAQ(index)}
-                className="w-full px-4 sm:px-6 py-4 sm:py-5 text-left flex items-center justify-between hover:bg-gray-50 dark:hover:bg-gray-800 transition-all duration-200"
-              >
-                <span className="text-base sm:text-lg font-semibold text-gray-900 dark:text-white pr-4">{faq.question}</span>
-                <div className="flex-shrink-0">
-                  {openFAQ === index ? (
-                    <ChevronUp className="w-5 h-5 text-blue-600 dark:text-blue-400 transition-transform duration-300" />
-                  ) : (
-                    <ChevronDown className="w-5 h-5 text-gray-500 dark:text-gray-400 transition-transform duration-300" />
-                  )}
-                </div>
-              </button>
+            <div key={index} ref={faqAnimations[index].ref}>
               <div 
-                className={`transition-all duration-500 ease-out overflow-hidden ${
-                  openFAQ === index 
-                    ? 'max-h-96 opacity-100' 
-                    : 'max-h-0 opacity-0'
-                }`}
+                className={`bg-white dark:bg-gray-900 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700 overflow-hidden transition-all duration-300 hover:shadow-md ${faqAnimations[index].isVisible ? 'animate-fade-up' : 'opacity-0'}`}
+                style={{ animationDelay: `${index * 100}ms` }}
               >
-                <div className="px-4 sm:px-6 pb-4 sm:pb-5">
-                  <div className="pt-2 border-t border-gray-100 dark:border-gray-700">
-                    <p className="text-gray-600 dark:text-gray-300 leading-relaxed text-sm sm:text-base">{faq.answer}</p>
+                <button
+                  onClick={() => toggleFAQ(index)}
+                  className="w-full px-4 sm:px-6 py-4 sm:py-5 text-left flex items-center justify-between hover:bg-gray-50 dark:hover:bg-gray-800 transition-all duration-200"
+                >
+                  <span className="text-base sm:text-lg font-semibold text-gray-900 dark:text-white pr-4">{faq.question}</span>
+                  <div className="flex-shrink-0">
+                    {openFAQ === index ? (
+                      <ChevronUp className="w-5 h-5 text-blue-600 dark:text-blue-400 transition-transform duration-300" />
+                    ) : (
+                      <ChevronDown className="w-5 h-5 text-gray-500 dark:text-gray-400 transition-transform duration-300" />
+                    )}
+                  </div>
+                </button>
+                <div 
+                  className={`transition-all duration-500 ease-out overflow-hidden ${
+                    openFAQ === index 
+                      ? 'max-h-96 opacity-100' 
+                      : 'max-h-0 opacity-0'
+                  }`}
+                >
+                  <div className="px-4 sm:px-6 pb-4 sm:pb-5">
+                    <div className="pt-2 border-t border-gray-100 dark:border-gray-700">
+                      <p className="text-gray-600 dark:text-gray-300 leading-relaxed text-sm sm:text-base">{faq.answer}</p>
+                    </div>
                   </div>
                 </div>
               </div>
