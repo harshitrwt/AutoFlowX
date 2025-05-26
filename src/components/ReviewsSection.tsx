@@ -39,33 +39,33 @@ export const ReviewsSection = () => {
   ];
 
   return (
-    <section id="reviews" className="py-20 bg-white">
-      <div className="max-w-7xl mx-auto px-6">
-        <div className="text-center mb-16">
-          <h2 className="text-4xl font-bold text-gray-900 mb-4">Trusted by Developers Worldwide</h2>
-          <p className="text-gray-600 text-lg max-w-2xl mx-auto">
+    <section id="reviews" className="py-12 sm:py-20 bg-white dark:bg-gray-900">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6">
+        <div className="text-center mb-12 sm:mb-16">
+          <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white mb-4">Trusted by Developers Worldwide</h2>
+          <p className="text-gray-600 dark:text-gray-300 text-base sm:text-lg max-w-2xl mx-auto">
             See what engineering teams are saying about our CI/CD pipeline generator
           </p>
         </div>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8">
           {reviews.map((review, index) => (
-            <div key={index} className="bg-gray-50 rounded-xl p-6 relative">
-              <Quote className="w-8 h-8 text-blue-600 mb-4 opacity-50" />
+            <div key={index} className="bg-gray-50 dark:bg-gray-800 rounded-xl p-4 sm:p-6 relative border border-gray-200 dark:border-gray-700">
+              <Quote className="w-6 sm:w-8 h-6 sm:h-8 text-blue-600 dark:text-blue-400 mb-4 opacity-50" />
               <div className="flex items-center mb-4">
                 {[...Array(review.rating)].map((_, i) => (
                   <Star key={i} className="w-4 h-4 text-yellow-400 fill-current" />
                 ))}
               </div>
-              <p className="text-gray-700 mb-6 text-sm leading-relaxed">"{review.content}"</p>
+              <p className="text-gray-700 dark:text-gray-300 mb-6 text-sm leading-relaxed">"{review.content}"</p>
               <div className="flex items-center">
-                <div className="w-10 h-10 bg-blue-600 rounded-full flex items-center justify-center text-white font-semibold text-sm">
+                <div className="w-8 sm:w-10 h-8 sm:h-10 bg-blue-600 rounded-full flex items-center justify-center text-white font-semibold text-xs sm:text-sm">
                   {review.avatar}
                 </div>
                 <div className="ml-3">
-                  <div className="font-semibold text-gray-900 text-sm">{review.name}</div>
-                  <div className="text-gray-500 text-xs">{review.role}</div>
-                  <div className="text-blue-600 text-xs font-medium">{review.company}</div>
+                  <div className="font-semibold text-gray-900 dark:text-white text-sm">{review.name}</div>
+                  <div className="text-gray-500 dark:text-gray-400 text-xs">{review.role}</div>
+                  <div className="text-blue-600 dark:text-blue-400 text-xs font-medium">{review.company}</div>
                 </div>
               </div>
             </div>

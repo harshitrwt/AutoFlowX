@@ -1,11 +1,10 @@
-
 import React, { useState } from 'react';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { ChevronLeft, ChevronRight } from 'lucide-react';
+import { ChevronLeft, ChevronRight, ArrowRight } from 'lucide-react';
 
 interface TechStackConfig {
   frontend: string[];
@@ -129,12 +128,12 @@ export const MultiStepForm: React.FC<MultiStepFormProps> = ({ config, setConfig,
       content: (
         <div className="space-y-6">
           <div>
-            <h4 className="text-lg font-semibold text-gray-900 mb-4">CI/CD Provider</h4>
+            <h4 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">CI/CD Provider</h4>
             <Select value={config.ciProvider} onValueChange={(value) => setConfig({ ...config, ciProvider: value })}>
-              <SelectTrigger className="bg-white border-gray-300">
+              <SelectTrigger className="bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white">
                 <SelectValue placeholder="Select CI/CD provider" />
               </SelectTrigger>
-              <SelectContent>
+              <SelectContent className="bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-600">
                 <SelectItem value="github">GitHub Actions</SelectItem>
                 <SelectItem value="gitlab">GitLab CI</SelectItem>
                 <SelectItem value="jenkins">Jenkins</SelectItem>
@@ -144,12 +143,12 @@ export const MultiStepForm: React.FC<MultiStepFormProps> = ({ config, setConfig,
           </div>
 
           <div>
-            <h4 className="text-lg font-semibold text-gray-900 mb-4">Deployment Target</h4>
+            <h4 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">Deployment Target</h4>
             <Select value={config.deployment} onValueChange={(value) => setConfig({ ...config, deployment: value })}>
-              <SelectTrigger className="bg-white border-gray-300">
+              <SelectTrigger className="bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white">
                 <SelectValue placeholder="Select deployment target" />
               </SelectTrigger>
-              <SelectContent>
+              <SelectContent className="bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-600">
                 <SelectItem value="vercel">Vercel</SelectItem>
                 <SelectItem value="netlify">Netlify</SelectItem>
                 <SelectItem value="docker">Docker Hub</SelectItem>
@@ -161,7 +160,7 @@ export const MultiStepForm: React.FC<MultiStepFormProps> = ({ config, setConfig,
           </div>
 
           <div>
-            <h4 className="text-lg font-semibold text-gray-900 mb-4">Pipeline Features</h4>
+            <h4 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">Pipeline Features</h4>
             <div className="grid grid-cols-1 gap-4">
               {[
                 { key: 'linting', label: 'Code Linting', description: 'ESLint, Prettier, etc.' },
@@ -172,7 +171,7 @@ export const MultiStepForm: React.FC<MultiStepFormProps> = ({ config, setConfig,
                 { key: 'environmentVars', label: 'Environment Variables', description: 'Secure env management' },
                 { key: 'dockerization', label: 'Dockerization', description: 'Container support' }
               ].map((feature) => (
-                <div key={feature.key} className="flex items-start space-x-3 p-4 bg-gray-50 rounded-lg border border-gray-200">
+                <div key={feature.key} className="flex items-start space-x-3 p-4 bg-gray-50 dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700">
                   <Checkbox
                     id={feature.key}
                     checked={config.features[feature.key as keyof typeof config.features]}
@@ -180,10 +179,10 @@ export const MultiStepForm: React.FC<MultiStepFormProps> = ({ config, setConfig,
                     className="mt-1"
                   />
                   <div className="flex-1">
-                    <label htmlFor={feature.key} className="text-sm font-medium text-gray-900 cursor-pointer">
+                    <label htmlFor={feature.key} className="text-sm font-medium text-gray-900 dark:text-white cursor-pointer">
                       {feature.label}
                     </label>
-                    <p className="text-xs text-gray-500">{feature.description}</p>
+                    <p className="text-xs text-gray-500 dark:text-gray-400">{feature.description}</p>
                   </div>
                 </div>
               ))}
@@ -198,7 +197,7 @@ export const MultiStepForm: React.FC<MultiStepFormProps> = ({ config, setConfig,
       content: (
         <div className="space-y-6">
           <div>
-            <h4 className="text-lg font-semibold text-gray-900 mb-3">Selected Technologies</h4>
+            <h4 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">Selected Technologies</h4>
             <div className="space-y-3">
               {['frontend', 'backend', 'database'].map((category) => {
                 const selected = config[category as keyof TechStackConfig] as string[];
@@ -206,7 +205,7 @@ export const MultiStepForm: React.FC<MultiStepFormProps> = ({ config, setConfig,
                 
                 return (
                   <div key={category} className="flex items-center space-x-3">
-                    <span className="text-gray-600 capitalize min-w-[80px]">{category}:</span>
+                    <span className="text-gray-600 dark:text-gray-400 capitalize min-w-[80px]">{category}:</span>
                     <div className="flex flex-wrap gap-2">
                       {selected.map((tech) => (
                         <Badge key={tech} className="bg-blue-600 text-white">
@@ -221,19 +220,19 @@ export const MultiStepForm: React.FC<MultiStepFormProps> = ({ config, setConfig,
           </div>
 
           <div>
-            <h4 className="text-lg font-semibold text-gray-900 mb-3">Configuration</h4>
+            <h4 className="text-lg font-semibold text-gray-900 dark:text-white mb-3">Configuration</h4>
             <div className="space-y-2 text-sm">
               <div className="flex justify-between">
-                <span className="text-gray-600">CI/CD Provider:</span>
-                <span className="text-gray-900 font-medium">{config.ciProvider || 'None selected'}</span>
+                <span className="text-gray-600 dark:text-gray-400">CI/CD Provider:</span>
+                <span className="text-gray-900 dark:text-white font-medium">{config.ciProvider || 'None selected'}</span>
               </div>
               <div className="flex justify-between">
-                <span className="text-gray-600">Deployment:</span>
-                <span className="text-gray-900 font-medium">{config.deployment || 'None selected'}</span>
+                <span className="text-gray-600 dark:text-gray-400">Deployment:</span>
+                <span className="text-gray-900 dark:text-white font-medium">{config.deployment || 'None selected'}</span>
               </div>
               <div className="flex justify-between">
-                <span className="text-gray-600">Features:</span>
-                <span className="text-gray-900 font-medium">
+                <span className="text-gray-600 dark:text-gray-400">Features:</span>
+                <span className="text-gray-900 dark:text-white font-medium">
                   {Object.values(config.features).filter(Boolean).length} enabled
                 </span>
               </div>
@@ -255,22 +254,25 @@ export const MultiStepForm: React.FC<MultiStepFormProps> = ({ config, setConfig,
   const currentStepData = steps[currentStep - 1];
 
   return (
-    <Card className="bg-white border border-gray-200 p-6 shadow-lg">
-      {/* Step Indicator */}
+    <Card className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 p-6 shadow-lg">
+      {/* Step Indicator with Arrows */}
       <div className="flex items-center justify-between mb-8">
         {steps.map((step, index) => (
           <div key={index} className="flex items-center">
             <div
-              className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium ${
+              className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium transition-all duration-300 ${
                 index + 1 <= currentStep
-                  ? 'bg-blue-600 text-white'
-                  : 'bg-gray-200 text-gray-500'
+                  ? 'bg-blue-600 text-white shadow-lg'
+                  : 'bg-gray-200 dark:bg-gray-700 text-gray-500 dark:text-gray-400'
               }`}
             >
               {index + 1}
             </div>
             {index < steps.length - 1 && (
-              <div className={`w-16 h-0.5 mx-2 ${index + 1 < currentStep ? 'bg-blue-600' : 'bg-gray-200'}`} />
+              <div className="flex items-center mx-2">
+                <div className={`w-12 h-0.5 transition-all duration-300 ${index + 1 < currentStep ? 'bg-blue-600' : 'bg-gray-200 dark:bg-gray-700'}`} />
+                <ArrowRight className={`w-4 h-4 ml-1 transition-all duration-300 ${index + 1 < currentStep ? 'text-blue-600' : 'text-gray-300 dark:text-gray-600'}`} />
+              </div>
             )}
           </div>
         ))}
@@ -278,8 +280,8 @@ export const MultiStepForm: React.FC<MultiStepFormProps> = ({ config, setConfig,
 
       {/* Step Content */}
       <div className="mb-8">
-        <h3 className="text-xl font-bold text-gray-900 mb-2">{currentStepData.title}</h3>
-        <p className="text-gray-600 mb-6">{currentStepData.description}</p>
+        <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2">{currentStepData.title}</h3>
+        <p className="text-gray-600 dark:text-gray-400 mb-6">{currentStepData.description}</p>
         {currentStepData.content}
       </div>
 
@@ -289,7 +291,7 @@ export const MultiStepForm: React.FC<MultiStepFormProps> = ({ config, setConfig,
           variant="outline"
           onClick={() => setCurrentStep(Math.max(1, currentStep - 1))}
           disabled={currentStep === 1}
-          className="border-gray-300 text-gray-700 hover:bg-gray-50"
+          className="border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800"
         >
           <ChevronLeft className="w-4 h-4 mr-2" />
           Previous
