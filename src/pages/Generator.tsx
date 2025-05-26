@@ -6,9 +6,9 @@ import { Footer } from '@/components/Footer';
 
 const Generator = () => {
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-white dark:bg-gray-900">
       <Header />
-      <div className="pt-20">
+      <div className="pt-16 sm:pt-20">
         <GeneratorSection />
       </div>
       <Footer />
