@@ -65,8 +65,8 @@ export const GeneratorSection = () => {
           </p>
         </div>
 
-        {/* Mobile-first responsive layout */}
-        <div className="flex flex-col lg:grid lg:grid-cols-5 lg:gap-8 space-y-8 lg:space-y-0">
+        {/* Mobile-first layout: Form on top, preview below */}
+        <div className="space-y-8 lg:space-y-0 lg:grid lg:grid-cols-5 lg:gap-8">
           <div className="lg:col-span-3 order-1 lg:order-1">
             <MultiStepForm 
               config={config} 
@@ -75,7 +75,7 @@ export const GeneratorSection = () => {
             />
           </div>
           <div className="lg:col-span-2 order-2 lg:order-2">
-            <div className="lg:sticky lg:top-24">
+            <div className="sticky top-24">
               <EnhancedYamlPreview workflow={generatedWorkflow} />
             </div>
           </div>
