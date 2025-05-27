@@ -1,12 +1,11 @@
+
 import React, { useState } from 'react';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
-import { Label } from '@/components/ui/label';
-import { ChevronLeft, ChevronRight, ArrowRight, Zap, GitBranch, Workflow, HelpCircle } from 'lucide-react';
+import { ChevronLeft, ChevronRight, ArrowRight, Zap } from 'lucide-react';
 
 interface TechStackConfig {
   frontend: string[];
@@ -14,14 +13,6 @@ interface TechStackConfig {
   database: string[];
   deployment: string;
   ciProvider: string;
-  workflowType: 'single' | 'multiple';
-  workflows: {
-    main: boolean;
-    staging: boolean;
-    development: boolean;
-    testing: boolean;
-    release: boolean;
-  };
   features: {
     linting: boolean;
     testing: boolean;
@@ -86,13 +77,6 @@ export const MultiStepForm: React.FC<MultiStepFormProps> = ({ config, setConfig,
     });
   };
 
-  const updateWorkflow = (workflow: keyof typeof config.workflows, value: boolean) => {
-    setConfig({
-      ...config,
-      workflows: { ...config.workflows, [workflow]: value }
-    });
-  };
-
   const renderTechSelection = (category: keyof typeof techOptions, title: string) => (
     <div className="space-y-4">
       <h4 className="text-lg font-semibold text-gray-900 dark:text-white flex items-center">
@@ -131,99 +115,6 @@ export const MultiStepForm: React.FC<MultiStepFormProps> = ({ config, setConfig,
   );
 
   const steps = [
-    {
-      title: 'Workflow Strategy',
-      description: 'Choose your workflow approach',
-      content: (
-        <div className="space-y-6">
-          <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-4">
-            <div className="flex items-start space-x-3">
-              <HelpCircle className="w-5 h-5 text-blue-600 dark:text-blue-400 mt-0.5" />
-              <div>
-                <h4 className="font-semibold text-blue-900 dark:text-blue-100 mb-2">
-                  Understanding Workflows
-                </h4>
-                <p className="text-sm text-blue-800 dark:text-blue-200 mb-2">
-                  A workflow defines when and how your code gets built, tested, and deployed. You can have:
-                </p>
-                <ul className="text-sm text-blue-700 dark:text-blue-300 space-y-1 ml-4">
-                  <li>• <strong>Single workflow:</strong> One pipeline that handles everything</li>
-                  <li>• <strong>Multiple workflows:</strong> Separate pipelines for different environments</li>
-                </ul>
-              </div>
-            </div>
-          </div>
-
-          <div>
-            <h4 className="text-lg font-semibold text-gray-900 dark:text-white mb-4 flex items-center">
-              <Workflow className="w-5 h-5 mr-2 text-orange-500" />
-              Workflow Strategy
-            </h4>
-            <RadioGroup 
-              value={config.workflowType} 
-              onValueChange={(value: 'single' | 'multiple') => setConfig({ ...config, workflowType: value })}
-              className="space-y-4"
-            >
-              <div className="flex items-start space-x-3 p-4 border border-gray-200 dark:border-gray-700 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800">
-                <RadioGroupItem value="single" id="single" className="mt-1" />
-                <div className="flex-1">
-                  <Label htmlFor="single" className="text-base font-medium text-gray-900 dark:text-white cursor-pointer">
-                    Single Workflow (Recommended for beginners)
-                  </Label>
-                  <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
-                    One comprehensive pipeline that handles build, test, and deployment. Perfect for small to medium projects.
-                  </p>
-                </div>
-              </div>
-              <div className="flex items-start space-x-3 p-4 border border-gray-200 dark:border-gray-700 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800">
-                <RadioGroupItem value="multiple" id="multiple" className="mt-1" />
-                <div className="flex-1">
-                  <Label htmlFor="multiple" className="text-base font-medium text-gray-900 dark:text-white cursor-pointer">
-                    Multiple Workflows (Advanced)
-                  </Label>
-                  <p className="text-sm text-gray-600 dark:text-gray-400 mt-1">
-                    Separate workflows for different purposes. Ideal for complex projects with multiple environments.
-                  </p>
-                </div>
-              </div>
-            </RadioGroup>
-          </div>
-
-          {config.workflowType === 'multiple' && (
-            <div className="bg-yellow-50 dark:bg-yellow-900/20 border border-yellow-200 dark:border-yellow-800 rounded-lg p-4">
-              <h4 className="font-semibold text-yellow-900 dark:text-yellow-100 mb-3 flex items-center">
-                <GitBranch className="w-4 h-4 mr-2" />
-                Select Workflows to Generate
-              </h4>
-              <div className="space-y-3">
-                {[
-                  { key: 'main', label: 'Production Deployment', description: 'Deploys to production from main branch' },
-                  { key: 'staging', label: 'Staging Environment', description: 'Deploys to staging for testing' },
-                  { key: 'development', label: 'Development Build', description: 'Runs tests and builds on feature branches' },
-                  { key: 'testing', label: 'Testing Pipeline', description: 'Comprehensive testing workflow' },
-                  { key: 'release', label: 'Release Workflow', description: 'Handles versioning and releases' }
-                ].map((workflow) => (
-                  <div key={workflow.key} className="flex items-start space-x-3">
-                    <Checkbox
-                      id={workflow.key}
-                      checked={config.workflows[workflow.key as keyof typeof config.workflows]}
-                      onCheckedChange={(checked) => updateWorkflow(workflow.key as keyof typeof config.workflows, checked as boolean)}
-                      className="mt-1"
-                    />
-                    <div className="flex-1">
-                      <label htmlFor={workflow.key} className="text-sm font-medium text-yellow-900 dark:text-yellow-100 cursor-pointer">
-                        {workflow.label}
-                      </label>
-                      <p className="text-xs text-yellow-700 dark:text-yellow-300">{workflow.description}</p>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          )}
-        </div>
-      )
-    },
     {
       title: 'Tech Stack Selection',
       description: 'Choose your technologies',
@@ -318,35 +209,6 @@ export const MultiStepForm: React.FC<MultiStepFormProps> = ({ config, setConfig,
       description: 'Review your configuration',
       content: (
         <div className="space-y-6">
-          <div>
-            <h4 className="text-lg font-semibold text-gray-900 dark:text-white mb-3 flex items-center">
-              <span className="w-2 h-2 bg-orange-500 rounded-full mr-3"></span>
-              Workflow Configuration
-            </h4>
-            <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-4">
-              <div className="flex items-center justify-between mb-2">
-                <span className="text-blue-900 dark:text-blue-100 font-medium">Strategy:</span>
-                <Badge className="bg-blue-600 text-white">
-                  {config.workflowType === 'single' ? 'Single Workflow' : 'Multiple Workflows'}
-                </Badge>
-              </div>
-              {config.workflowType === 'multiple' && (
-                <div className="mt-3">
-                  <span className="text-blue-800 dark:text-blue-200 text-sm font-medium">Selected workflows:</span>
-                  <div className="flex flex-wrap gap-2 mt-2">
-                    {Object.entries(config.workflows)
-                      .filter(([_, enabled]) => enabled)
-                      .map(([workflow]) => (
-                        <Badge key={workflow} className="bg-blue-500 text-white text-xs">
-                          {workflow.charAt(0).toUpperCase() + workflow.slice(1)}
-                        </Badge>
-                      ))}
-                  </div>
-                </div>
-              )}
-            </div>
-          </div>
-
           <div>
             <h4 className="text-lg font-semibold text-gray-900 dark:text-white mb-3 flex items-center">
               <span className="w-2 h-2 bg-orange-500 rounded-full mr-3"></span>
