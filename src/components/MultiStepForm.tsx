@@ -1,11 +1,10 @@
-
 import React, { useState } from 'react';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { ChevronLeft, ChevronRight, ArrowRight, Zap, Shield, Code } from 'lucide-react';
+import { ChevronLeft, ChevronRight, ArrowRight } from 'lucide-react';
 
 interface TechStackConfig {
   frontend: string[];
@@ -77,34 +76,29 @@ export const MultiStepForm: React.FC<MultiStepFormProps> = ({ config, setConfig,
     });
   };
 
-  const renderTechSelection = (category: keyof typeof techOptions, title: string, icon: React.ReactNode) => (
+  const renderTechSelection = (category: keyof typeof techOptions, title: string) => (
     <div className="space-y-4">
-      <div className="flex items-center space-x-3">
-        <div className="flex items-center justify-center w-8 h-8 bg-orange-100 dark:bg-orange-900/30 rounded-lg">
-          {icon}
-        </div>
-        <h4 className="text-lg font-semibold text-gray-900 dark:text-white">{title}</h4>
-      </div>
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+      <h4 className="text-lg font-semibold text-gray-900">{title}</h4>
+      <div className="grid grid-cols-1 gap-3">
         {techOptions[category].map((tech) => {
           const isSelected = (config[category] as string[]).includes(tech.id);
           return (
             <div
               key={tech.id}
               onClick={() => toggleTechSelection(category, tech.id)}
-              className={`p-4 rounded-xl border cursor-pointer transition-all duration-200 hover:shadow-md ${
+              className={`p-4 rounded-lg border cursor-pointer transition-all ${
                 isSelected
-                  ? 'bg-orange-50 dark:bg-orange-900/20 border-orange-300 dark:border-orange-600 text-orange-900 dark:text-orange-100 shadow-sm'
-                  : 'bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300 hover:border-gray-300 dark:hover:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-700'
+                  ? 'bg-blue-50 border-blue-300 text-blue-900'
+                  : 'bg-white border-gray-200 text-gray-700 hover:border-gray-300 hover:bg-gray-50'
               }`}
             >
               <div className="flex items-center justify-between">
-                <div className="min-w-0 flex-1">
-                  <div className="font-medium truncate">{tech.label}</div>
-                  <div className="text-sm text-gray-500 dark:text-gray-400 truncate">{tech.description}</div>
+                <div>
+                  <div className="font-medium">{tech.label}</div>
+                  <div className="text-sm text-gray-500">{tech.description}</div>
                 </div>
                 {isSelected && (
-                  <Badge className="bg-orange-600 text-white ml-2 shrink-0">
+                  <Badge className="bg-blue-600 text-white">
                     ✓
                   </Badge>
                 )}
@@ -122,9 +116,9 @@ export const MultiStepForm: React.FC<MultiStepFormProps> = ({ config, setConfig,
       description: 'Choose your technologies',
       content: (
         <div className="space-y-8">
-          {renderTechSelection('frontend', 'Frontend Technologies', <Code className="w-4 h-4 text-orange-600" />)}
-          {renderTechSelection('backend', 'Backend Technologies', <Zap className="w-4 h-4 text-orange-600" />)}
-          {renderTechSelection('database', 'Database & Storage', <Shield className="w-4 h-4 text-orange-600" />)}
+          {renderTechSelection('frontend', 'Frontend Technologies')}
+          {renderTechSelection('backend', 'Backend Technologies')}
+          {renderTechSelection('database', 'Database & Storage')}
         </div>
       )
     },
@@ -177,15 +171,15 @@ export const MultiStepForm: React.FC<MultiStepFormProps> = ({ config, setConfig,
                 { key: 'environmentVars', label: 'Environment Variables', description: 'Secure env management' },
                 { key: 'dockerization', label: 'Dockerization', description: 'Container support' }
               ].map((feature) => (
-                <div key={feature.key} className="flex items-start space-x-3 p-4 bg-gray-50 dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700">
+                <div key={feature.key} className="flex items-start space-x-3 p-4 bg-gray-50 dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700">
                   <Checkbox
                     id={feature.key}
                     checked={config.features[feature.key as keyof typeof config.features]}
                     onCheckedChange={(checked) => updateFeature(feature.key as keyof typeof config.features, checked as boolean)}
                     className="mt-1"
                   />
-                  <div className="flex-1 min-w-0">
-                    <label htmlFor={feature.key} className="text-sm font-medium text-gray-900 dark:text-white cursor-pointer block">
+                  <div className="flex-1">
+                    <label htmlFor={feature.key} className="text-sm font-medium text-gray-900 dark:text-white cursor-pointer">
                       {feature.label}
                     </label>
                     <p className="text-xs text-gray-500 dark:text-gray-400">{feature.description}</p>
@@ -210,11 +204,11 @@ export const MultiStepForm: React.FC<MultiStepFormProps> = ({ config, setConfig,
                 if (selected.length === 0) return null;
                 
                 return (
-                  <div key={category} className="flex flex-col sm:flex-row sm:items-center space-y-2 sm:space-y-0 sm:space-x-3">
-                    <span className="text-gray-600 dark:text-gray-400 capitalize font-medium min-w-[80px]">{category}:</span>
+                  <div key={category} className="flex items-center space-x-3">
+                    <span className="text-gray-600 dark:text-gray-400 capitalize min-w-[80px]">{category}:</span>
                     <div className="flex flex-wrap gap-2">
                       {selected.map((tech) => (
-                        <Badge key={tech} className="bg-orange-600 text-white">
+                        <Badge key={tech} className="bg-blue-600 text-white">
                           {techOptions[category as keyof typeof techOptions].find(t => t.id === tech)?.label || tech}
                         </Badge>
                       ))}
@@ -248,9 +242,9 @@ export const MultiStepForm: React.FC<MultiStepFormProps> = ({ config, setConfig,
           <Button 
             onClick={onGenerate}
             disabled={config.frontend.length === 0 && config.backend.length === 0}
-            className="w-full bg-orange-600 hover:bg-orange-700 text-white py-3 text-lg font-medium"
+            className="w-full bg-blue-600 hover:bg-blue-700 text-white"
           >
-            Generate Pipeline Configuration 🚀
+            Generate Pipeline Configuration
           </Button>
         </div>
       )
@@ -260,24 +254,24 @@ export const MultiStepForm: React.FC<MultiStepFormProps> = ({ config, setConfig,
   const currentStepData = steps[currentStep - 1];
 
   return (
-    <Card className="bg-white/80 dark:bg-gray-900/80 backdrop-blur-sm border border-gray-200 dark:border-gray-700 p-4 sm:p-6 shadow-xl">
-      {/* Step Indicator */}
-      <div className="flex items-center justify-between mb-6 sm:mb-8 overflow-x-auto pb-2">
+    <Card className="bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 p-6 shadow-lg">
+      {/* Step Indicator with Arrows */}
+      <div className="flex items-center justify-between mb-8">
         {steps.map((step, index) => (
-          <div key={index} className="flex items-center shrink-0">
+          <div key={index} className="flex items-center">
             <div
-              className={`w-8 h-8 sm:w-10 sm:h-10 rounded-full flex items-center justify-center text-sm font-medium transition-all duration-300 ${
+              className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium transition-all duration-300 ${
                 index + 1 <= currentStep
-                  ? 'bg-orange-600 text-white shadow-lg'
+                  ? 'bg-blue-600 text-white shadow-lg'
                   : 'bg-gray-200 dark:bg-gray-700 text-gray-500 dark:text-gray-400'
               }`}
             >
               {index + 1}
             </div>
             {index < steps.length - 1 && (
-              <div className="flex items-center mx-2 sm:mx-4">
-                <div className={`w-8 sm:w-12 h-0.5 transition-all duration-300 ${index + 1 < currentStep ? 'bg-orange-600' : 'bg-gray-200 dark:bg-gray-700'}`} />
-                <ArrowRight className={`w-4 h-4 ml-1 transition-all duration-300 ${index + 1 < currentStep ? 'text-orange-600' : 'text-gray-300 dark:text-gray-600'}`} />
+              <div className="flex items-center mx-2">
+                <div className={`w-12 h-0.5 transition-all duration-300 ${index + 1 < currentStep ? 'bg-blue-600' : 'bg-gray-200 dark:bg-gray-700'}`} />
+                <ArrowRight className={`w-4 h-4 ml-1 transition-all duration-300 ${index + 1 < currentStep ? 'text-blue-600' : 'text-gray-300 dark:text-gray-600'}`} />
               </div>
             )}
           </div>
@@ -285,21 +279,19 @@ export const MultiStepForm: React.FC<MultiStepFormProps> = ({ config, setConfig,
       </div>
 
       {/* Step Content */}
-      <div className="mb-6 sm:mb-8">
-        <h3 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white mb-2">{currentStepData.title}</h3>
+      <div className="mb-8">
+        <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2">{currentStepData.title}</h3>
         <p className="text-gray-600 dark:text-gray-400 mb-6">{currentStepData.description}</p>
-        <div className="overflow-hidden">
-          {currentStepData.content}
-        </div>
+        {currentStepData.content}
       </div>
 
       {/* Navigation */}
-      <div className="flex flex-col sm:flex-row justify-between space-y-3 sm:space-y-0">
+      <div className="flex justify-between">
         <Button
           variant="outline"
           onClick={() => setCurrentStep(Math.max(1, currentStep - 1))}
           disabled={currentStep === 1}
-          className="border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800 w-full sm:w-auto"
+          className="border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800"
         >
           <ChevronLeft className="w-4 h-4 mr-2" />
           Previous
@@ -308,7 +300,7 @@ export const MultiStepForm: React.FC<MultiStepFormProps> = ({ config, setConfig,
         {currentStep < steps.length ? (
           <Button
             onClick={() => setCurrentStep(Math.min(steps.length, currentStep + 1))}
-            className="bg-orange-600 hover:bg-orange-700 w-full sm:w-auto"
+            className="bg-blue-600 hover:bg-blue-700"
           >
             Next
             <ChevronRight className="w-4 h-4 ml-2" />
