@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { MultiStepForm } from './MultiStepForm';
 import { EnhancedYamlPreview } from './EnhancedYamlPreview';
@@ -10,6 +9,14 @@ interface TechStackConfig {
   database: string[];
   deployment: string;
   ciProvider: string;
+  workflowType: 'single' | 'multiple' | 'main' | 'staging' | 'development' | 'testing' | 'release';
+  workflows?: {
+    main: boolean;
+    staging: boolean;
+    development: boolean;
+    testing: boolean;
+    release: boolean;
+  };
   features: {
     linting: boolean;
     testing: boolean;
@@ -28,6 +35,7 @@ export const GeneratorSection = () => {
     database: [],
     deployment: '',
     ciProvider: 'github',
+    workflowType: 'single',
     features: {
       linting: false,
       testing: false,
