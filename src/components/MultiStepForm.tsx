@@ -13,6 +13,14 @@ interface TechStackConfig {
   database: string[];
   deployment: string;
   ciProvider: string;
+  workflowType: 'single' | 'multiple' | 'main' | 'staging' | 'development' | 'testing' | 'release';
+  workflows?: {
+    main: boolean;
+    staging: boolean;
+    development: boolean;
+    testing: boolean;
+    release: boolean;
+  };
   features: {
     linting: boolean;
     testing: boolean;
@@ -307,13 +315,13 @@ export const MultiStepForm: React.FC<MultiStepFormProps> = ({ config, setConfig,
       <div>
         <div className="mb-6">
           <h3 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white mb-2">
-            {currentStepData.title}
+            {steps[currentStep - 1].title}
           </h3>
           <p className="text-gray-600 dark:text-gray-400 text-sm sm:text-base">
-            {currentStepData.description}
+            {steps[currentStep - 1].description}
           </p>
         </div>
-        {currentStepData.content}
+        {steps[currentStep - 1].content}
       </div>
 
       {/* Navigation */}
