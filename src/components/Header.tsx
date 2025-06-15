@@ -4,32 +4,27 @@ import { Button } from '@/components/ui/button';
 import { Code2, Github, Moon, Sun, Menu, X, Users, Star } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useTheme } from './ThemeProvider';
+import { useCountUp } from "@/hooks/useCountUp";
 
-export const Header = () => {
+export const Header = ({ showLoading=false }: { showLoading?: boolean }) => {
   const navigate = useNavigate();
   const { theme, toggleTheme } = useTheme();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const [visitorCount, setVisitorCount] = useState(0);
-  const [githubStars, setGithubStars] = useState(0);
 
-  // Simulate visitor count (in real app, this would come from your analytics)
+  // Counters start at 0, animate up
+  const [visitorCountTarget, setVisitorCountTarget] = useState(0);
+  const [githubStarsTarget, setGithubStarsTarget] = useState(0);
+  const visitorCount = useCountUp(visitorCountTarget, 0, 1200);
+  const githubStars = useCountUp(githubStarsTarget, 0, 1200);
+
   useEffect(() => {
-    const baseCount = 1247;
-    const randomIncrement = Math.floor(Math.random() * 50);
-    setVisitorCount(baseCount + randomIncrement);
-    
-    // Update visitor count every 30 seconds
-    const interval = setInterval(() => {
-      setVisitorCount(prev => prev + Math.floor(Math.random() * 3));
-    }, 30000);
-
-    return () => clearInterval(interval);
-  }, []);
-
-  // Simulate GitHub stars (in real app, this would come from GitHub API)
-  useEffect(() => {
-    setGithubStars(342);
-  }, []);
+    if (!showLoading) {
+      // Animate to new numbers after pipeline generation
+      setVisitorCountTarget(1274 + Math.floor(Math.random() * 30));
+      setGithubStarsTarget(357 + Math.floor(Math.random() * 8));
+    }
+    // else leave at 0
+  }, [showLoading]);
 
   return (
     <header className="fixed top-0 left-0 right-0 z-50 bg-white/90 dark:bg-gray-900/90 backdrop-blur-md border-b border-gray-200 dark:border-gray-700">
@@ -70,17 +65,15 @@ export const Header = () => {
           >
             {theme === 'light' ? <Moon className="w-4 h-4" /> : <Sun className="w-4 h-4" />}
           </Button>
-
           {/* Desktop Stats and GitHub */}
           <div className="hidden sm:flex items-center space-x-3">
             {/* Visitor Count */}
             <div className="flex items-center space-x-2 px-3 py-2 bg-orange-50 dark:bg-orange-900/20 border border-orange-200 dark:border-orange-800 rounded-lg">
               <Users className="w-4 h-4 text-orange-600 dark:text-orange-400" />
               <span className="text-sm font-medium text-orange-700 dark:text-orange-300">
-                {visitorCount.toLocaleString()}
+                {showLoading ? (<span className="animate-pulse text-gray-400">...</span>) : visitorCount.toLocaleString()}
               </span>
             </div>
-
             {/* GitHub Stars */}
             <Button 
               variant="outline" 
@@ -89,10 +82,11 @@ export const Header = () => {
             >
               <Github className="w-4 h-4" />
               <Star className="w-4 h-4" />
-              <span className="hidden md:inline font-medium">{githubStars}</span>
+              <span className="hidden md:inline font-medium">
+                {showLoading ? (<span className="animate-pulse text-gray-400">...</span>) : githubStars}
+              </span>
             </Button>
           </div>
-
           {/* Mobile Menu Button */}
           <Button
             variant="outline"
@@ -104,7 +98,6 @@ export const Header = () => {
           </Button>
         </div>
       </div>
-
       {/* Mobile Menu */}
       {isMobileMenuOpen && (
         <div className="lg:hidden bg-white dark:bg-gray-900 border-t border-gray-200 dark:border-gray-700">
@@ -127,14 +120,15 @@ export const Header = () => {
               <div className="flex items-center space-x-2 px-3 py-2 bg-orange-50 dark:bg-orange-900/20 border border-orange-200 dark:border-orange-800 rounded-lg">
                 <Users className="w-4 h-4 text-orange-600 dark:text-orange-400" />
                 <span className="text-sm font-medium text-orange-700 dark:text-orange-300">
-                  {visitorCount.toLocaleString()}
+                  {showLoading ? (<span className="animate-pulse text-gray-400">...</span>) : visitorCount.toLocaleString()}
                 </span>
               </div>
-              
               <Button variant="outline" size="sm" className="flex items-center space-x-2">
                 <Github className="w-4 h-4" />
                 <Star className="w-4 h-4" />
-                <span className="font-medium">{githubStars}</span>
+                <span className="font-medium">
+                  {showLoading ? (<span className="animate-pulse text-gray-400">...</span>) : githubStars}
+                </span>
               </Button>
             </div>
           </div>

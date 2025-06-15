@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { CheckCircle, Code, Shield, Zap, GitBranch, Settings } from 'lucide-react';
 import { useScrollAnimation } from '@/hooks/useScrollAnimation';
@@ -45,104 +44,51 @@ export const FeaturesSection = () => {
   ];
 
   return (
-    <section id="features" className="py-12 sm:py-20 bg-gray-50 dark:bg-gray-800">
+    <section id="features" className="py-16 bg-gradient-to-br from-orange-100/60 via-white to-gray-50 dark:from-gray-900 dark:to-gray-800">
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
-        <div ref={titleAnimation.ref} className="text-center mb-12 sm:mb-16">
-          <h2 className={`text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white mb-4 ${titleAnimation.isVisible ? 'animate-fade-up' : 'opacity-0'}`}>Everything You Need</h2>
-          <p className={`text-gray-600 dark:text-gray-300 text-base sm:text-lg max-w-3xl mx-auto ${titleAnimation.isVisible ? 'animate-fade-up animate-delay-200' : 'opacity-0'}`}>
-            A complete feature set for production environments, built with 
-            a worldwide community of developers and enterprises.
+        <div ref={titleAnimation.ref} className="mb-12 text-center">
+          <h2 className={`text-3xl sm:text-4xl font-extrabold tracking-tight text-gray-900 dark:text-white mb-4 ${titleAnimation.isVisible ? 'animate-fade-up' : 'opacity-0'}`}>
+            <span className="bg-orange-600 text-white px-2 rounded">Everything You Need</span>
+          </h2>
+          <p className={`mx-auto max-w-2xl text-lg text-gray-700 dark:text-gray-200 leading-relaxed ${titleAnimation.isVisible ? 'animate-fade-up animate-delay-200' : 'opacity-0'}`}>
+            Production-grade CI/CD—<span className="text-orange-600 dark:text-orange-400 font-semibold">in minutes</span>, not days.
+            No vendor lock-in. Infinite extensibility. 
           </p>
         </div>
-
-        <div className="grid lg:grid-cols-2 gap-8 sm:gap-12 items-center mb-12 sm:mb-16">
-          <div ref={mainFeatureAnimation.ref}>
-            <div className={`bg-white dark:bg-gray-900 rounded-2xl p-6 sm:p-8 shadow-lg border border-gray-200 dark:border-gray-700 ${mainFeatureAnimation.isVisible ? 'animate-fade-left' : 'opacity-0'}`}>
-              <div className="flex items-center mb-6">
-                {features[0].icon}
-                <h3 className="text-xl sm:text-2xl font-bold text-gray-900 dark:text-white ml-4">{features[0].title}</h3>
-              </div>
-              <p className="text-gray-600 dark:text-gray-300 mb-6">{features[0].description}</p>
+        <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+          {/* Main feature card */}
+          <div className="relative group md:row-span-2 bg-white dark:bg-gray-900 border-2 border-orange-500 shadow-2xl rounded-3xl overflow-hidden hover:scale-105 transition-transform duration-300 animate-fade-in">
+            <div className="absolute -top-10 -right-8 bg-orange-500 text-white px-4 py-2 rounded-xl rotate-12 shadow-lg border-2 border-orange-600 font-black text-xl">Popular</div>
+            <div className="p-8 flex flex-col items-center justify-between h-full">
+              <div className="mb-4">{features[0].icon}</div>
+              <h3 className="text-xl font-bold text-gray-800 dark:text-white mb-2 text-center">{features[0].title}</h3>
+              <p className="text-gray-600 dark:text-gray-300 text-center mb-6">{features[0].description}</p>
               <img 
-                src="/lovable-uploads/46abd016-524e-45c4-8038-66f29332392a.png" 
-                alt="Technology stack visualization"
-                className="w-full rounded-lg"
+                src={features[0].image}
+                alt="Tech stack"
+                className="max-w-full rounded-xl border-2 border-orange-200 shadow-xl"
               />
             </div>
           </div>
-          <div className="space-y-6">
-            <div ref={sideFeatures1Animation.ref}>
-              <div className={`bg-white dark:bg-gray-900 rounded-xl p-4 sm:p-6 shadow-lg border border-gray-200 dark:border-gray-700 ${sideFeatures1Animation.isVisible ? 'animate-fade-right' : 'opacity-0'}`}>
-                <div className="flex items-center mb-4">
-                  {features[1].icon}
-                  <h3 className="text-lg sm:text-xl font-bold text-gray-900 dark:text-white ml-4">{features[1].title}</h3>
-                </div>
-                <p className="text-gray-600 dark:text-gray-300 mb-4">{features[1].description}</p>
-                <div className="space-y-2">
-                  {features[1].features?.map((item, itemIndex) => (
-                    <div key={itemIndex} className="flex items-center">
-                      <CheckCircle className="w-4 h-4 text-green-500 mr-2 flex-shrink-0" />
-                      <span className="text-gray-700 dark:text-gray-300 text-sm">{item}</span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
-            <div ref={sideFeatures2Animation.ref}>
-              <div className={`bg-white dark:bg-gray-900 rounded-xl p-4 sm:p-6 shadow-lg border border-gray-200 dark:border-gray-700 ${sideFeatures2Animation.isVisible ? 'animate-fade-right animate-delay-200' : 'opacity-0'}`}>
-                <div className="flex items-center mb-4">
-                  {features[2].icon}
-                  <h3 className="text-lg sm:text-xl font-bold text-gray-900 dark:text-white ml-4">{features[2].title}</h3>
-                </div>
-                <p className="text-gray-600 dark:text-gray-300 mb-4">{features[2].description}</p>
-                <div className="space-y-2">
-                  {features[2].features?.map((item, itemIndex) => (
-                    <div key={itemIndex} className="flex items-center">
-                      <CheckCircle className="w-4 h-4 text-green-500 mr-2 flex-shrink-0" />
-                      <span className="text-gray-700 dark:text-gray-300 text-sm">{item}</span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div className="grid md:grid-cols-2 gap-6 sm:gap-8">
-          <div ref={bottomFeatures1Animation.ref}>
-            <div className={`bg-white dark:bg-gray-900 rounded-xl p-6 sm:p-8 shadow-lg border border-gray-200 dark:border-gray-700 ${bottomFeatures1Animation.isVisible ? 'animate-fade-left' : 'opacity-0'}`}>
-              <div className="flex items-center mb-6">
-                {features[3].icon}
-                <h3 className="text-lg sm:text-xl font-bold text-gray-900 dark:text-white ml-4">{features[3].title}</h3>
-              </div>
-              <p className="text-gray-600 dark:text-gray-300 mb-6">{features[3].description}</p>
-              <div className="space-y-3">
-                {features[3].features?.map((item, itemIndex) => (
-                  <div key={itemIndex} className="flex items-center">
-                    <CheckCircle className="w-4 h-4 text-green-500 mr-2 flex-shrink-0" />
-                    <span className="text-gray-700 dark:text-gray-300 text-sm sm:text-base">{item}</span>
-                  </div>
+          {/* Other feature cards */}
+          {features.slice(1).map((feature, i) => (
+            <div 
+              key={feature.title}
+              className={`bg-white/90 dark:bg-gray-900 border border-gray-200 dark:border-gray-800 shadow-lg rounded-2xl p-7 flex flex-col animate-fade-in hover:shadow-2xl transition group ${i === 0 ? 'md:col-span-1' : ''}`}
+            >
+              <div className="mb-4 flex items-center justify-center">{feature.icon}</div>
+              <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-3 text-center">{feature.title}</h3>
+              <p className="text-gray-600 dark:text-gray-400 mb-4 text-center">{feature.description}</p>
+              <ul className="space-y-2 mt-auto">
+                {(feature.features || []).map(item => (
+                  <li key={item} className="flex items-center justify-center">
+                    <CheckCircle className="text-green-500 mr-2 w-4 h-4" /> 
+                    <span className="text-gray-700 dark:text-gray-300 text-sm">{item}</span>
+                  </li>
                 ))}
-              </div>
+              </ul>
             </div>
-          </div>
-          <div ref={bottomFeatures2Animation.ref}>
-            <div className={`bg-white dark:bg-gray-900 rounded-xl p-6 sm:p-8 shadow-lg border border-gray-200 dark:border-gray-700 ${bottomFeatures2Animation.isVisible ? 'animate-fade-right' : 'opacity-0'}`}>
-              <div className="flex items-center mb-6">
-                {features[4].icon}
-                <h3 className="text-lg sm:text-xl font-bold text-gray-900 dark:text-white ml-4">{features[4].title}</h3>
-              </div>
-              <p className="text-gray-600 dark:text-gray-300 mb-6">{features[4].description}</p>
-              <div className="space-y-3">
-                {features[4].features?.map((item, itemIndex) => (
-                  <div key={itemIndex} className="flex items-center">
-                    <CheckCircle className="w-4 h-4 text-green-500 mr-2 flex-shrink-0" />
-                    <span className="text-gray-700 dark:text-gray-300 text-sm sm:text-base">{item}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
+          ))}
         </div>
       </div>
     </section>

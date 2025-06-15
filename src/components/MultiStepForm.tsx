@@ -37,10 +37,11 @@ interface MultiStepFormProps {
   config: TechStackConfig & { workflowSteps?: { name: string; description: string; script: string; }[]; ciProvider?: string };
   setConfig: (config: TechStackConfig & { workflowSteps?: { name: string; description: string; script: string; }[] }) => void;
   onGenerate: () => void;
+  isGenerating?: boolean;
 }
 
-export const MultiStepForm: React.FC<MultiStepFormProps> = ({ config, setConfig, onGenerate }) => {
-  const [currentStep, setCurrentStep] = useState(1);
+export const MultiStepForm: React.FC<MultiStepFormProps> = ({ config, setConfig, onGenerate, isGenerating }) => {
+  const [currentStep, setCurrentStep] = React.useState(1);
 
   const techOptions = {
     frontend: [
@@ -149,10 +150,21 @@ export const MultiStepForm: React.FC<MultiStepFormProps> = ({ config, setConfig,
       title: "Workflow Steps",
       description: "Add custom build/test/deploy steps (in order they run)",
       content: (
-        <WorkflowStepEditor
-          steps={config.workflowSteps || []}
-          onChange={steps => setConfig({ ...config, workflowSteps: steps })}
-        />
+        <>
+          <WorkflowStepEditor
+            steps={config.workflowSteps || []}
+            onChange={steps => setConfig({ ...config, workflowSteps: steps })}
+          />
+          <div className="flex justify-end mt-2">
+            <button
+              className="text-sm text-orange-600 dark:text-orange-400 font-semibold px-3 py-1 hover:underline rounded"
+              type="button"
+              onClick={() => setCurrentStep(currentStep + 1)}
+            >
+              Skip &rarr;
+            </button>
+          </div>
+        </>
       ),
     },
     {
@@ -291,11 +303,20 @@ export const MultiStepForm: React.FC<MultiStepFormProps> = ({ config, setConfig,
 
           <Button 
             onClick={onGenerate}
-            disabled={config.frontend.length === 0 && config.backend.length === 0}
-            className="w-full bg-gradient-to-r from-orange-600 to-orange-700 hover:from-orange-700 hover:to-orange-800 text-white h-12 text-base font-semibold shadow-lg hover:shadow-xl transition-all duration-200"
+            disabled={config.frontend.length === 0 && config.backend.length === 0 || isGenerating}
+            className="w-full bg-gradient-to-r from-orange-600 to-orange-700 hover:from-orange-700 hover:to-orange-800 text-white h-12 text-base font-semibold shadow-lg hover:shadow-xl transition-all duration-200 mt-2"
           >
-            <Zap className="w-5 h-5 mr-2" />
-            Generate Pipeline Configuration
+            {isGenerating ? (
+              <>
+                <svg width="26" height="26" className="animate-spin text-white mr-2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" strokeWidth="4" strokeDasharray="31.4" strokeDashoffset="20"></circle></svg>
+                Generating...
+              </>
+            ) : (
+              <>
+                <Zap className="w-5 h-5 mr-2" />
+                Generate Pipeline Configuration
+              </>
+            )}
           </Button>
         </div>
       )
@@ -342,7 +363,7 @@ export const MultiStepForm: React.FC<MultiStepFormProps> = ({ config, setConfig,
             {steps[currentStep - 1].description}
           </p>
         </div>
-        {steps[currentStep - 1].content}
+        {currentStepData.content}
       </div>
 
       {/* Navigation */}
@@ -350,7 +371,7 @@ export const MultiStepForm: React.FC<MultiStepFormProps> = ({ config, setConfig,
         <Button
           variant="outline"
           onClick={() => setCurrentStep(Math.max(1, currentStep - 1))}
-          disabled={currentStep === 1}
+          disabled={currentStep === 1 || isGenerating}
           className="border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800 h-10 sm:h-12"
         >
           <ChevronLeft className="w-4 h-4 mr-2" />
@@ -361,12 +382,33 @@ export const MultiStepForm: React.FC<MultiStepFormProps> = ({ config, setConfig,
           <Button
             onClick={() => setCurrentStep(Math.min(steps.length, currentStep + 1))}
             className="bg-gradient-to-r from-orange-600 to-orange-700 hover:from-orange-700 hover:to-orange-800 text-white h-10 sm:h-12"
+            disabled={isGenerating}
           >
             Next
             <ChevronRight className="w-4 h-4 ml-2" />
           </Button>
         ) : null}
       </div>
+      {/* On last step - Generate */}
+      {currentStep === steps.length && (
+        <Button
+          onClick={onGenerate}
+          disabled={config.frontend.length === 0 && config.backend.length === 0 || isGenerating}
+          className="w-full bg-gradient-to-r from-orange-600 to-orange-700 hover:from-orange-700 hover:to-orange-800 text-white h-12 text-base font-semibold shadow-lg hover:shadow-xl transition-all duration-200 mt-2"
+        >
+          {isGenerating ? (
+            <>
+              <svg width="26" height="26" className="animate-spin text-white mr-2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" strokeWidth="4" strokeDasharray="31.4" strokeDashoffset="20"></circle></svg>
+              Generating...
+            </>
+          ) : (
+            <>
+              <Zap className="w-5 h-5 mr-2" />
+              Generate Pipeline Configuration
+            </>
+          )}
+        </Button>
+      )}
     </div>
   );
 };
