@@ -90,7 +90,7 @@ export const MultiStepForm: React.FC<MultiStepFormProps> = ({ config, setConfig,
   const renderTechSelection = (category: keyof typeof techOptions, title: string) => (
     <div className="space-y-4">
       <h4 className="text-lg font-semibold text-gray-900 dark:text-white flex items-center">
-        <span className="w-2 h-2 bg-orange-500 rounded-full mr-3"></span>
+        <span className="w-2 h-2 bg-blue-500 rounded-full mr-3"></span>
         {title}
       </h4>
       <div className="grid grid-cols-1 gap-3">
@@ -102,8 +102,8 @@ export const MultiStepForm: React.FC<MultiStepFormProps> = ({ config, setConfig,
               onClick={() => toggleTechSelection(category, tech.id)}
               className={`p-3 sm:p-4 rounded-lg border cursor-pointer transition-all duration-200 ${
                 isSelected
-                  ? 'bg-orange-50 dark:bg-orange-900/20 border-orange-300 dark:border-orange-700 text-orange-900 dark:text-orange-100 shadow-md'
-                  : 'bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300 hover:border-orange-300 dark:hover:border-orange-700 hover:bg-orange-50 dark:hover:bg-orange-900/10'
+                  ? 'bg-blue-50 dark:bg-blue-900/20 border-blue-300 dark:border-blue-700 text-blue-900 dark:text-blue-100 shadow-md'
+                  : 'bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700 text-gray-700 dark:text-gray-300 hover:border-blue-300 dark:hover:border-blue-700 hover:bg-blue-50 dark:hover:bg-blue-900/10'
               }`}
             >
               <div className="flex items-center justify-between">
@@ -112,7 +112,7 @@ export const MultiStepForm: React.FC<MultiStepFormProps> = ({ config, setConfig,
                   <div className="text-xs sm:text-sm text-gray-500 dark:text-gray-400">{tech.description}</div>
                 </div>
                 {isSelected && (
-                  <Badge className="bg-orange-600 text-white text-xs">
+                  <Badge className="bg-blue-600 text-white text-xs">
                     ✓
                   </Badge>
                 )}
@@ -157,7 +157,7 @@ export const MultiStepForm: React.FC<MultiStepFormProps> = ({ config, setConfig,
           />
           <div className="flex justify-end mt-2">
             <button
-              className="text-sm text-orange-600 dark:text-orange-400 font-semibold px-3 py-1 hover:underline rounded"
+              className="text-sm text-blue-600 dark:text-blue-400 font-semibold px-3 py-1 hover:underline rounded"
               type="button"
               onClick={() => setCurrentStep(currentStep + 1)}
             >
@@ -174,7 +174,7 @@ export const MultiStepForm: React.FC<MultiStepFormProps> = ({ config, setConfig,
         <div className="space-y-6">
           <div>
             <h4 className="text-lg font-semibold text-gray-900 dark:text-white mb-4 flex items-center">
-              <span className="w-2 h-2 bg-orange-500 rounded-full mr-3"></span>
+              <span className="w-2 h-2 bg-blue-500 rounded-full mr-3"></span>
               CI/CD Provider
             </h4>
             <Select value={config.ciProvider} onValueChange={(value) => setConfig({ ...config, ciProvider: value })}>
@@ -192,7 +192,7 @@ export const MultiStepForm: React.FC<MultiStepFormProps> = ({ config, setConfig,
 
           <div>
             <h4 className="text-lg font-semibold text-gray-900 dark:text-white mb-4 flex items-center">
-              <span className="w-2 h-2 bg-orange-500 rounded-full mr-3"></span>
+              <span className="w-2 h-2 bg-blue-500 rounded-full mr-3"></span>
               Deployment Target
             </h4>
             <Select value={config.deployment} onValueChange={(value) => setConfig({ ...config, deployment: value })}>
@@ -212,7 +212,7 @@ export const MultiStepForm: React.FC<MultiStepFormProps> = ({ config, setConfig,
 
           <div>
             <h4 className="text-lg font-semibold text-gray-900 dark:text-white mb-4 flex items-center">
-              <span className="w-2 h-2 bg-orange-500 rounded-full mr-3"></span>
+              <span className="w-2 h-2 bg-blue-500 rounded-full mr-3"></span>
               Pipeline Features
             </h4>
             <div className="grid grid-cols-1 gap-3 sm:gap-4">
@@ -225,7 +225,7 @@ export const MultiStepForm: React.FC<MultiStepFormProps> = ({ config, setConfig,
                 { key: 'environmentVars', label: 'Environment Variables', description: 'Secure env management' },
                 { key: 'dockerization', label: 'Dockerization', description: 'Container support' }
               ].map((feature) => (
-                <div key={feature.key} className="flex items-start space-x-3 p-3 sm:p-4 bg-gray-50 dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 hover:bg-orange-50 dark:hover:bg-orange-900/10 transition-colors">
+                <div key={feature.key} className="flex items-start space-x-3 p-3 sm:p-4 bg-gray-50 dark:bg-gray-800 rounded-lg border border-gray-200 dark:border-gray-700 hover:bg-blue-50 dark:hover:bg-blue-900/10 transition-colors">
                   <Checkbox
                     id={feature.key}
                     checked={config.features[feature.key as keyof typeof config.features]}
@@ -252,7 +252,7 @@ export const MultiStepForm: React.FC<MultiStepFormProps> = ({ config, setConfig,
         <div className="space-y-6">
           <div>
             <h4 className="text-lg font-semibold text-gray-900 dark:text-white mb-3 flex items-center">
-              <span className="w-2 h-2 bg-orange-500 rounded-full mr-3"></span>
+              <span className="w-2 h-2 bg-blue-500 rounded-full mr-3"></span>
               Selected Technologies
             </h4>
             <div className="space-y-3">
@@ -267,7 +267,7 @@ export const MultiStepForm: React.FC<MultiStepFormProps> = ({ config, setConfig,
                     </span>
                     <div className="flex flex-wrap gap-2">
                       {selected.map((tech) => (
-                        <Badge key={tech} className="bg-orange-600 hover:bg-orange-700 text-white text-xs">
+                        <Badge key={tech} className="bg-blue-600 hover:bg-blue-700 text-white text-xs">
                           {techOptions[category as keyof typeof techOptions].find(t => t.id === tech)?.label || tech}
                         </Badge>
                       ))}
@@ -280,7 +280,7 @@ export const MultiStepForm: React.FC<MultiStepFormProps> = ({ config, setConfig,
 
           <div>
             <h4 className="text-lg font-semibold text-gray-900 dark:text-white mb-3 flex items-center">
-              <span className="w-2 h-2 bg-orange-500 rounded-full mr-3"></span>
+              <span className="w-2 h-2 bg-blue-500 rounded-full mr-3"></span>
               Configuration
             </h4>
             <div className="space-y-2 text-sm">
@@ -304,7 +304,7 @@ export const MultiStepForm: React.FC<MultiStepFormProps> = ({ config, setConfig,
           <Button 
             onClick={onGenerate}
             disabled={config.frontend.length === 0 && config.backend.length === 0 || isGenerating}
-            className="w-full bg-gradient-to-r from-orange-600 to-orange-700 hover:from-orange-700 hover:to-orange-800 text-white h-12 text-base font-semibold shadow-lg hover:shadow-xl transition-all duration-200 mt-2"
+            className="w-full bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white h-12 text-base font-semibold shadow-lg hover:shadow-xl transition-all duration-200 mt-2"
           >
             {isGenerating ? (
               <>
@@ -334,7 +334,7 @@ export const MultiStepForm: React.FC<MultiStepFormProps> = ({ config, setConfig,
             <div
               className={`w-8 h-8 sm:w-10 sm:h-10 rounded-full flex items-center justify-center text-sm font-bold transition-all duration-300 ${
                 index + 1 <= currentStep
-                  ? 'bg-gradient-to-r from-orange-600 to-orange-700 text-white shadow-lg'
+                  ? 'bg-gradient-to-r from-blue-600 to-blue-700 text-white shadow-lg'
                   : 'bg-gray-200 dark:bg-gray-700 text-gray-500 dark:text-gray-400'
               }`}
             >
@@ -344,7 +344,7 @@ export const MultiStepForm: React.FC<MultiStepFormProps> = ({ config, setConfig,
               <div className="flex-1 mx-2 sm:mx-4">
                 <div className={`h-1 rounded-full transition-all duration-300 ${
                   index + 1 < currentStep 
-                    ? 'bg-gradient-to-r from-orange-600 to-orange-700' 
+                    ? 'bg-gradient-to-r from-blue-600 to-blue-700' 
                     : 'bg-gray-200 dark:bg-gray-700'
                 }`} />
               </div>
@@ -381,7 +381,7 @@ export const MultiStepForm: React.FC<MultiStepFormProps> = ({ config, setConfig,
         {currentStep < steps.length ? (
           <Button
             onClick={() => setCurrentStep(Math.min(steps.length, currentStep + 1))}
-            className="bg-gradient-to-r from-orange-600 to-orange-700 hover:from-orange-700 hover:to-orange-800 text-white h-10 sm:h-12"
+            className="bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white h-10 sm:h-12"
             disabled={isGenerating}
           >
             Next
@@ -394,7 +394,7 @@ export const MultiStepForm: React.FC<MultiStepFormProps> = ({ config, setConfig,
         <Button
           onClick={onGenerate}
           disabled={config.frontend.length === 0 && config.backend.length === 0 || isGenerating}
-          className="w-full bg-gradient-to-r from-orange-600 to-orange-700 hover:from-orange-700 hover:to-orange-800 text-white h-12 text-base font-semibold shadow-lg hover:shadow-xl transition-all duration-200 mt-2"
+          className="w-full bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white h-12 text-base font-semibold shadow-lg hover:shadow-xl transition-all duration-200 mt-2"
         >
           {isGenerating ? (
             <>
@@ -412,3 +412,5 @@ export const MultiStepForm: React.FC<MultiStepFormProps> = ({ config, setConfig,
     </div>
   );
 };
+
+// NOTE: This file is now 415+ lines long. For best maintainability, consider refactoring it into smaller focused components.

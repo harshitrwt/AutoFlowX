@@ -80,13 +80,13 @@ export const GeneratorSection = () => {
   };
 
   return (
-    <section id="generator" className="px-4 sm:px-6 py-6 sm:py-8 lg:py-12 bg-gradient-to-br from-orange-50 to-white dark:from-gray-900 dark:to-gray-800 min-h-screen">
+    <section id="generator" className="px-4 sm:px-6 py-6 sm:py-8 lg:py-12 bg-gradient-to-br from-blue-50 to-white dark:from-gray-900 dark:to-gray-800 min-h-screen">
       <Header showLoading={headerLoading} />
       <div className="pt-16 sm:pt-20">
         <div className="max-w-7xl mx-auto">
           {/* Header */}
           <div className="text-center mb-6 sm:mb-8 lg:mb-10">
-            <div className="inline-flex items-center px-4 py-2 bg-orange-100 dark:bg-orange-900/30 border border-orange-200 dark:border-orange-700 rounded-full text-orange-700 dark:text-orange-300 text-sm font-medium mb-4">
+            <div className="inline-flex items-center px-4 py-2 bg-blue-100 dark:bg-blue-900/30 border border-blue-200 dark:border-blue-700 rounded-full text-blue-700 dark:text-blue-300 text-sm font-medium mb-4">
               🚀 Advanced Pipeline Generator
             </div>
             <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900 dark:text-white mb-3 sm:mb-4">
@@ -103,11 +103,11 @@ export const GeneratorSection = () => {
             {/* Configuration Section */}
             <div className="order-1 lg:order-1">
               <div className="bg-white dark:bg-gray-900 rounded-xl shadow-xl border border-gray-200 dark:border-gray-700 overflow-hidden">
-                <div className="bg-gradient-to-r from-orange-500 to-orange-600 p-4 sm:p-6">
+                <div className="bg-gradient-to-r from-blue-500 to-blue-600 p-4 sm:p-6">
                   <h2 className="text-xl sm:text-2xl font-bold text-white mb-2">
                     Configure Your Stack
                   </h2>
-                  <p className="text-orange-100 text-sm sm:text-base">
+                  <p className="text-blue-100 text-sm sm:text-base">
                     Choose your technologies and pipeline features
                   </p>
                 </div>
@@ -136,7 +136,7 @@ export const GeneratorSection = () => {
                 <div className="p-4 sm:p-6">
                   {isGenerating ? (
                     <div className="flex flex-col items-center justify-center min-h-[300px] animate-pulse">
-                      <svg width="32" height="32" viewBox="0 0 24 24" className="animate-spin text-orange-500 mb-3"><circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" strokeWidth="4" strokeDasharray="31.4" strokeDashoffset="20"></circle></svg>
+                      <svg width="32" height="32" viewBox="0 0 24 24" className="animate-spin text-blue-500 mb-3"><circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" strokeWidth="4" strokeDasharray="31.4" strokeDashoffset="20"></circle></svg>
                       <span className="text-lg text-gray-500 dark:text-gray-300 font-medium">Generating your pipeline...</span>
                     </div>
                   ) : (
@@ -150,15 +150,15 @@ export const GeneratorSection = () => {
           {/* Stats Section */}
           <div className="mt-12 grid grid-cols-1 sm:grid-cols-3 gap-6">
             <div className="bg-white dark:bg-gray-900 rounded-lg p-6 text-center border border-gray-200 dark:border-gray-700 shadow-lg">
-              <div className="text-2xl sm:text-3xl font-bold text-orange-600 dark:text-orange-400 mb-2">500+</div>
+              <div className="text-2xl sm:text-3xl font-bold text-blue-600 dark:text-blue-400 mb-2">500+</div>
               <div className="text-gray-600 dark:text-gray-400 text-sm">Pipelines Generated</div>
             </div>
             <div className="bg-white dark:bg-gray-900 rounded-lg p-6 text-center border border-gray-200 dark:border-gray-700 shadow-lg">
-              <div className="text-2xl sm:text-3xl font-bold text-orange-600 dark:text-orange-400 mb-2">20+</div>
+              <div className="text-2xl sm:text-3xl font-bold text-blue-600 dark:text-blue-400 mb-2">20+</div>
               <div className="text-gray-600 dark:text-gray-400 text-sm">Supported Technologies</div>
             </div>
             <div className="bg-white dark:bg-gray-900 rounded-lg p-6 text-center border border-gray-200 dark:border-gray-700 shadow-lg">
-              <div className="text-2xl sm:text-3xl font-bold text-orange-600 dark:text-orange-400 mb-2">99%</div>
+              <div className="text-2xl sm:text-3xl font-bold text-blue-600 dark:text-blue-400 mb-2">99%</div>
               <div className="text-gray-600 dark:text-gray-400 text-sm">Success Rate</div>
             </div>
           </div>
