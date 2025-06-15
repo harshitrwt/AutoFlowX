@@ -1,211 +1,101 @@
-import React, { useState } from 'react';
-import { CheckCircle, Code, Shield, Zap, GitBranch, Settings, Github, FileText, ListChecks, Users, MessageCircle } from 'lucide-react';
-import { useScrollAnimation } from '@/hooks/useScrollAnimation';
 
-// Helper for feature icon backgrounds
-const iconBgColors = [
-  "bg-gradient-to-tr from-orange-500 via-yellow-400 to-orange-300",
-  "bg-gradient-to-tr from-yellow-500 via-pink-400 to-red-300",
-  "bg-gradient-to-tr from-green-500 via-emerald-400 to-lime-300",
-  "bg-gradient-to-tr from-purple-600 via-indigo-500 to-blue-400",
-  "bg-gradient-to-tr from-gray-600 via-gray-400 to-slate-300"
-];
+import React from 'react';
+import {
+  Code, CheckCircle, Shield, Zap, GitBranch, Settings, Github, FileText, ListChecks, Users, MessageCircle, Jenkins
+} from 'lucide-react';
+import { FeatureCard } from './FeatureCard';
 
-const features = [
+const featureData = [
   {
-    icon: <Code className="w-8 h-8 text-white drop-shadow-lg" />,
+    icon: <Code className="w-7 h-7 text-orange-300" />,
     title: "Multi-Technology Support",
-    description:
-      "Support for 20+ major frameworks, languages and cloud environments. Build, test, and deploy with flexibility for every stack.",
+    description: "Work seamlessly across React, Next.js, Angular, Vue, Svelte, Node.js, Python, Java, Go, PHP and more. Connect to CI/CD with GitHub, GitLab, Bitbucket, Jenkins. Build, test, and deploy for any stack.",
     bullets: [
-      { icon: <Code className="w-5 h-5 text-orange-400" />, text: "React, Next.js, Angular, Vue, Svelte..." },
-      { icon: <Shield className="w-5 h-5 text-yellow-400" />, text: "Node.js, Python, Java, Go, PHP" },
-      { icon: <Github className="w-5 h-5 text-purple-500" />, text: "GitHub, GitLab, Bitbucket, Jenkins" },
-      { icon: <FileText className="w-5 h-5 text-green-600" />, text: "Monorepo, Microservices, PR workflows" }
+      { icon: <Code className="w-4 h-4 text-orange-400" />, text: "Web, backend, and mobile frameworks" },
+      { icon: <Shield className="w-4 h-4 text-yellow-400" />, text: "Node.js, Python, Java, Go, PHP" },
+      { icon: <Github className="w-4 h-4 text-purple-400" />, text: "GitHub, GitLab, Bitbucket, Jenkins" },
+      { icon: <FileText className="w-4 h-4 text-green-300" />, text: "Monorepo, microservices, PR workflows" },
     ],
-    image: "/lovable-uploads/9f90d2c3-4d5f-47c5-9b77-b9318cbc08f5.png"
+    colorClass: "border-orange-500 bg-gradient-to-br from-[#251e10] via-[#141210] to-[#181829]",
   },
   {
-    icon: <Zap className="w-8 h-8 text-white drop-shadow-lg" />,
+    icon: <Zap className="w-7 h-7 text-yellow-200" />,
     title: "Lightning Fast Setup",
-    description: "Generate production-ready pipelines in under 60 seconds with zero configuration.",
-    features: ["One-click generation", "Auto-optimization", "Best practices built-in"]
+    description: "Generate production-ready pipelines in under 60 seconds, no manual YAML required.",
+    bullets: [
+      { icon: <CheckCircle className="w-4 h-4 text-green-400" />, text: "One-click generation" },
+      { icon: <CheckCircle className="w-4 h-4 text-green-400" />, text: "Auto-optimization" },
+      { icon: <CheckCircle className="w-4 h-4 text-green-400" />, text: "Best practices built-in" }
+    ],
+    colorClass: "border-pink-400 bg-gradient-to-br from-[#24121c] via-[#2e181c] to-[#181829]",
   },
   {
-    icon: <Shield className="w-8 h-8 text-white drop-shadow-lg" />,
+    icon: <Shield className="w-7 h-7 text-green-200" />,
     title: "Enterprise Security",
-    description: "Built-in security scanning, vulnerability detection, and compliance checks.",
-    features: ["SAST/DAST scanning", "Dependency analysis", "Container security"]
+    description: "Security scanning, vulnerability checks, and compliance out of the box for peace of mind.",
+    bullets: [
+      { icon: <CheckCircle className="w-4 h-4 text-green-400" />, text: "SAST/DAST scanning" },
+      { icon: <CheckCircle className="w-4 h-4 text-green-400" />, text: "Dependency analysis" },
+      { icon: <CheckCircle className="w-4 h-4 text-green-400" />, text: "Container security" }
+    ],
+    colorClass: "border-emerald-400 bg-gradient-to-br from-[#192417] via-[#121f15] to-[#181829]",
   },
   {
-    icon: <GitBranch className="w-8 h-8 text-white drop-shadow-lg" />,
+    icon: <GitBranch className="w-7 h-7 text-purple-200" />,
     title: "Advanced Workflows",
-    description: "Support for complex deployment strategies and multi-environment setups.",
-    features: ["Blue-green deployment", "Canary releases", "Rollback strategies"]
+    description: "Support for blue-green and canary deployments, multi-env setups, and custom triggers.",
+    bullets: [
+      { icon: <CheckCircle className="w-4 h-4 text-green-400" />, text: "Blue-green deployment" },
+      { icon: <CheckCircle className="w-4 h-4 text-green-400" />, text: "Canary releases" },
+      { icon: <CheckCircle className="w-4 h-4 text-green-400" />, text: "Rollback strategies" }
+    ],
+    colorClass: "border-purple-400 bg-gradient-to-br from-[#211824] via-[#1c1522] to-[#181829]",
   },
   {
-    icon: <Settings className="w-8 h-8 text-white drop-shadow-lg" />,
+    icon: <Settings className="w-7 h-7 text-gray-300" />,
     title: "Customizable Pipelines",
-    description: "Fine-tune every aspect of your CI/CD pipeline with advanced configuration.",
-    features: ["Custom steps", "Environment variables", "Conditional logic"]
+    description: "Finetune every step of your workflow: custom, conditional, or environment-aware logic.",
+    bullets: [
+      { icon: <CheckCircle className="w-4 h-4 text-green-400" />, text: "Custom steps" },
+      { icon: <CheckCircle className="w-4 h-4 text-green-400" />, text: "Env variables & secrets" },
+      { icon: <CheckCircle className="w-4 h-4 text-green-400" />, text: "Conditional logic" }
+    ],
+    colorClass: "border-gray-500 bg-gradient-to-br from-[#191b20] via-[#181a1e] to-[#181829]",
   }
 ];
 
 export const FeaturesSection = () => {
-  const titleAnimation = useScrollAnimation({ threshold: 0.2, triggerOnce: true });
-
   return (
-    <section
-      id="features"
-      className="relative bg-gradient-to-br from-orange-50 via-white to-gray-100 dark:from-[#1B1B1F] dark:to-[#181829] py-24 overflow-x-clip"
-    >
+    <section id="features" className="relative bg-gradient-to-br from-orange-50 via-white to-gray-100 dark:from-[#1B1B1F] dark:to-[#181829] py-20 sm:py-24 overflow-x-clip">
       <div className="max-w-7xl mx-auto px-4 sm:px-8">
-        <div ref={titleAnimation.ref} className="mb-20 text-center">
-          <h2 className={`inline-block px-6 py-2 rounded-full font-black text-3xl sm:text-5xl tracking-tight
-            bg-gradient-to-tr from-orange-600/90 to-orange-400/90 text-white shadow-xl mb-4
-            ${titleAnimation.isVisible ? 'animate-fade-up' : 'opacity-0'}`}>
+        {/* Title */}
+        <div className="mb-16 text-center">
+          <h2 className="inline-block px-6 py-2 rounded-full font-black text-3xl sm:text-5xl tracking-tight bg-gradient-to-tr from-orange-600/90 to-orange-400/90 text-white shadow-xl mb-4">
             Everything You Need
           </h2>
-          <p className={`mx-auto max-w-2xl text-lg text-slate-700 dark:text-gray-200 leading-relaxed mt-4
-            ${titleAnimation.isVisible ? 'animate-fade-up animate-delay-200' : 'opacity-0'}`}>
+          <p className="mx-auto max-w-2xl text-lg text-slate-700 dark:text-gray-200 leading-relaxed mt-4">
             Production-grade CI/CD—<span className="text-orange-600 dark:text-orange-400 font-semibold">in minutes</span>, not days.<br />
             No vendor lock-in. Infinite extensibility.
           </p>
         </div>
-        {/* Modern Bento Grid */}
-        <div
-          className={`
-            grid gap-7
-            grid-cols-1
-            sm:grid-cols-6
-            auto-rows-[minmax(185px,1fr)]
-            md:auto-rows-[minmax(230px,1fr)]
-            lg:grid-cols-8
-          `}
-          style={{ display: 'grid' }}
-        >
-          {/* Large Card: Multi-Technology Support */}
-          <div className="relative col-span-1 sm:col-span-3 lg:col-span-4 row-span-2 rounded-2xl overflow-hidden
-            flex flex-col shadow-2xl group border-2 border-orange-400 bg-gradient-to-br from-[#1B1B1F] via-[#292933] to-[#181829] dark:bg-[#181829] 
-            outline outline-1 outline-orange-400/10"
-          >
-            <div className="absolute -top-7 right-8 bg-orange-600 text-white py-1 px-5 rounded-full rotate-6 shadow-md font-black text-xs tracking-wide z-10">
-              Popular
-            </div>
-            <div className="absolute inset-0 bg-gradient-to-tl from-orange-200/10 via-orange-50/10 to-transparent dark:from-orange-900/20 dark:via-gray-900/10 pointer-events-none z-0"/>
-            {/* Card Content */}
-            <div className="flex flex-col h-full justify-between relative z-10 p-8">
-              <div>
-                <div className="rounded-full w-14 h-14 flex items-center justify-center mb-6 bg-gradient-to-tr from-orange-500 via-yellow-400 to-orange-400 shadow-lg">
-                  <Code className="w-8 h-8 text-white" />
-                </div>
-                <h3 className="text-2xl sm:text-3xl font-extrabold text-white mb-3">{features[0].title}</h3>
-                <p className="text-gray-200 text-base mb-7">
-                  {features[0].description}
-                </p>
-                <ul className="space-y-3">
-                  {features[0].bullets.map((b, idx) => (
-                    <li key={idx} className="flex items-center gap-2 text-base text-[#FBFAFF] font-medium">
-                      <span>{b.icon}</span>
-                      <span>{b.text}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-              <img
-                src={features[0].image}
-                alt="Supported technologies"
-                className="mx-auto mt-6 rounded-xl border border-orange-400/50 shadow-lg bg-[#181829] object-contain"
-                style={{
-                  maxWidth: "310px",
-                  width: "100%",
-                  maxHeight: "90px"
-                }}
-              />
-            </div>
-          </div>
-          {/* Feature 2 */}
-          <div className="relative col-span-1 sm:col-span-3 lg:col-span-2 rounded-2xl bg-gradient-to-br from-pink-50 via-yellow-100 to-red-50 dark:from-orange-900/80 dark:via-gray-900/60 dark:to-pink-900/60 border border-pink-200 dark:border-pink-900 overflow-hidden group flex flex-col shadow-lg">
-            <span className="absolute right-5 -top-7 w-14 h-14 blur-xl opacity-30 pointer-events-none z-0 bg-gradient-to-br from-yellow-500 via-pink-400 to-red-300 rounded-full"></span>
-            <div className="flex flex-col gap-2 p-8 h-full z-10 relative">
-              <div className={`${iconBgColors[1]} rounded-xl p-3 shadow-lg w-fit mb-2`}>
-                {features[1].icon}
-              </div>
-              <h3 className="text-xl font-extrabold text-gray-900 dark:text-white mb-1">{features[1].title}</h3>
-              <p className="text-gray-700 dark:text-gray-200 mb-2">{features[1].description}</p>
-              <ul className="flex flex-col gap-1 mt-auto">
-                {features[1].features!.map(item => (
-                  <li key={item} className="flex items-center text-sm text-gray-700 dark:text-gray-300">
-                    <CheckCircle className="text-green-500 mr-2 w-4 h-4" />
-                    {item}
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </div>
-          {/* Feature 3 */}
-          <div className="relative col-span-1 sm:col-span-3 lg:col-span-2 rounded-2xl bg-gradient-to-br from-green-50 via-lime-100 to-emerald-50 dark:from-emerald-900/70 dark:via-gray-900/70 dark:to-lime-900/70 border border-emerald-200 dark:border-emerald-900 overflow-hidden group flex flex-col shadow-lg">
-            <span className="absolute left-5 -top-7 w-14 h-14 blur-xl opacity-30 pointer-events-none z-0 bg-gradient-to-br from-green-400 via-emerald-400 to-lime-300 rounded-full"></span>
-            <div className="flex flex-col gap-2 p-8 h-full z-10 relative">
-              <div className={`${iconBgColors[2]} rounded-xl p-3 shadow-lg w-fit mb-2`}>
-                {features[2].icon}
-              </div>
-              <h3 className="text-xl font-extrabold text-gray-900 dark:text-white mb-1">{features[2].title}</h3>
-              <p className="text-gray-700 dark:text-gray-200 mb-2">{features[2].description}</p>
-              <ul className="flex flex-col gap-1 mt-auto">
-                {features[2].features!.map(item => (
-                  <li key={item} className="flex items-center text-sm text-gray-700 dark:text-gray-300">
-                    <CheckCircle className="text-green-500 mr-2 w-4 h-4" />
-                    {item}
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </div>
-          {/* Feature 4 */}
-          <div className="relative col-span-1 sm:col-span-3 lg:col-span-2 rounded-2xl bg-gradient-to-br from-indigo-50 via-purple-100 to-blue-50 dark:from-purple-900/60 dark:via-gray-900/70 dark:to-blue-900/60 border border-indigo-200 dark:border-indigo-900 overflow-hidden group flex flex-col shadow-lg">
-            <span className="absolute right-5 -top-7 w-14 h-14 blur-xl opacity-30 pointer-events-none z-0 bg-gradient-to-br from-purple-600 via-indigo-500 to-blue-400 rounded-full"></span>
-            <div className="flex flex-col gap-2 p-8 h-full z-10 relative">
-              <div className={`${iconBgColors[3]} rounded-xl p-3 shadow-lg w-fit mb-2`}>
-                {features[3].icon}
-              </div>
-              <h3 className="text-xl font-extrabold text-gray-900 dark:text-white mb-1">{features[3].title}</h3>
-              <p className="text-gray-700 dark:text-gray-200 mb-2">{features[3].description}</p>
-              <ul className="flex flex-col gap-1 mt-auto">
-                {features[3].features!.map(item => (
-                  <li key={item} className="flex items-center text-sm text-gray-700 dark:text-gray-300">
-                    <CheckCircle className="text-green-500 mr-2 w-4 h-4" />
-                    {item}
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </div>
-          {/* Feature 5 */}
-          <div className="relative col-span-1 sm:col-span-3 lg:col-span-2 rounded-2xl bg-gradient-to-br from-gray-50 via-slate-100 to-gray-200 dark:from-gray-900/75 dark:via-gray-800/80 dark:to-slate-900/60 border border-gray-200 dark:border-gray-700 overflow-hidden group flex flex-col shadow-lg">
-            <span className="absolute left-5 -top-7 w-14 h-14 blur-xl opacity-30 pointer-events-none z-0 bg-gradient-to-br from-gray-600 via-gray-400 to-slate-300 rounded-full"></span>
-            <div className="flex flex-col gap-2 p-8 h-full z-10 relative">
-              <div className={`${iconBgColors[4]} rounded-xl p-3 shadow-lg w-fit mb-2`}>
-                {features[4].icon}
-              </div>
-              <h3 className="text-xl font-extrabold text-gray-900 dark:text-white mb-1">{features[4].title}</h3>
-              <p className="text-gray-700 dark:text-gray-200 mb-2">{features[4].description}</p>
-              <ul className="flex flex-col gap-1 mt-auto">
-                {features[4].features!.map(item => (
-                  <li key={item} className="flex items-center text-sm text-gray-700 dark:text-gray-300">
-                    <CheckCircle className="text-green-500 mr-2 w-4 h-4" />
-                    {item}
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </div>
+        {/* Bento Grid */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-7">
+          {featureData.map((f, i) => (
+            <FeatureCard
+              key={f.title}
+              icon={f.icon}
+              title={f.title}
+              description={f.description}
+              bullets={f.bullets}
+              colorClass={f.colorClass}
+            />
+          ))}
         </div>
-      </div>
-      {/* Fancy floating gradient decor */}
-      <div className="pointer-events-none absolute -z-10 left-0 right-0 bottom-0 top-0 overflow-hidden">
-        <div className="absolute left-[8%] top-[60%] w-56 h-56 bg-gradient-to-bl from-orange-300 to-transparent opacity-30 rounded-full blur-3xl animate-pulse-slow"></div>
-        <div className="absolute right-[6%] top-[18%] w-32 h-32 bg-gradient-to-br from-orange-400 to-pink-300 opacity-25 rounded-full blur-2xl animate-pulse-slower"></div>
+        {/* Gradient decor */}
+        <div className="pointer-events-none absolute -z-10 left-0 right-0 bottom-0 top-0 overflow-hidden">
+          <div className="absolute left-[8%] top-[60%] w-56 h-56 bg-gradient-to-bl from-orange-300 to-transparent opacity-30 rounded-full blur-3xl animate-pulse-slow"></div>
+          <div className="absolute right-[6%] top-[18%] w-32 h-32 bg-gradient-to-br from-orange-400 to-pink-300 opacity-25 rounded-full blur-2xl animate-pulse-slower"></div>
+        </div>
       </div>
     </section>
   );
