@@ -56,6 +56,113 @@ export const generateAdvancedYaml = (config: TechStackConfig & { workflowSteps?:
 
   // Generate workflow based on CI provider and workflow type
   switch (ciProvider) {
+    case "jenkins": {
+      // A high-quality Jenkins pipeline with support for build, test, lint, deploy, docker, etc.
+      yaml =
+`
+pipeline {
+  agent any
+  environment {
+    ${hasNode ? "NODE_VERSION = '18.x'" : ""}
+    ${hasPython ? "PYTHON_VERSION = '3.11'" : ""}
+    ${features.environmentVars ? "// Add environment variables here\n    // DATABASE_URL = credentials('db-url')\n    // API_KEY = credentials('api-key')" : ""}
+  }
+  stages {
+    stage('Checkout') {
+      steps {
+        checkout scm
+      }
+    }
+    ${hasNode ?
+    `stage('Setup Node') {
+      steps {
+        sh 'nvm install $NODE_VERSION || true'
+        sh 'node -v'
+      }
+    }` : ""}
+    ${hasPython ?
+    `stage('Setup Python') {
+      steps {
+        sh 'python3 --version'
+      }
+    }` : ""}
+    ${hasNode ?
+    `stage('Install Node Dependencies') {
+      steps {
+        sh 'npm ci'
+      }
+    }` : ""}
+    ${hasPython ?
+    `stage('Install Python Deps') {
+      steps {
+        sh 'pip install --upgrade pip'
+        sh 'pip install -r requirements.txt'
+      }
+    }` : ""}
+
+    ${features.linting && hasNode ?
+      `stage('Lint JS/TS') {
+      steps {
+        sh 'npm run lint'
+      }
+    }` : ""}
+    ${features.linting && hasPython ?
+      `stage('Lint Python') {
+      steps {
+        sh 'flake8 .'
+        sh 'pylint **/*.py || true'
+      }
+    }` : ""}
+    ${features.formatting && hasNode ?
+      `stage('Format Check') {
+      steps { sh 'npm run format:check' }
+    }` : ""}
+    ${features.formatting && hasPython ?
+      `stage('Format Python') {
+      steps { sh 'black --check .' }
+    }` : ""}
+    ${features.testing && hasNode ?
+      `stage('Test JS') {
+      steps { sh 'npm test' }
+    }` : ""}
+    ${features.testing && hasPython ?
+      `stage('Test Python') {
+      steps { sh 'pytest' }
+    }` : ""}
+    ${features.coverage ?
+      `stage('Upload Coverage') {
+      steps { echo 'Upload to coverage service (add your integration here)' }
+    }` : ""}
+    // Deployment
+    ${deployment !== 'none' && deployment ?
+      `stage('Deploy') {
+      when { branch 'main' }
+      steps {
+        echo 'Deploying to ${deployment.charAt(0).toUpperCase() + deployment.slice(1)}...'
+        // Add real deployment steps here (Vercel/Netlify/AWS, etc)
+      }
+    }` : ""}
+    // Docker build option
+    ${features.dockerization ?
+      `stage('Docker Build') {
+      steps {
+        sh 'docker build -t your-repo:latest .'
+      }
+    }` : ""}
+  }
+  ${features.environmentVars ?
+`  // Use Jenkins Credentials Plugin for secrets. See docs: https://www.jenkins.io/doc/book/using/using-credentials/
+` : ""}
+}
+`;
+      filename = "Jenkinsfile";
+      instructions.push(
+        'Configure Jenkins with required credentials (API keys, tokens, etc) via Jenkins Credentials Plugin.',
+        'Install required build agents for Node.js/Python as needed.',
+        'Add deployment steps for your cloud provider if needed.'
+      );
+      break;
+    }
     case "github":
     default: {
       // ... keep existing variable setup for github actions ...

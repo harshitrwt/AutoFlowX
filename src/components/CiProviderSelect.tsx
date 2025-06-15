@@ -6,6 +6,7 @@ import { Badge } from "@/components/ui/badge";
 const ciProviders = [
   { value: "github", label: "GitHub Actions" },
   { value: "gitlab", label: "GitLab CI" },
+  { value: "jenkins", label: "Jenkins" },
   { value: "azure", label: "Azure Pipelines" },
   { value: "bitbucket", label: "Bitbucket Pipelines" }
 ];

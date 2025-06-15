@@ -1,6 +1,6 @@
 
-import React from 'react';
-import { CheckCircle, Code, Shield, Zap, GitBranch, Settings } from 'lucide-react';
+import React, { useState } from 'react';
+import { CheckCircle, Code, Shield, Zap, GitBranch, Settings, Github, FileText, ListChecks, Users, MessageCircle } from 'lucide-react';
 import { useScrollAnimation } from '@/hooks/useScrollAnimation';
 
 // Helper for feature icon backgrounds
@@ -16,7 +16,13 @@ const features = [
   {
     icon: <Code className="w-8 h-8 text-white drop-shadow-lg" />,
     title: "Multi-Technology Support",
-    description: "Support for 20+ technologies including React, Node.js, Python, Docker, and more.",
+    description: "Support for 20+ major frameworks, languages and cloud environments. Build, test, and deploy with flexibility for every stack.",
+    bullets: [
+      {icon: <Code className="w-6 h-6 text-orange-500"/>, text: "React, Next.js, Angular, Vue, Svelte..."},
+      {icon: <Shield className="w-6 h-6 text-yellow-500"/>, text: "Node.js, Python, Java, Go, PHP"},
+      {icon: <Github className="w-6 h-6 text-purple-500"/>, text: "GitHub, GitLab, Bitbucket, Jenkins"},
+      {icon: <FileText className="w-6 h-6 text-green-600"/>, text: "Monorepo, Microservices, PR workflows"},
+    ],
     image: "/lovable-uploads/46abd016-524e-45c4-8038-66f29332392a.png"
   },
   {
@@ -45,8 +51,18 @@ const features = [
   }
 ];
 
+// Suggestions box state (UI only)
 export const FeaturesSection = () => {
   const titleAnimation = useScrollAnimation({ threshold: 0.2, triggerOnce: true });
+  const [suggestion, setSuggestion] = useState('');
+  const [submitted, setSubmitted] = useState(false);
+
+  const handleSuggestionSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    setSubmitted(true);
+    setTimeout(() => setSubmitted(false), 2000);
+    setSuggestion('');
+  };
 
   return (
     <section
@@ -78,26 +94,33 @@ export const FeaturesSection = () => {
           `}
           style={{ display: 'grid' }}
         >
-          {/* Main feature - large card */}
-          <div className="relative col-span-1 sm:col-span-3 lg:col-span-4 row-span-2 rounded-3xl overflow-hidden flex flex-col shadow-xl group bg-white/70 dark:bg-gray-900/90 border-2 border-orange-400 hover:scale-[1.02] hover:shadow-[0_12px_80px_-8px_orange] transition-all duration-300">
+          {/* Main feature - large card with details */}
+          <div className="relative col-span-1 sm:col-span-3 lg:col-span-4 row-span-2 rounded-3xl overflow-hidden flex flex-col shadow-xl group bg-white/80 dark:bg-gray-900/90 border-2 border-orange-400 hover:scale-[1.01] transition-all duration-300">
             <div className="absolute -top-8 right-8 bg-orange-600 text-white py-1 px-5 rounded-full rotate-6 shadow-md font-black text-sm tracking-wide z-10">
               Popular
             </div>
             {/* Subtle Overlay */}
-            <span className="absolute inset-0 bg-gradient-to-tr from-orange-100/40 via-orange-50 to-transparent dark:from-orange-800/40 dark:via-gray-900/50 pointer-events-none z-0" />
+            <span className="absolute inset-0 bg-gradient-to-tr from-orange-100/40 via-orange-50 to-transparent dark:from-orange-800/30 dark:via-gray-900/30 pointer-events-none z-0" />
             {/* Content */}
             <div className="flex flex-col md:flex-row items-center justify-between h-full px-8 pt-8 pb-6 relative z-10">
               <div className="flex-1 flex flex-col gap-4 items-center md:items-start">
                 <div className={`${iconBgColors[0]} rounded-full p-5 shadow-2xl mb-3`}>
-                  {features[0].icon}
+                  <Code className="w-10 h-10 text-white drop-shadow-lg"/>
                 </div>
                 <h3 className="text-3xl font-bold text-gray-900 dark:text-white text-center md:text-left">{features[0].title}</h3>
-                <p className="text-gray-700 dark:text-orange-200 text-lg">{features[0].description}</p>
+                <p className="text-gray-700 dark:text-orange-200 text-lg mb-2">{features[0].description}</p>
+                <ul className="space-y-2 mt-2">
+                  {features[0].bullets.map((bullet, idx) => (
+                    <li key={idx} className="flex items-center gap-2 text-base text-gray-700 dark:text-gray-200 font-medium">
+                      <span>{bullet.icon}</span> {bullet.text}
+                    </li>
+                  ))}
+                </ul>
               </div>
               <img 
                 src={features[0].image}
                 alt="Tech stack"
-                className="w-full md:w-52 lg:w-64 max-h-32 md:max-h-36 mt-7 md:mt-0 mx-auto rounded-xl border-2 border-orange-200 shadow-xl object-contain bg-white dark:bg-gray-900"
+                className="w-full md:w-56 lg:w-64 max-h-32 md:max-h-36 mt-7 md:mt-0 mx-auto rounded-xl border-2 border-orange-200 shadow-xl object-contain bg-white dark:bg-gray-900"
               />
             </div>
           </div>
@@ -175,6 +198,39 @@ export const FeaturesSection = () => {
                   </li>
                 ))}
               </ul>
+            </div>
+          </div>
+          {/* Suggestions Box */}
+          <div className="col-span-1 sm:col-span-3 lg:col-span-4 row-span-1 rounded-3xl bg-gradient-to-br from-blue-50 via-gray-100 to-blue-200 dark:from-gray-800/90 dark:via-blue-900/20 dark:to-gray-900/80 border border-blue-200 dark:border-blue-800 shadow-lg flex flex-col items-center justify-center p-7 mt-4 sm:mt-0">
+            <div className="flex items-center justify-center mb-3">
+              <MessageCircle className="w-8 h-8 text-blue-600 dark:text-blue-300 mr-2" />
+              <span className="text-lg font-semibold text-blue-700 dark:text-blue-200">Suggestions</span>
+            </div>
+            <form onSubmit={handleSuggestionSubmit} className="w-full flex flex-col items-center">
+              <input
+                type="text"
+                className="w-full max-w-sm px-4 py-2 rounded-lg border border-blue-300 dark:border-blue-700 bg-white dark:bg-gray-950 text-gray-800 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-300 transition"
+                placeholder="Suggest a workflow, integration, or feature..."
+                value={suggestion}
+                onChange={e => setSuggestion(e.target.value)}
+                maxLength={160}
+                disabled={submitted}
+                required
+              />
+              <button
+                type="submit"
+                className={`mt-3 px-6 py-2 rounded-lg font-bold text-white bg-gradient-to-r from-blue-500 to-blue-700 hover:from-blue-600 hover:to-blue-900 shadow ${
+                  submitted ? "opacity-50 cursor-not-allowed" : "hover-scale"
+                }`}
+                disabled={submitted}
+              >
+                {submitted ? "Thank you!" : "Submit"}
+              </button>
+            </form>
+            <div className="text-xs text-gray-600 dark:text-gray-400 mt-3">
+              {submitted
+                ? "We appreciate your feedback! 🙏"
+                : "Let us know what CI/CD options you'd love to see."}
             </div>
           </div>
         </div>
