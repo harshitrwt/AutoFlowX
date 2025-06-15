@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { CheckCircle, Code, Shield, Zap, GitBranch, Settings, Github, FileText, ListChecks, Users, MessageCircle } from 'lucide-react';
 import { useScrollAnimation } from '@/hooks/useScrollAnimation';
@@ -16,14 +15,15 @@ const features = [
   {
     icon: <Code className="w-8 h-8 text-white drop-shadow-lg" />,
     title: "Multi-Technology Support",
-    description: "Support for 20+ major frameworks, languages and cloud environments. Build, test, and deploy with flexibility for every stack.",
+    description:
+      "Support for 20+ major frameworks, languages and cloud environments. Build, test, and deploy with flexibility for every stack.",
     bullets: [
-      {icon: <Code className="w-6 h-6 text-orange-500"/>, text: "React, Next.js, Angular, Vue, Svelte..."},
-      {icon: <Shield className="w-6 h-6 text-yellow-500"/>, text: "Node.js, Python, Java, Go, PHP"},
-      {icon: <Github className="w-6 h-6 text-purple-500"/>, text: "GitHub, GitLab, Bitbucket, Jenkins"},
-      {icon: <FileText className="w-6 h-6 text-green-600"/>, text: "Monorepo, Microservices, PR workflows"},
+      { icon: <Code className="w-5 h-5 text-orange-400" />, text: "React, Next.js, Angular, Vue, Svelte..." },
+      { icon: <Shield className="w-5 h-5 text-yellow-400" />, text: "Node.js, Python, Java, Go, PHP" },
+      { icon: <Github className="w-5 h-5 text-purple-500" />, text: "GitHub, GitLab, Bitbucket, Jenkins" },
+      { icon: <FileText className="w-5 h-5 text-green-600" />, text: "Monorepo, Microservices, PR workflows" }
     ],
-    image: "/lovable-uploads/46abd016-524e-45c4-8038-66f29332392a.png"
+    image: "/lovable-uploads/9f90d2c3-4d5f-47c5-9b77-b9318cbc08f5.png"
   },
   {
     icon: <Zap className="w-8 h-8 text-white drop-shadow-lg" />,
@@ -51,23 +51,13 @@ const features = [
   }
 ];
 
-// Suggestions box state (UI only)
 export const FeaturesSection = () => {
   const titleAnimation = useScrollAnimation({ threshold: 0.2, triggerOnce: true });
-  const [suggestion, setSuggestion] = useState('');
-  const [submitted, setSubmitted] = useState(false);
-
-  const handleSuggestionSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    setSubmitted(true);
-    setTimeout(() => setSubmitted(false), 2000);
-    setSuggestion('');
-  };
 
   return (
     <section
       id="features"
-      className="relative bg-gradient-to-br from-orange-50 via-white to-gray-100 dark:from-gray-950 dark:to-gray-800 py-24 overflow-x-clip"
+      className="relative bg-gradient-to-br from-orange-50 via-white to-gray-100 dark:from-[#1B1B1F] dark:to-[#181829] py-24 overflow-x-clip"
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-8">
         <div ref={titleAnimation.ref} className="mb-20 text-center">
@@ -82,50 +72,60 @@ export const FeaturesSection = () => {
             No vendor lock-in. Infinite extensibility.
           </p>
         </div>
-        {/* Bento Grid */}
+        {/* Modern Bento Grid */}
         <div
           className={`
-            grid gap-6
+            grid gap-7
             grid-cols-1
             sm:grid-cols-6
-            auto-rows-[minmax(180px,1fr)]
+            auto-rows-[minmax(185px,1fr)]
             md:auto-rows-[minmax(230px,1fr)]
             lg:grid-cols-8
           `}
           style={{ display: 'grid' }}
         >
-          {/* Main feature - large card with details */}
-          <div className="relative col-span-1 sm:col-span-3 lg:col-span-4 row-span-2 rounded-3xl overflow-hidden flex flex-col shadow-xl group bg-white/80 dark:bg-gray-900/90 border-2 border-orange-400 hover:scale-[1.01] transition-all duration-300">
-            <div className="absolute -top-8 right-8 bg-orange-600 text-white py-1 px-5 rounded-full rotate-6 shadow-md font-black text-sm tracking-wide z-10">
+          {/* Large Card: Multi-Technology Support */}
+          <div className="relative col-span-1 sm:col-span-3 lg:col-span-4 row-span-2 rounded-2xl overflow-hidden
+            flex flex-col shadow-2xl group border-2 border-orange-400 bg-gradient-to-br from-[#1B1B1F] via-[#292933] to-[#181829] dark:bg-[#181829] 
+            outline outline-1 outline-orange-400/10"
+          >
+            <div className="absolute -top-7 right-8 bg-orange-600 text-white py-1 px-5 rounded-full rotate-6 shadow-md font-black text-xs tracking-wide z-10">
               Popular
             </div>
-            {/* Subtle Overlay */}
-            <span className="absolute inset-0 bg-gradient-to-tr from-orange-100/40 via-orange-50 to-transparent dark:from-orange-800/30 dark:via-gray-900/30 pointer-events-none z-0" />
-            {/* Content */}
-            <div className="flex flex-col md:flex-row items-center justify-between h-full px-8 pt-8 pb-6 relative z-10">
-              <div className="flex-1 flex flex-col gap-4 items-center md:items-start">
-                <div className={`${iconBgColors[0]} rounded-full p-5 shadow-2xl mb-3`}>
-                  <Code className="w-10 h-10 text-white drop-shadow-lg"/>
+            <div className="absolute inset-0 bg-gradient-to-tl from-orange-200/10 via-orange-50/10 to-transparent dark:from-orange-900/20 dark:via-gray-900/10 pointer-events-none z-0"/>
+            {/* Card Content */}
+            <div className="flex flex-col h-full justify-between relative z-10 p-8">
+              <div>
+                <div className="rounded-full w-14 h-14 flex items-center justify-center mb-6 bg-gradient-to-tr from-orange-500 via-yellow-400 to-orange-400 shadow-lg">
+                  <Code className="w-8 h-8 text-white" />
                 </div>
-                <h3 className="text-3xl font-bold text-gray-900 dark:text-white text-center md:text-left">{features[0].title}</h3>
-                <p className="text-gray-700 dark:text-orange-200 text-lg mb-2">{features[0].description}</p>
-                <ul className="space-y-2 mt-2">
-                  {features[0].bullets.map((bullet, idx) => (
-                    <li key={idx} className="flex items-center gap-2 text-base text-gray-700 dark:text-gray-200 font-medium">
-                      <span>{bullet.icon}</span> {bullet.text}
+                <h3 className="text-2xl sm:text-3xl font-extrabold text-white mb-3">{features[0].title}</h3>
+                <p className="text-gray-200 text-base mb-7">
+                  {features[0].description}
+                </p>
+                <ul className="space-y-3">
+                  {features[0].bullets.map((b, idx) => (
+                    <li key={idx} className="flex items-center gap-2 text-base text-[#FBFAFF] font-medium">
+                      <span>{b.icon}</span>
+                      <span>{b.text}</span>
                     </li>
                   ))}
                 </ul>
               </div>
-              <img 
+              <img
                 src={features[0].image}
-                alt="Tech stack"
-                className="w-full md:w-56 lg:w-64 max-h-32 md:max-h-36 mt-7 md:mt-0 mx-auto rounded-xl border-2 border-orange-200 shadow-xl object-contain bg-white dark:bg-gray-900"
+                alt="Supported technologies"
+                className="mx-auto mt-6 rounded-xl border border-orange-400/50 shadow-lg bg-[#181829] object-contain"
+                style={{
+                  maxWidth: "310px",
+                  width: "100%",
+                  maxHeight: "90px"
+                }}
               />
             </div>
           </div>
           {/* Feature 2 */}
-          <div className="relative col-span-1 sm:col-span-3 lg:col-span-2 rounded-3xl bg-gradient-to-br from-pink-50 via-yellow-100 to-red-50 dark:from-orange-900/80 dark:via-gray-900/60 dark:to-pink-900/60 border border-pink-200 dark:border-pink-900 overflow-hidden hover:scale-[1.03] hover:shadow-2xl transition-all group flex flex-col shadow-lg">
+          <div className="relative col-span-1 sm:col-span-3 lg:col-span-2 rounded-2xl bg-gradient-to-br from-pink-50 via-yellow-100 to-red-50 dark:from-orange-900/80 dark:via-gray-900/60 dark:to-pink-900/60 border border-pink-200 dark:border-pink-900 overflow-hidden group flex flex-col shadow-lg">
             <span className="absolute right-5 -top-7 w-14 h-14 blur-xl opacity-30 pointer-events-none z-0 bg-gradient-to-br from-yellow-500 via-pink-400 to-red-300 rounded-full"></span>
             <div className="flex flex-col gap-2 p-8 h-full z-10 relative">
               <div className={`${iconBgColors[1]} rounded-xl p-3 shadow-lg w-fit mb-2`}>
@@ -144,7 +144,7 @@ export const FeaturesSection = () => {
             </div>
           </div>
           {/* Feature 3 */}
-          <div className="relative col-span-1 sm:col-span-3 lg:col-span-2 rounded-3xl bg-gradient-to-br from-green-50 via-lime-100 to-emerald-50 dark:from-emerald-900/70 dark:via-gray-900/70 dark:to-lime-900/70 border border-emerald-200 dark:border-emerald-900 overflow-hidden hover:scale-[1.03] hover:shadow-2xl transition-all group flex flex-col shadow-lg">
+          <div className="relative col-span-1 sm:col-span-3 lg:col-span-2 rounded-2xl bg-gradient-to-br from-green-50 via-lime-100 to-emerald-50 dark:from-emerald-900/70 dark:via-gray-900/70 dark:to-lime-900/70 border border-emerald-200 dark:border-emerald-900 overflow-hidden group flex flex-col shadow-lg">
             <span className="absolute left-5 -top-7 w-14 h-14 blur-xl opacity-30 pointer-events-none z-0 bg-gradient-to-br from-green-400 via-emerald-400 to-lime-300 rounded-full"></span>
             <div className="flex flex-col gap-2 p-8 h-full z-10 relative">
               <div className={`${iconBgColors[2]} rounded-xl p-3 shadow-lg w-fit mb-2`}>
@@ -163,7 +163,7 @@ export const FeaturesSection = () => {
             </div>
           </div>
           {/* Feature 4 */}
-          <div className="relative col-span-1 sm:col-span-3 lg:col-span-2 rounded-3xl bg-gradient-to-br from-indigo-50 via-purple-100 to-blue-50 dark:from-purple-900/60 dark:via-gray-900/70 dark:to-blue-900/60 border border-indigo-200 dark:border-indigo-900 overflow-hidden hover:scale-[1.03] hover:shadow-2xl transition-all group flex flex-col shadow-lg">
+          <div className="relative col-span-1 sm:col-span-3 lg:col-span-2 rounded-2xl bg-gradient-to-br from-indigo-50 via-purple-100 to-blue-50 dark:from-purple-900/60 dark:via-gray-900/70 dark:to-blue-900/60 border border-indigo-200 dark:border-indigo-900 overflow-hidden group flex flex-col shadow-lg">
             <span className="absolute right-5 -top-7 w-14 h-14 blur-xl opacity-30 pointer-events-none z-0 bg-gradient-to-br from-purple-600 via-indigo-500 to-blue-400 rounded-full"></span>
             <div className="flex flex-col gap-2 p-8 h-full z-10 relative">
               <div className={`${iconBgColors[3]} rounded-xl p-3 shadow-lg w-fit mb-2`}>
@@ -182,7 +182,7 @@ export const FeaturesSection = () => {
             </div>
           </div>
           {/* Feature 5 */}
-          <div className="relative col-span-1 sm:col-span-3 lg:col-span-2 rounded-3xl bg-gradient-to-br from-gray-50 via-slate-100 to-gray-200 dark:from-gray-900/75 dark:via-gray-800/80 dark:to-slate-900/60 border border-gray-200 dark:border-gray-700 overflow-hidden hover:scale-[1.03] hover:shadow-2xl transition-all group flex flex-col shadow-lg">
+          <div className="relative col-span-1 sm:col-span-3 lg:col-span-2 rounded-2xl bg-gradient-to-br from-gray-50 via-slate-100 to-gray-200 dark:from-gray-900/75 dark:via-gray-800/80 dark:to-slate-900/60 border border-gray-200 dark:border-gray-700 overflow-hidden group flex flex-col shadow-lg">
             <span className="absolute left-5 -top-7 w-14 h-14 blur-xl opacity-30 pointer-events-none z-0 bg-gradient-to-br from-gray-600 via-gray-400 to-slate-300 rounded-full"></span>
             <div className="flex flex-col gap-2 p-8 h-full z-10 relative">
               <div className={`${iconBgColors[4]} rounded-xl p-3 shadow-lg w-fit mb-2`}>
@@ -198,39 +198,6 @@ export const FeaturesSection = () => {
                   </li>
                 ))}
               </ul>
-            </div>
-          </div>
-          {/* Suggestions Box */}
-          <div className="col-span-1 sm:col-span-3 lg:col-span-4 row-span-1 rounded-3xl bg-gradient-to-br from-blue-50 via-gray-100 to-blue-200 dark:from-gray-800/90 dark:via-blue-900/20 dark:to-gray-900/80 border border-blue-200 dark:border-blue-800 shadow-lg flex flex-col items-center justify-center p-7 mt-4 sm:mt-0">
-            <div className="flex items-center justify-center mb-3">
-              <MessageCircle className="w-8 h-8 text-blue-600 dark:text-blue-300 mr-2" />
-              <span className="text-lg font-semibold text-blue-700 dark:text-blue-200">Suggestions</span>
-            </div>
-            <form onSubmit={handleSuggestionSubmit} className="w-full flex flex-col items-center">
-              <input
-                type="text"
-                className="w-full max-w-sm px-4 py-2 rounded-lg border border-blue-300 dark:border-blue-700 bg-white dark:bg-gray-950 text-gray-800 dark:text-gray-100 focus:outline-none focus:ring-2 focus:ring-blue-300 transition"
-                placeholder="Suggest a workflow, integration, or feature..."
-                value={suggestion}
-                onChange={e => setSuggestion(e.target.value)}
-                maxLength={160}
-                disabled={submitted}
-                required
-              />
-              <button
-                type="submit"
-                className={`mt-3 px-6 py-2 rounded-lg font-bold text-white bg-gradient-to-r from-blue-500 to-blue-700 hover:from-blue-600 hover:to-blue-900 shadow ${
-                  submitted ? "opacity-50 cursor-not-allowed" : "hover-scale"
-                }`}
-                disabled={submitted}
-              >
-                {submitted ? "Thank you!" : "Submit"}
-              </button>
-            </form>
-            <div className="text-xs text-gray-600 dark:text-gray-400 mt-3">
-              {submitted
-                ? "We appreciate your feedback! 🙏"
-                : "Let us know what CI/CD options you'd love to see."}
             </div>
           </div>
         </div>
