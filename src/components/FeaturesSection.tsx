@@ -1,7 +1,7 @@
 
 import React from 'react';
 import {
-  Code, Database, GitBranch, Check, ShieldCheck, Jenkins, FileText,
+  Code, Database, GitBranch, Check, ShieldCheck, FileText, Server,
 } from 'lucide-react';
 import { FeatureCard } from './FeatureCard';
 
@@ -54,7 +54,7 @@ const featureData = [
     ],
   },
   {
-    icon: <Jenkins className="w-8 h-8 text-blue-500" />,
+    icon: <Server className="w-8 h-8 text-blue-500" />,
     title: "Jenkins & More",
     description: "Generate Jenkins, GitHub Actions, GitLab, Bitbucket, or CircleCI pipelines—no plugins or setup needed.",
     bullets: [
