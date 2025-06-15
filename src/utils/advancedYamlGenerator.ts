@@ -29,7 +29,7 @@ interface GeneratedWorkflow {
   instructions: string[];
 }
 
-export const generateAdvancedYaml = (config: TechStackConfig & { workflowSteps?: { name: string; description: string; script: string }[]; ciProvider?: string }): GeneratedWorkflow => {
+export const generateAdvancedYaml = (config: TechStackConfig & { workflowSteps?: { name: string; description: string; script: string }[]; ciProvider?: string }): GeneratedWorkflow & { explanation: string } => {
   const { frontend, backend, database, deployment, ciProvider = "github", features, workflowType, workflowSteps = [] } = config;
   
   // Detect project type and requirements
@@ -44,6 +44,18 @@ export const generateAdvancedYaml = (config: TechStackConfig & { workflowSteps?:
   let yaml = "";
   let filename = "";
   const instructions: string[] = [];
+  let explanation = "";
+
+  // Detect project type and requirements, then build plain-English explanation:
+  if (config.ciProvider === "jenkins") {
+    explanation = "This Jenkinsfile sets up your project to install dependencies, run code checks, tests, builds, and optionally deploy or build Docker images, all using Jenkins automation. Only set up what fits your project's tech stack.";
+  } else if (config.ciProvider === "github") {
+    explanation = "This workflow uses GitHub Actions to automatically run code checks, install dependencies, run tests, and deploy your code whenever you push or open a pull request. It's built for your tech stack and easy to edit.";
+  } else if (config.ciProvider === "gitlab") {
+    explanation = "This GitLab pipeline installs dependencies, checks code, runs tests, and deploys your app. Triggered on pushes or merge requests, and can be customized for your stack.";
+  } else {
+    explanation = "This pipeline file runs the steps you choose for building, testing, and deploying your code. Copy, edit, and use it to automate your workflow with ease.";
+  }
 
   // GENERIC step emitter for custom workflowSteps
   const emitSteps = (steps: { name: string; description: string; script: string }[], indent = "") =>
@@ -165,8 +177,6 @@ pipeline {
     }
     case "github":
     default: {
-      // ... keep existing variable setup for github actions ...
-      // Instead of hardcoding steps, use base steps, then custom steps
       yaml = `name: Customizable Pipeline
 
 on:
@@ -191,7 +201,6 @@ ${workflowSteps.length ? "" : `
       break;
     }
     case "gitlab": {
-      // ... existing gitlab dummy yaml, but with custom steps ...
       yaml = `stages:
   - build
 
@@ -270,7 +279,8 @@ ${workflowSteps.length
   return {
     yaml,
     filename,
-    instructions
+    instructions,
+    explanation
   };
 };
 

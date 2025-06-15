@@ -11,16 +11,22 @@ import { SuggestionBox } from "@/components/SuggestionBox";
 const Index = () => {
   return (
     <div className="min-h-screen bg-white dark:bg-gray-900">
-      <Header />
-      <HeroSection />
-      <FeaturesSection />
-      <ReviewsSection />
-      <FAQSection />
-      {/* Minimal suggestion box, before the footer */}
-      <SuggestionBox />
-      <Footer />
+      <div className="w-full flex flex-col items-center">
+        {/* Header remains full-width */}
+        <Header />
+        {/* Hero full width */}
+        <HeroSection />
+        {/* All below this: max-w-5xl and centered */}
+        <main className="w-full max-w-5xl mx-auto px-4 sm:px-8">
+          <FeaturesSection />
+          <ReviewsSection />
+          <FAQSection />
+          {/* Minimal suggestion box, before the footer */}
+          <SuggestionBox />
+        </main>
+        <Footer />
+      </div>
     </div>
   );
 };
-
 export default Index;
