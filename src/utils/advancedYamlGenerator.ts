@@ -1,4 +1,3 @@
-
 interface TechStackConfig {
   frontend: string[];
   backend: string[];
@@ -30,8 +29,8 @@ interface GeneratedWorkflow {
   instructions: string[];
 }
 
-export const generateAdvancedYaml = (config: TechStackConfig): GeneratedWorkflow => {
-  const { frontend, backend, database, deployment, ciProvider, features, workflowType } = config;
+export const generateAdvancedYaml = (config: TechStackConfig & { workflowSteps?: { name: string; description: string; script: string }[]; ciProvider?: string }): GeneratedWorkflow => {
+  const { frontend, backend, database, deployment, ciProvider = "github", features, workflowType, workflowSteps = [] } = config;
   
   // Detect project type and requirements
   const hasReact = frontend.includes('react') || frontend.includes('nextjs');
@@ -42,25 +41,99 @@ export const generateAdvancedYaml = (config: TechStackConfig): GeneratedWorkflow
   const hasPrisma = backend.includes('prisma');
   const needsDatabase = database.length > 0;
 
-  let yaml = '';
+  let yaml = "";
+  let filename = "";
   const instructions: string[] = [];
-  let filename = '';
+
+  // GENERIC step emitter for custom workflowSteps
+  const emitSteps = (steps: { name: string; description: string; script: string }[], indent = "") =>
+    steps
+      .map(
+        (step, i) =>
+          `${indent}- name: ${step.name || `Custom Step ${i+1}`}\n${step.description ? indent + "  # "+step.description+"\n" : ""}${indent}  run: |\n${step.script.split("\n").map(s=>indent+"    "+s).join("\n")}`
+      )
+      .join("\n");
 
   // Generate workflow based on CI provider and workflow type
   switch (ciProvider) {
-    case 'github':
-      const result = generateGitHubWorkflow(config, { hasReact, hasNextJS, hasNode, hasPython, hasTypeScript, hasPrisma, needsDatabase });
-      yaml = result.yaml;
-      filename = result.filename;
+    case "github":
+    default: {
+      // ... keep existing variable setup for github actions ...
+      // Instead of hardcoding steps, use base steps, then custom steps
+      yaml = `name: Customizable Pipeline
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+${workflowSteps.length ? emitSteps(workflowSteps, "    ") : ''}
+${workflowSteps.length ? "" : `
+    - name: Example default step
+      run: echo "Edit workflow steps above to add real actions"
+`}
+`;
+      filename = ".github/workflows/pipeline.yml";
       break;
-    case 'gitlab':
-      yaml = generateGitLabWorkflow(config, { hasReact, hasNextJS, hasNode, hasPython, hasTypeScript, hasPrisma, needsDatabase });
-      filename = '.gitlab-ci.yml';
+    }
+    case "gitlab": {
+      // ... existing gitlab dummy yaml, but with custom steps ...
+      yaml = `stages:
+  - build
+
+build-job:
+  stage: build
+  script:
+${workflowSteps.length
+  ? workflowSteps.map(s => `    # ${s.name}\n    ${s.script.split("\n").join("\n    ")}`).join("\n")
+  : "    echo 'Edit workflow steps above to add real scripts'"}
+`;
+      filename = ".gitlab-ci.yml";
       break;
-    default:
-      const defaultResult = generateGitHubWorkflow(config, { hasReact, hasNextJS, hasNode, hasPython, hasTypeScript, hasPrisma, needsDatabase });
-      yaml = defaultResult.yaml;
-      filename = defaultResult.filename;
+    }
+    case "azure": {
+      yaml = `trigger:
+  - main
+
+pool:
+  vmImage: ubuntu-latest
+
+steps:
+${workflowSteps.length
+  ? workflowSteps
+      .map(
+        s =>
+          `- script: |\n    ${s.script.split("\n").join("\n    ")}\n  displayName: '${s.name || "Pipeline Step"}'${s.description ? "\n  # "+s.description : ""}`
+      )
+      .join("\n")
+  : "- script: echo 'Edit workflow steps above to add real scripts'\n  displayName: 'Example'"
+}
+`;
+      filename = "azure-pipelines.yml";
+      break;
+    }
+    case "bitbucket": {
+      yaml = `pipelines:
+  default:
+    - step:
+        name: "Build and Test"
+        script:
+${workflowSteps.length
+  ? workflowSteps
+      .map(s => `          # ${s.name}\n${s.script.split("\n").map(l => "          " + l).join("\n")}`)
+      .join("\n")
+  : "          echo 'Edit workflow steps above to add real scripts'"}
+`;
+      filename = "bitbucket-pipelines.yml";
+      break;
+    }
   }
 
   // Add setup instructions based on configuration

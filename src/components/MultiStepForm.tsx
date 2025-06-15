@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -6,6 +5,8 @@ import { Badge } from '@/components/ui/badge';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { ChevronLeft, ChevronRight, ArrowRight, Zap } from 'lucide-react';
+import { WorkflowStepEditor } from './WorkflowStepEditor';
+import { CiProviderSelect } from './CiProviderSelect';
 
 interface TechStackConfig {
   frontend: string[];
@@ -33,8 +34,8 @@ interface TechStackConfig {
 }
 
 interface MultiStepFormProps {
-  config: TechStackConfig;
-  setConfig: (config: TechStackConfig) => void;
+  config: TechStackConfig & { workflowSteps?: { name: string; description: string; script: string; }[]; ciProvider?: string };
+  setConfig: (config: TechStackConfig & { workflowSteps?: { name: string; description: string; script: string; }[] }) => void;
   onGenerate: () => void;
 }
 
@@ -133,6 +134,26 @@ export const MultiStepForm: React.FC<MultiStepFormProps> = ({ config, setConfig,
           {renderTechSelection('database', 'Database & Storage')}
         </div>
       )
+    },
+    {
+      title: 'CI Provider',
+      description: 'Choose your CI/CD provider',
+      content: (
+        <CiProviderSelect
+          value={config.ciProvider || ''}
+          onChange={v => setConfig({ ...config, ciProvider: v })}
+        />
+      ),
+    },
+    {
+      title: "Workflow Steps",
+      description: "Add custom build/test/deploy steps (in order they run)",
+      content: (
+        <WorkflowStepEditor
+          steps={config.workflowSteps || []}
+          onChange={steps => setConfig({ ...config, workflowSteps: steps })}
+        />
+      ),
     },
     {
       title: 'Features & Configuration',
