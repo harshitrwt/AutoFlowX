@@ -66,7 +66,6 @@ export const FeaturesSection = () => {
               icon={f.icon}
               title={f.title}
               description={f.description}
-              bullets={f.bullets}
             />
           ))}
         </div>
