@@ -1,7 +1,7 @@
 
 import React, { useEffect, useState } from 'react';
 import { Button } from '@/components/ui/button';
-import { ArrowRight, CheckCircle, Code, Zap, Shield, Star, Award } from 'lucide-react';
+import { ArrowRight, CheckCircle, Code, Zap, Shield, Star, Rocket } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { AnimatedLogos } from './AnimatedLogos';
 
@@ -32,8 +32,8 @@ export const HeroSection = () => {
       <div className="relative max-w-7xl mx-auto">
         <div className="text-center mb-12 sm:mb-16">
           <div className={`inline-flex items-center px-3 sm:px-4 py-2 bg-gradient-to-r from-blue-50 to-blue-100 dark:bg-blue-900/30 border border-blue-200 dark:border-blue-700 rounded-full text-blue-700 dark:text-blue-300 text-sm font-medium mb-6 shadow-lg ${isLoaded ? 'animate-fade-up' : 'opacity-0'}`}>
-            <Award className="w-4 h-4 mr-2 text-blue-600" />
-            <span className="font-semibold">Enterprise-Grade Pipelines</span>
+            <Rocket className="w-4 h-4 mr-2 text-blue-600" />
+            <span className="font-semibold">Production-Ready CI/CD Pipelines</span>
             <Star className="w-4 h-4 ml-2 text-blue-600" />
           </div>
           

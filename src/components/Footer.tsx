@@ -5,9 +5,9 @@ import { Link } from 'react-router-dom';
 
 export const Footer = () => {
   return (
-    <footer className="bg-gray-900 dark:bg-black text-white py-12 sm:py-16">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 mb-8 sm:mb-12">
+    <footer className="w-full bg-gray-900 dark:bg-black text-white py-12 sm:py-16">
+      <div className="w-full px-4 sm:px-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 mb-8 sm:mb-12 max-w-7xl mx-auto">
           <div className="lg:col-span-2">
             <div className="flex items-center space-x-3 mb-4">
               <div className="w-8 h-8 sm:w-10 sm:h-10 bg-blue-600 rounded-lg flex items-center justify-center">
@@ -59,7 +59,7 @@ export const Footer = () => {
           </div>
         </div>
         
-        <div className="border-t border-gray-800 dark:border-gray-900 pt-6 sm:pt-8 flex flex-col sm:flex-row justify-between items-center space-y-4 sm:space-y-0">
+        <div className="border-t border-gray-800 dark:border-gray-900 pt-6 sm:pt-8 flex flex-col sm:flex-row justify-between items-center space-y-4 sm:space-y-0 max-w-7xl mx-auto">
           <p className="text-gray-400 text-xs sm:text-sm">
             © 2024 Pipeline Builder. All rights reserved.
           </p>

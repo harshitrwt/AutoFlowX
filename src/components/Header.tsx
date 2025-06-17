@@ -1,30 +1,14 @@
 
 import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
-import { Code2, Github, Moon, Sun, Menu, X, Users, Star } from 'lucide-react';
+import { Code2, Moon, Sun, Menu, X } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useTheme } from './ThemeProvider';
-import { useCountUp } from "@/hooks/useCountUp";
 
 export const Header = ({ showLoading=false }: { showLoading?: boolean }) => {
   const navigate = useNavigate();
   const { theme, toggleTheme } = useTheme();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-
-  // Counters start at 0, animate up
-  const [visitorCountTarget, setVisitorCountTarget] = useState(0);
-  const [githubStarsTarget, setGithubStarsTarget] = useState(0);
-  const visitorCount = useCountUp(visitorCountTarget, 0, 1200);
-  const githubStars = useCountUp(githubStarsTarget, 0, 1200);
-
-  useEffect(() => {
-    if (!showLoading) {
-      // Animate to new numbers after pipeline generation
-      setVisitorCountTarget(1274 + Math.floor(Math.random() * 30));
-      setGithubStarsTarget(357 + Math.floor(Math.random() * 8));
-    }
-    // else leave at 0
-  }, [showLoading]);
 
   return (
     <header className="fixed top-0 left-0 right-0 z-50 bg-white/90 dark:bg-gray-900/90 backdrop-blur-md border-b border-gray-200 dark:border-gray-700">
@@ -65,28 +49,7 @@ export const Header = ({ showLoading=false }: { showLoading?: boolean }) => {
           >
             {theme === 'light' ? <Moon className="w-4 h-4" /> : <Sun className="w-4 h-4" />}
           </Button>
-          {/* Desktop Stats and GitHub */}
-          <div className="hidden sm:flex items-center space-x-3">
-            {/* Visitor Count */}
-            <div className="flex items-center space-x-2 px-3 py-2 bg-orange-50 dark:bg-orange-900/20 border border-orange-200 dark:border-orange-800 rounded-lg">
-              <Users className="w-4 h-4 text-orange-600 dark:text-orange-400" />
-              <span className="text-sm font-medium text-orange-700 dark:text-orange-300">
-                {showLoading ? (<span className="animate-pulse text-gray-400">...</span>) : visitorCount.toLocaleString()}
-              </span>
-            </div>
-            {/* GitHub Stars */}
-            <Button 
-              variant="outline" 
-              size="sm"
-              className="border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800 flex items-center space-x-2"
-            >
-              <Github className="w-4 h-4" />
-              <Star className="w-4 h-4" />
-              <span className="hidden md:inline font-medium">
-                {showLoading ? (<span className="animate-pulse text-gray-400">...</span>) : githubStars}
-              </span>
-            </Button>
-          </div>
+          
           {/* Mobile Menu Button */}
           <Button
             variant="outline"
@@ -114,23 +77,6 @@ export const Header = ({ showLoading=false }: { showLoading?: boolean }) => {
             <a href="#faq" className="block text-gray-600 dark:text-gray-300 hover:text-orange-600 dark:hover:text-orange-400 font-medium">
               FAQ
             </a>
-            
-            {/* Mobile Stats */}
-            <div className="flex justify-between items-center pt-4 border-t border-gray-200 dark:border-gray-700">
-              <div className="flex items-center space-x-2 px-3 py-2 bg-orange-50 dark:bg-orange-900/20 border border-orange-200 dark:border-orange-800 rounded-lg">
-                <Users className="w-4 h-4 text-orange-600 dark:text-orange-400" />
-                <span className="text-sm font-medium text-orange-700 dark:text-orange-300">
-                  {showLoading ? (<span className="animate-pulse text-gray-400">...</span>) : visitorCount.toLocaleString()}
-                </span>
-              </div>
-              <Button variant="outline" size="sm" className="flex items-center space-x-2">
-                <Github className="w-4 h-4" />
-                <Star className="w-4 h-4" />
-                <span className="font-medium">
-                  {showLoading ? (<span className="animate-pulse text-gray-400">...</span>) : githubStars}
-                </span>
-              </Button>
-            </div>
           </div>
         </div>
       )}
