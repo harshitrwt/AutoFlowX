@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
@@ -10,7 +11,6 @@ interface EnhancedYamlPreviewProps {
     yaml: string;
     filename: string;
     instructions: string[];
-    explanation?: string;
   };
 }
 
@@ -114,13 +114,6 @@ export const EnhancedYamlPreview: React.FC<EnhancedYamlPreviewProps> = ({ workfl
             <h3 className="text-xl font-bold text-gray-900">Generated Pipeline</h3>
             {workflow.filename && (
               <p className="text-sm text-gray-600 mt-1">{workflow.filename}</p>
-            )}
-            {/* Pipeline explanation - hidden on mobile, visible on desktop */}
-            {workflow.explanation && (
-              <div className="hidden lg:block mt-2 mb-2 px-3 py-2 rounded-lg bg-orange-50 border border-orange-200 text-sm text-orange-900 font-medium max-w-xl">
-                <span className="font-bold mr-1">What does this pipeline do?</span>
-                {workflow.explanation}
-              </div>
             )}
           </div>
           <div className="flex space-x-2">
