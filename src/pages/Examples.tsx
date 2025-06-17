@@ -5,7 +5,7 @@ import { Footer } from '@/components/Footer';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Copy, Download, ArrowLeft, Code, Zap, Shield, Database, Globe, Smartphone } from 'lucide-react';
+import { Copy, Download, ArrowLeft, Code, Zap, Shield, Database, Globe, Smartphone, ArrowRight } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import { toast } from '@/hooks/use-toast';
 
