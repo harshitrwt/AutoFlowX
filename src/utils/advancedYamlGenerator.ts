@@ -12,6 +12,7 @@ interface TechStackConfig {
     testing: boolean;
     release: boolean;
   };
+  workflowSteps?: Array<{ name: string; description: string; script: string; }>;
   features: {
     linting: boolean;
     testing: boolean;
@@ -67,7 +68,7 @@ export const generateAdvancedYaml = (config: TechStackConfig): WorkflowResult =>
         stage('Docker Build') {
             steps {
                 script {
-                    docker.build("${env.JOB_NAME}:${env.BUILD_NUMBER}")
+                    docker.build("\${env.JOB_NAME}:\${env.BUILD_NUMBER}")
                 }
             }
         }
@@ -75,7 +76,7 @@ export const generateAdvancedYaml = (config: TechStackConfig): WorkflowResult =>
             steps {
                 script {
                     docker.withRegistry('https://registry.hub.docker.com', 'docker-hub-credentials') {
-                        docker.image("${env.JOB_NAME}:${env.BUILD_NUMBER}").push()
+                        docker.image("\${env.JOB_NAME}:\${env.BUILD_NUMBER}").push()
                     }
                 }
             }
@@ -161,7 +162,7 @@ export const generateAdvancedYaml = (config: TechStackConfig): WorkflowResult =>
     stage('Build Docker Image') {
       steps {
         sh 'docker build -t my-app:latest .'
-        sh 'docker tag my-app:latest my-app:${BUILD_NUMBER}'
+        sh 'docker tag my-app:latest my-app:\${BUILD_NUMBER}'
       }
     }` : ''}
     
