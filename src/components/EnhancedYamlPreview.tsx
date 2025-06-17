@@ -115,9 +115,9 @@ export const EnhancedYamlPreview: React.FC<EnhancedYamlPreviewProps> = ({ workfl
             {workflow.filename && (
               <p className="text-sm text-gray-600 mt-1">{workflow.filename}</p>
             )}
-            {/* BEGIN: Pipeline explanation */}
+            {/* Pipeline explanation - hidden on mobile, visible on desktop */}
             {workflow.explanation && (
-              <div className="mt-2 mb-2 px-3 py-2 rounded-lg bg-orange-50 border border-orange-200 text-sm text-orange-900 font-medium max-w-xl">
+              <div className="hidden lg:block mt-2 mb-2 px-3 py-2 rounded-lg bg-orange-50 border border-orange-200 text-sm text-orange-900 font-medium max-w-xl">
                 <span className="font-bold mr-1">What does this pipeline do?</span>
                 {workflow.explanation}
               </div>

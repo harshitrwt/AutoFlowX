@@ -23,13 +23,14 @@ interface TechStackConfig {
   };
 }
 
-interface GeneratedWorkflow {
+interface WorkflowResult {
   yaml: string;
   filename: string;
   instructions: string[];
+  explanation: string;
 }
 
-export const generateAdvancedYaml = (config: TechStackConfig & { workflowSteps?: { name: string; description: string; script: string }[]; ciProvider?: string }): GeneratedWorkflow & { explanation: string } => {
+export const generateAdvancedYaml = (config: TechStackConfig): WorkflowResult => {
   const { frontend, backend, database, deployment, ciProvider = "github", features, workflowType, workflowSteps = [] } = config;
   
   // Detect project type and requirements
@@ -62,6 +63,24 @@ export const generateAdvancedYaml = (config: TechStackConfig & { workflowSteps?:
   // Generate workflow based on CI provider
   switch (ciProvider) {
     case "jenkins": {
+      const dockerSteps = config.features.dockerization ? `
+        stage('Docker Build') {
+            steps {
+                script {
+                    docker.build("${env.JOB_NAME}:${env.BUILD_NUMBER}")
+                }
+            }
+        }
+        stage('Docker Push') {
+            steps {
+                script {
+                    docker.withRegistry('https://registry.hub.docker.com', 'docker-hub-credentials') {
+                        docker.image("${env.JOB_NAME}:${env.BUILD_NUMBER}").push()
+                    }
+                }
+            }
+        }` : '';
+
       yaml = `pipeline {
   agent any
   
@@ -145,6 +164,8 @@ export const generateAdvancedYaml = (config: TechStackConfig & { workflowSteps?:
         sh 'docker tag my-app:latest my-app:${BUILD_NUMBER}'
       }
     }` : ''}
+    
+    ${dockerSteps}
     
     ${deployment && deployment !== 'none' ? `
     stage('Deploy') {
