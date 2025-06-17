@@ -35,7 +35,7 @@ export const generateAdvancedYaml = (config: TechStackConfig & { workflowSteps?:
   // Detect project type and requirements
   const hasReact = frontend.includes('react') || frontend.includes('nextjs');
   const hasNextJS = frontend.includes('nextjs');
-  const hasNode = backend.includes('nodejs') || backend.includes('express') || backend.includes('nestjs');
+  const hasNode = backend.includes('nodejs') || backend.includes('express') || backend.includes('nestjs') || hasReact;
   const hasPython = backend.includes('django') || backend.includes('fastapi');
   const hasTypeScript = frontend.includes('typescript') || backend.includes('nestjs');
   const hasPrisma = backend.includes('prisma');
@@ -46,234 +46,533 @@ export const generateAdvancedYaml = (config: TechStackConfig & { workflowSteps?:
   const instructions: string[] = [];
   let explanation = "";
 
-  // Detect project type and requirements, then build plain-English explanation:
-  if (config.ciProvider === "jenkins") {
-    explanation = "This Jenkinsfile sets up your project to install dependencies, run code checks, tests, builds, and optionally deploy or build Docker images, all using Jenkins automation. Only set up what fits your project's tech stack.";
-  } else if (config.ciProvider === "github") {
-    explanation = "This workflow uses GitHub Actions to automatically run code checks, install dependencies, run tests, and deploy your code whenever you push or open a pull request. It's built for your tech stack and easy to edit.";
-  } else if (config.ciProvider === "gitlab") {
-    explanation = "This GitLab pipeline installs dependencies, checks code, runs tests, and deploys your app. Triggered on pushes or merge requests, and can be customized for your stack.";
-  } else {
-    explanation = "This pipeline file runs the steps you choose for building, testing, and deploying your code. Copy, edit, and use it to automate your workflow with ease.";
-  }
+  // Build explanation based on what the workflow actually does
+  const actions = [];
+  if (hasNode) actions.push("install Node.js dependencies");
+  if (hasPython) actions.push("install Python dependencies");
+  if (features.linting) actions.push("run code linting");
+  if (features.testing) actions.push("execute tests");
+  if (features.formatting) actions.push("check code formatting");
+  if (features.security) actions.push("perform security scans");
+  if (features.dockerization) actions.push("build Docker images");
+  if (deployment && deployment !== 'none') actions.push(`deploy to ${deployment}`);
 
-  // GENERIC step emitter for custom workflowSteps
-  const emitSteps = (steps: { name: string; description: string; script: string }[], indent = "") =>
-    steps
-      .map(
-        (step, i) =>
-          `${indent}- name: ${step.name || `Custom Step ${i+1}`}\n${step.description ? indent + "  # "+step.description+"\n" : ""}${indent}  run: |\n${step.script.split("\n").map(s=>indent+"    "+s).join("\n")}`
-      )
-      .join("\n");
+  explanation = `This workflow automatically ${actions.join(", ")} when you push code or create pull requests. It's configured for your specific tech stack and will help maintain code quality and automate deployments.`;
 
-  // Generate workflow based on CI provider and workflow type
+  // Generate workflow based on CI provider
   switch (ciProvider) {
     case "jenkins": {
-      // A high-quality Jenkins pipeline with support for build, test, lint, deploy, docker, etc.
-      yaml =
-`
-pipeline {
+      yaml = `pipeline {
   agent any
+  
   environment {
-    ${hasNode ? "NODE_VERSION = '18.x'" : ""}
-    ${hasPython ? "PYTHON_VERSION = '3.11'" : ""}
-    ${features.environmentVars ? "// Add environment variables here\n    // DATABASE_URL = credentials('db-url')\n    // API_KEY = credentials('api-key')" : ""}
+    ${hasNode ? 'NODE_VERSION = "18.x"' : ''}
+    ${hasPython ? 'PYTHON_VERSION = "3.11"' : ''}
+    ${features.environmentVars ? `
+    // Add your environment variables here
+    // DATABASE_URL = credentials('database-url')
+    // API_KEY = credentials('api-key')` : ''}
   }
+  
   stages {
     stage('Checkout') {
       steps {
         checkout scm
       }
     }
-    ${hasNode ?
-    `stage('Setup Node') {
+    
+    ${hasNode ? `
+    stage('Setup Node.js') {
       steps {
-        sh 'nvm install $NODE_VERSION || true'
-        sh 'node -v'
+        sh 'curl -fsSL https://deb.nodesource.com/setup_18.x | sudo -E bash -'
+        sh 'sudo apt-get install -y nodejs'
+        sh 'node --version'
+        sh 'npm --version'
       }
-    }` : ""}
-    ${hasPython ?
-    `stage('Setup Python') {
-      steps {
-        sh 'python3 --version'
-      }
-    }` : ""}
-    ${hasNode ?
-    `stage('Install Node Dependencies') {
+    }
+    
+    stage('Install Dependencies') {
       steps {
         sh 'npm ci'
       }
-    }` : ""}
-    ${hasPython ?
-    `stage('Install Python Deps') {
+    }` : ''}
+    
+    ${hasPython ? `
+    stage('Setup Python') {
       steps {
-        sh 'pip install --upgrade pip'
-        sh 'pip install -r requirements.txt'
+        sh 'python3 --version'
+        sh 'pip3 install --upgrade pip'
+        sh 'pip3 install -r requirements.txt'
       }
-    }` : ""}
-
-    ${features.linting && hasNode ?
-      `stage('Lint JS/TS') {
+    }` : ''}
+    
+    ${features.linting ? `
+    stage('Lint Code') {
       steps {
-        sh 'npm run lint'
+        ${hasNode ? "sh 'npm run lint'" : ''}
+        ${hasPython ? "sh 'flake8 . || true'" : ''}
       }
-    }` : ""}
-    ${features.linting && hasPython ?
-      `stage('Lint Python') {
+    }` : ''}
+    
+    ${features.formatting ? `
+    stage('Check Formatting') {
       steps {
-        sh 'flake8 .'
-        sh 'pylint **/*.py || true'
+        ${hasNode ? "sh 'npm run format:check || npx prettier --check .'" : ''}
+        ${hasPython ? "sh 'black --check . || true'" : ''}
       }
-    }` : ""}
-    ${features.formatting && hasNode ?
-      `stage('Format Check') {
-      steps { sh 'npm run format:check' }
-    }` : ""}
-    ${features.formatting && hasPython ?
-      `stage('Format Python') {
-      steps { sh 'black --check .' }
-    }` : ""}
-    ${features.testing && hasNode ?
-      `stage('Test JS') {
-      steps { sh 'npm test' }
-    }` : ""}
-    ${features.testing && hasPython ?
-      `stage('Test Python') {
-      steps { sh 'pytest' }
-    }` : ""}
-    ${features.coverage ?
-      `stage('Upload Coverage') {
-      steps { echo 'Upload to coverage service (add your integration here)' }
-    }` : ""}
-    // Deployment
-    ${deployment !== 'none' && deployment ?
-      `stage('Deploy') {
+    }` : ''}
+    
+    ${features.testing ? `
+    stage('Run Tests') {
+      steps {
+        ${hasNode ? "sh 'npm test'" : ''}
+        ${hasPython ? "sh 'pytest'" : ''}
+      }
+    }` : ''}
+    
+    ${hasNode || hasPython ? `
+    stage('Build Application') {
+      steps {
+        ${hasNode ? "sh 'npm run build'" : ''}
+        ${hasPython ? "echo 'Python build step if needed'" : ''}
+      }
+    }` : ''}
+    
+    ${features.dockerization ? `
+    stage('Build Docker Image') {
+      steps {
+        sh 'docker build -t my-app:latest .'
+        sh 'docker tag my-app:latest my-app:${BUILD_NUMBER}'
+      }
+    }` : ''}
+    
+    ${deployment && deployment !== 'none' ? `
+    stage('Deploy') {
       when { branch 'main' }
       steps {
-        echo 'Deploying to ${deployment.charAt(0).toUpperCase() + deployment.slice(1)}...'
-        // Add real deployment steps here (Vercel/Netlify/AWS, etc)
+        script {
+          echo "Deploying to ${deployment}..."
+          // Add deployment commands here based on your platform
+        }
       }
-    }` : ""}
-    // Docker build option
-    ${features.dockerization ?
-      `stage('Docker Build') {
-      steps {
-        sh 'docker build -t your-repo:latest .'
-      }
-    }` : ""}
+    }` : ''}
   }
-  ${features.environmentVars ?
-`  // Use Jenkins Credentials Plugin for secrets. See docs: https://www.jenkins.io/doc/book/using/using-credentials/
-` : ""}
-}
-`;
+  
+  post {
+    always {
+      cleanWs()
+    }
+    failure {
+      echo 'Pipeline failed!'
+    }
+    success {
+      echo 'Pipeline succeeded!'
+    }
+  }
+}`;
       filename = "Jenkinsfile";
-      instructions.push(
-        'Configure Jenkins with required credentials (API keys, tokens, etc) via Jenkins Credentials Plugin.',
-        'Install required build agents for Node.js/Python as needed.',
-        'Add deployment steps for your cloud provider if needed.'
-      );
       break;
     }
-    case "github":
-    default: {
-      yaml = `name: Customizable Pipeline
 
-on:
-  push:
-    branches: [main]
-  pull_request:
-    branches: [main]
-
-jobs:
-  build:
-    runs-on: ubuntu-latest
-    steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
-${workflowSteps.length ? emitSteps(workflowSteps, "    ") : ''}
-${workflowSteps.length ? "" : `
-    - name: Example default step
-      run: echo "Edit workflow steps above to add real actions"
-`}
-`;
-      filename = ".github/workflows/pipeline.yml";
-      break;
-    }
     case "gitlab": {
       yaml = `stages:
+  - install
+  - lint
+  - test
   - build
+  - deploy
 
-build-job:
-  stage: build
+variables:
+  ${hasNode ? 'NODE_VERSION: "18"' : ''}
+  ${hasPython ? 'PYTHON_VERSION: "3.11"' : ''}
+
+${needsDatabase ? `services:
+  ${database.includes('postgresql') ? `
+  - name: postgres:15
+    alias: postgres
+    variables:
+      POSTGRES_DB: test_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres` : ''}
+  ${database.includes('mongodb') ? `
+  - name: mongo:7.0
+    alias: mongodb` : ''}
+  ${database.includes('redis') ? `
+  - name: redis:7-alpine
+    alias: redis` : ''}` : ''}
+
+${hasNode ? `
+install_node:
+  stage: install
+  image: node:18
   script:
-${workflowSteps.length
-  ? workflowSteps.map(s => `    # ${s.name}\n    ${s.script.split("\n").join("\n    ")}`).join("\n")
-  : "    echo 'Edit workflow steps above to add real scripts'"}
-`;
+    - npm ci
+  artifacts:
+    paths:
+      - node_modules/
+    expire_in: 1 hour
+  cache:
+    paths:
+      - node_modules/` : ''}
+
+${hasPython ? `
+install_python:
+  stage: install
+  image: python:3.11
+  script:
+    - pip install --upgrade pip
+    - pip install -r requirements.txt
+  artifacts:
+    paths:
+      - venv/
+    expire_in: 1 hour` : ''}
+
+${features.linting ? `
+lint:
+  stage: lint
+  ${hasNode ? 'image: node:18' : hasPython ? 'image: python:3.11' : 'image: alpine'}
+  script:
+    ${hasNode ? '- npm run lint' : ''}
+    ${hasPython ? '- flake8 .' : ''}
+  ${hasNode ? 'dependencies:\n    - install_node' : hasPython ? 'dependencies:\n    - install_python' : ''}` : ''}
+
+${features.testing ? `
+test:
+  stage: test
+  ${hasNode ? 'image: node:18' : hasPython ? 'image: python:3.11' : 'image: alpine'}
+  script:
+    ${hasNode ? '- npm test' : ''}
+    ${hasPython ? '- pytest' : ''}
+  ${hasNode ? 'dependencies:\n    - install_node' : hasPython ? 'dependencies:\n    - install_python' : ''}
+  ${features.coverage ? `
+  artifacts:
+    reports:
+      coverage_report:
+        coverage_format: cobertura
+        path: coverage.xml` : ''}` : ''}
+
+build:
+  stage: build
+  ${hasNode ? 'image: node:18' : hasPython ? 'image: python:3.11' : 'image: alpine'}
+  script:
+    ${hasNode ? '- npm run build' : ''}
+    ${hasPython ? '- echo "Python build step"' : ''}
+  artifacts:
+    paths:
+      ${hasNode ? '- dist/' : ''}
+      ${hasPython ? '- build/' : ''}
+    expire_in: 1 hour
+  ${hasNode ? 'dependencies:\n    - install_node' : hasPython ? 'dependencies:\n    - install_python' : ''}
+
+${features.dockerization ? `
+docker_build:
+  stage: build
+  image: docker:latest
+  services:
+    - docker:dind
+  script:
+    - docker build -t $CI_PROJECT_NAME:$CI_COMMIT_SHA .
+    - docker tag $CI_PROJECT_NAME:$CI_COMMIT_SHA $CI_PROJECT_NAME:latest` : ''}
+
+${deployment && deployment !== 'none' ? `
+deploy:
+  stage: deploy
+  image: alpine:latest
+  script:
+    - echo "Deploying to ${deployment}..."
+    - # Add deployment commands here
+  only:
+    - main
+  when: manual` : ''}`;
       filename = ".gitlab-ci.yml";
       break;
     }
-    case "azure": {
-      yaml = `trigger:
-  - main
 
-pool:
-  vmImage: ubuntu-latest
+    case "github":
+    default: {
+      yaml = `name: CI/CD Pipeline
 
-steps:
-${workflowSteps.length
-  ? workflowSteps
-      .map(
-        s =>
-          `- script: |\n    ${s.script.split("\n").join("\n    ")}\n  displayName: '${s.name || "Pipeline Step"}'${s.description ? "\n  # "+s.description : ""}`
-      )
-      .join("\n")
-  : "- script: echo 'Edit workflow steps above to add real scripts'\n  displayName: 'Example'"
-}
-`;
-      filename = "azure-pipelines.yml";
-      break;
-    }
-    case "bitbucket": {
-      yaml = `pipelines:
-  default:
-    - step:
-        name: "Build and Test"
-        script:
-${workflowSteps.length
-  ? workflowSteps
-      .map(s => `          # ${s.name}\n${s.script.split("\n").map(l => "          " + l).join("\n")}`)
-      .join("\n")
-  : "          echo 'Edit workflow steps above to add real scripts'"}
-`;
-      filename = "bitbucket-pipelines.yml";
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main]
+
+env:
+  ${hasNode ? 'NODE_VERSION: "18.x"' : ''}
+  ${hasPython ? 'PYTHON_VERSION: "3.11"' : ''}
+  ${features.environmentVars ? `
+  # Add your environment variables here
+  # DATABASE_URL: \${{ secrets.DATABASE_URL }}
+  # API_KEY: \${{ secrets.API_KEY }}` : ''}
+
+jobs:
+  ${features.testing || features.linting || hasNode || hasPython ? `
+  test:
+    runs-on: ubuntu-latest
+    
+    ${needsDatabase ? `
+    services:
+      ${database.includes('postgresql') ? `
+      postgres:
+        image: postgres:15
+        env:
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: test_db
+          POSTGRES_USER: postgres
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 5432:5432` : ''}
+      ${database.includes('mongodb') ? `
+      mongodb:
+        image: mongo:7.0
+        ports:
+          - 27017:27017` : ''}
+      ${database.includes('redis') ? `
+      redis:
+        image: redis:7-alpine
+        ports:
+          - 6379:6379
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5` : ''}` : ''}
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    ${hasNode ? `
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: \${{ env.NODE_VERSION }}
+        cache: 'npm'
+        
+    - name: Install dependencies
+      run: npm ci` : ''}
+    
+    ${hasPython ? `
+    - name: Setup Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: \${{ env.PYTHON_VERSION }}
+        cache: 'pip'
+        
+    - name: Install Python dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt` : ''}
+    
+    ${hasPrisma ? `
+    - name: Setup Prisma
+      run: |
+        npx prisma generate
+        npx prisma db push
+      env:
+        DATABASE_URL: postgresql://postgres:postgres@localhost:5432/test_db` : ''}
+    
+    ${features.linting ? `
+    - name: Run linting
+      run: |
+        ${hasNode ? 'npm run lint' : ''}
+        ${hasPython ? 'flake8 .' : ''}` : ''}
+    
+    ${features.formatting ? `
+    - name: Check code formatting
+      run: |
+        ${hasNode ? 'npm run format:check || npx prettier --check .' : ''}
+        ${hasPython ? 'black --check .' : ''}` : ''}
+    
+    ${hasTypeScript ? `
+    - name: Type check
+      run: npx tsc --noEmit` : ''}
+    
+    ${features.security ? `
+    - name: Security audit
+      run: |
+        ${hasNode ? 'npm audit --audit-level=moderate' : ''}
+        ${hasPython ? 'pip check' : ''}
+      continue-on-error: true` : ''}
+    
+    ${features.testing ? `
+    - name: Run tests
+      run: |
+        ${hasNode ? 'npm test' : ''}
+        ${hasPython ? 'pytest' : ''}
+      env:
+        ${hasNode ? 'NODE_ENV: test' : ''}
+        ${needsDatabase && database.includes('postgresql') ? 'DATABASE_URL: postgresql://postgres:postgres@localhost:5432/test_db' : ''}` : ''}
+    
+    ${features.coverage ? `
+    - name: Upload coverage to Codecov
+      uses: codecov/codecov-action@v3
+      with:
+        token: \${{ secrets.CODECOV_TOKEN }}
+        fail_ci_if_error: false` : ''}` : ''}
+
+  build:
+    runs-on: ubuntu-latest
+    ${features.testing || features.linting || hasNode || hasPython ? 'needs: test' : ''}
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    ${hasNode ? `
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: \${{ env.NODE_VERSION }}
+        cache: 'npm'
+        
+    - name: Install dependencies
+      run: npm ci
+      
+    - name: Build application
+      run: npm run build
+      env:
+        NODE_ENV: production` : ''}
+    
+    ${hasPython ? `
+    - name: Setup Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: \${{ env.PYTHON_VERSION }}
+        
+    - name: Build Python application
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+        # Add build commands if needed` : ''}
+    
+    ${features.dockerization ? `
+    - name: Build Docker image
+      run: |
+        docker build -t \${{ github.repository }}:latest .
+        docker tag \${{ github.repository }}:latest \${{ github.repository }}:\${{ github.sha }}` : ''}
+    
+    ${features.dockerization && deployment === 'docker' ? `
+    - name: Login to Docker Hub
+      uses: docker/login-action@v3
+      with:
+        username: \${{ secrets.DOCKER_USERNAME }}
+        password: \${{ secrets.DOCKER_PASSWORD }}
+        
+    - name: Push Docker image
+      run: |
+        docker push \${{ github.repository }}:latest
+        docker push \${{ github.repository }}:\${{ github.sha }}` : ''}
+
+${deployment && deployment !== 'none' && deployment !== 'docker' ? `
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    environment: production
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    ${deployment === 'vercel' ? `
+    - name: Deploy to Vercel
+      uses: amondnet/vercel-action@v25
+      with:
+        vercel-token: \${{ secrets.VERCEL_TOKEN }}
+        vercel-project-id: \${{ secrets.VERCEL_PROJECT_ID }}
+        vercel-org-id: \${{ secrets.VERCEL_ORG_ID }}
+        working-directory: ./
+        vercel-args: '--prod'` : ''}
+    
+    ${deployment === 'netlify' ? `
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: \${{ env.NODE_VERSION }}
+        cache: 'npm'
+        
+    - name: Install and build
+      run: |
+        npm ci
+        npm run build
+        
+    - name: Deploy to Netlify
+      uses: nwtgck/actions-netlify@v2.0
+      with:
+        publish-dir: './dist'
+        production-branch: main
+        production-deploy: true
+        github-token: \${{ secrets.GITHUB_TOKEN }}
+        deploy-message: "Deploy from GitHub Actions"
+      env:
+        NETLIFY_AUTH_TOKEN: \${{ secrets.NETLIFY_AUTH_TOKEN }}
+        NETLIFY_SITE_ID: \${{ secrets.NETLIFY_SITE_ID }}` : ''}
+    
+    ${deployment === 'aws' ? `
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v4
+      with:
+        aws-access-key-id: \${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: \${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: \${{ secrets.AWS_REGION }}
+        
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: \${{ env.NODE_VERSION }}
+        cache: 'npm'
+        
+    - name: Install and build
+      run: |
+        npm ci
+        npm run build
+        
+    - name: Deploy to S3
+      run: |
+        aws s3 sync ./dist s3://\${{ secrets.S3_BUCKET_NAME }} --delete
+        aws cloudfront create-invalidation --distribution-id \${{ secrets.CLOUDFRONT_DISTRIBUTION_ID }} --paths "/*"` : ''}` : ''}`;
+      filename = ".github/workflows/ci-cd.yml";
       break;
     }
   }
 
   // Add setup instructions based on configuration
   if (features.environmentVars) {
-    instructions.push('Set up environment variables in your repository secrets');
+    instructions.push('Configure environment variables in your repository secrets/settings');
   }
   if (deployment === 'vercel') {
-    instructions.push('Configure Vercel token in repository secrets as VERCEL_TOKEN');
-    instructions.push('Add VERCEL_PROJECT_ID and VERCEL_ORG_ID to repository secrets');
+    instructions.push('Add VERCEL_TOKEN, VERCEL_PROJECT_ID, and VERCEL_ORG_ID to repository secrets');
   }
   if (deployment === 'netlify') {
     instructions.push('Add NETLIFY_AUTH_TOKEN and NETLIFY_SITE_ID to repository secrets');
   }
-  if (deployment === 'docker') {
+  if (deployment === 'docker' || features.dockerization) {
     instructions.push('Add DOCKER_USERNAME and DOCKER_PASSWORD to repository secrets');
+    instructions.push('Create a Dockerfile in your project root');
   }
   if (deployment === 'aws') {
-    instructions.push('Configure AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, S3_BUCKET_NAME, and CLOUDFRONT_DISTRIBUTION_ID in repository secrets');
+    instructions.push('Configure AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, AWS_REGION, S3_BUCKET_NAME, and CLOUDFRONT_DISTRIBUTION_ID in repository secrets');
   }
   if (features.coverage) {
     instructions.push('Sign up for Codecov and add CODECOV_TOKEN to repository secrets');
   }
-  if (features.security) {
-    instructions.push('Consider adding security scanning tokens for enhanced vulnerability detection');
+  if (hasNode) {
+    instructions.push('Ensure your package.json has the required scripts: "lint", "test", "build", "format:check"');
+  }
+  if (hasPython) {
+    instructions.push('Create a requirements.txt file with your Python dependencies');
+    if (features.testing) {
+      instructions.push('Configure pytest in your project (pytest.ini or pyproject.toml)');
+    }
+  }
+  if (needsDatabase) {
+    instructions.push('Configure database connection strings in environment variables');
   }
 
   return {
