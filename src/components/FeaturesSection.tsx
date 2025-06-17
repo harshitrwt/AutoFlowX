@@ -10,11 +10,13 @@ const featureData = [
     icon: <Code className="w-8 h-8 text-blue-500" />,
     title: "Multi-Technology Support",
     description: "Build CI/CD for frontend, backend, and database stacks. Just pick your stack and generate ready-to-use pipelines—no YAML needed.",
+    bullets: []
   },
   {
     icon: <Check className="w-8 h-8 text-blue-500" />,
     title: "1-Minute Setup",
     description: "Get deployable CI/CD in seconds. Generate workflows instantly and easily copy, download, or tweak.",
+    bullets: []
   },
   {
     icon: <ShieldCheck className="w-8 h-8 text-blue-500" />,
@@ -29,17 +31,19 @@ const featureData = [
     icon: <GitBranch className="w-8 h-8 text-blue-500" />,
     title: "Workflow Modes",
     description: "Support for multiple environments, branches, blue-green/canary deploy, and custom triggers.",
-    
+    bullets: []
   },
   {
     icon: <FileText className="w-8 h-8 text-blue-500" />,
     title: "Customization",
     description: "Add custom steps, secrets, or Docker flows for as simple or advanced pipelines as you want.",
+    bullets: []
   },
   {
     icon: <Server className="w-8 h-8 text-blue-500" />,
     title: "Jenkins & More",
     description: "Generate Jenkins, GitHub Actions, GitLab, Bitbucket, or CircleCI pipelines—no plugins or setup needed.",
+    bullets: []
   }
 ];
 
