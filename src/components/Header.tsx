@@ -11,7 +11,7 @@ export const Header = ({ showLoading=false }: { showLoading?: boolean }) => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 bg-white/90 dark:bg-[#111827]/90 backdrop-blur-md border-b border-gray-200 dark:border-gray-700">
+    <header className="fixed top-0 left-0 right-0 z-50 bg-white/90 dark:bg-gray-900/90 backdrop-blur-md border-b border-gray-200 dark:border-gray-700">
       <div className="max-w-7xl mx-auto flex items-center justify-between px-4 sm:px-6 py-4">
         <Link to="/" className="flex items-center space-x-3">
           <div className="w-8 h-8 sm:w-10 sm:h-10 bg-orange-600 rounded-lg flex items-center justify-center">
@@ -63,7 +63,7 @@ export const Header = ({ showLoading=false }: { showLoading?: boolean }) => {
       </div>
       {/* Mobile Menu */}
       {isMobileMenuOpen && (
-        <div className="lg:hidden bg-white dark:bg-[#111827] border-t border-gray-200 dark:border-gray-700">
+        <div className="lg:hidden bg-white dark:bg-gray-900 border-t border-gray-200 dark:border-gray-700">
           <div className="px-4 py-4 space-y-4">
             <a href="#features" className="block text-gray-600 dark:text-gray-300 hover:text-orange-600 dark:hover:text-orange-400 font-medium">
               Features
