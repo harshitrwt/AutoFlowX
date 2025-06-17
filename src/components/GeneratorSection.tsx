@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { MultiStepForm } from './MultiStepForm';
 import { EnhancedYamlPreview } from './EnhancedYamlPreview';
@@ -80,7 +81,7 @@ export const GeneratorSection = () => {
   };
 
   return (
-    <section id="generator" className="px-4 sm:px-6 py-6 sm:py-8 lg:py-12 bg-gradient-to-br from-blue-50 to-white dark:from-gray-900 dark:to-gray-800 min-h-screen">
+    <section id="generator" className="px-4 sm:px-6 py-6 sm:py-8 lg:py-12 bg-gradient-to-br from-blue-50 to-white dark:from-gray-900 dark:to-[#111827] min-h-screen">
       <Header showLoading={headerLoading} />
       <div className="pt-16 sm:pt-20">
         <div className="max-w-7xl mx-auto">
@@ -102,7 +103,7 @@ export const GeneratorSection = () => {
           <div className="space-y-6 lg:space-y-0 lg:grid lg:grid-cols-2 lg:gap-8">
             {/* Configuration Section */}
             <div className="order-1 lg:order-1">
-              <div className="bg-white dark:bg-gray-900 rounded-xl shadow-xl border border-gray-200 dark:border-gray-700 overflow-hidden">
+              <div className="bg-white dark:bg-[#111827] rounded-xl shadow-xl border border-gray-200 dark:border-gray-700 overflow-hidden">
                 <div className="bg-gradient-to-r from-blue-500 to-blue-600 p-4 sm:p-6">
                   <h2 className="text-xl sm:text-2xl font-bold text-white mb-2">
                     Configure Your Stack
@@ -124,7 +125,7 @@ export const GeneratorSection = () => {
             
             {/* Preview Section */}
             <div className="order-2 lg:order-2">
-              <div className="bg-white dark:bg-gray-900 rounded-xl shadow-xl border border-gray-200 dark:border-gray-700 overflow-hidden lg:sticky lg:top-24">
+              <div className="bg-white dark:bg-[#111827] rounded-xl shadow-xl border border-gray-200 dark:border-gray-700 overflow-hidden lg:sticky lg:top-24">
                 <div className="bg-gradient-to-r from-gray-800 to-gray-900 p-4 sm:p-6">
                   <h2 className="text-xl sm:text-2xl font-bold text-white mb-2">
                     Generated Pipeline
@@ -149,16 +150,16 @@ export const GeneratorSection = () => {
 
           {/* Stats Section */}
           <div className="mt-12 grid grid-cols-1 sm:grid-cols-3 gap-6">
-            <div className="bg-white dark:bg-gray-900 rounded-lg p-6 text-center border border-gray-200 dark:border-gray-700 shadow-lg">
-              <div className="text-2xl sm:text-3xl font-bold text-blue-600 dark:text-blue-400 mb-2">500+</div>
+            <div className="bg-white dark:bg-[#111827] rounded-lg p-6 text-center border border-gray-200 dark:border-gray-700 shadow-lg">
+              <div className="text-2xl sm:text-3xl font-bold text-blue-600 dark:text-blue-400 mb-2">150+</div>
               <div className="text-gray-600 dark:text-gray-400 text-sm">Pipelines Generated</div>
             </div>
-            <div className="bg-white dark:bg-gray-900 rounded-lg p-6 text-center border border-gray-200 dark:border-gray-700 shadow-lg">
+            <div className="bg-white dark:bg-[#111827] rounded-lg p-6 text-center border border-gray-200 dark:border-gray-700 shadow-lg">
               <div className="text-2xl sm:text-3xl font-bold text-blue-600 dark:text-blue-400 mb-2">20+</div>
               <div className="text-gray-600 dark:text-gray-400 text-sm">Supported Technologies</div>
             </div>
-            <div className="bg-white dark:bg-gray-900 rounded-lg p-6 text-center border border-gray-200 dark:border-gray-700 shadow-lg">
-              <div className="text-2xl sm:text-3xl font-bold text-blue-600 dark:text-blue-400 mb-2">99%</div>
+            <div className="bg-white dark:bg-[#111827] rounded-lg p-6 text-center border border-gray-200 dark:border-gray-700 shadow-lg">
+              <div className="text-2xl sm:text-3xl font-bold text-blue-600 dark:text-blue-400 mb-2">95%</div>
               <div className="text-gray-600 dark:text-gray-400 text-sm">Success Rate</div>
             </div>
           </div>

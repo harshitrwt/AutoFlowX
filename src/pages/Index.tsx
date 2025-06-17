@@ -10,7 +10,7 @@ import { SuggestionBox } from "@/components/SuggestionBox";
 
 const Index = () => {
   return (
-    <div className="min-h-screen bg-white dark:bg-gray-900">
+    <div className="min-h-screen bg-white dark:bg-[#111827]">
       <div className="w-full flex flex-col items-center">
         {/* Header remains full-width */}
         <Header />
