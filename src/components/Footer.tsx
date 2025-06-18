@@ -22,20 +22,7 @@ export const Footer = () => {
               Generate production-ready CI/CD pipelines for your tech stack in minutes. 
               Built by developers, for developers.
             </p>
-            <div className="flex space-x-4">
-              <a href="#" className="w-8 h-8 sm:w-10 sm:h-10 bg-gray-800 dark:bg-gray-900 rounded-lg flex items-center justify-center hover:bg-gray-700 dark:hover:bg-gray-800 transition-colors">
-                <Github className="w-4 h-4 sm:w-5 sm:h-5" />
-              </a>
-              <a href="#" className="w-8 h-8 sm:w-10 sm:h-10 bg-gray-800 dark:bg-gray-900 rounded-lg flex items-center justify-center hover:bg-gray-700 dark:hover:bg-gray-800 transition-colors">
-                <Twitter className="w-4 h-4 sm:w-5 sm:h-5" />
-              </a>
-              <a href="#" className="w-8 h-8 sm:w-10 sm:h-10 bg-gray-800 dark:bg-gray-900 rounded-lg flex items-center justify-center hover:bg-gray-700 dark:hover:bg-gray-800 transition-colors">
-                <Linkedin className="w-4 h-4 sm:w-5 sm:h-5" />
-              </a>
-              <a href="#" className="w-8 h-8 sm:w-10 sm:h-10 bg-gray-800 dark:bg-gray-900 rounded-lg flex items-center justify-center hover:bg-gray-700 dark:hover:bg-gray-800 transition-colors">
-                <Mail className="w-4 h-4 sm:w-5 sm:h-5" />
-              </a>
-            </div>
+            
           </div>
           
           <div>
@@ -43,8 +30,7 @@ export const Footer = () => {
             <ul className="space-y-2 text-gray-400 text-sm sm:text-base">
               <li><Link to="/generator" className="hover:text-white transition-colors">Generator</Link></li>
               <li><a href="#features" className="hover:text-white transition-colors">Features</a></li>
-              <li><a href="#" className="hover:text-white transition-colors">Documentation</a></li>
-              <li><a href="#" className="hover:text-white transition-colors">Examples</a></li>
+              
             </ul>
           </div>
           
@@ -52,16 +38,14 @@ export const Footer = () => {
             <h4 className="font-semibold mb-4 text-sm sm:text-base">Support</h4>
             <ul className="space-y-2 text-gray-400 text-sm sm:text-base">
               <li><a href="#faq" className="hover:text-white transition-colors">FAQ</a></li>
-              <li><a href="#" className="hover:text-white transition-colors">Help Center</a></li>
-              <li><a href="#" className="hover:text-white transition-colors">Community</a></li>
-              <li><a href="#" className="hover:text-white transition-colors">Contact</a></li>
+              
             </ul>
           </div>
         </div>
         
         <div className="border-t border-gray-800 dark:border-gray-900 pt-6 sm:pt-8 flex flex-col sm:flex-row justify-between items-center space-y-4 sm:space-y-0 max-w-7xl mx-auto">
           <p className="text-gray-400 text-xs sm:text-sm">
-            © 2024 Pipeline Builder. All rights reserved.
+            © 2025 Pipeline Builder. All rights reserved.
           </p>
           <div className="flex flex-wrap justify-center sm:justify-end space-x-4 sm:space-x-6">
             <a href="#" className="text-gray-400 hover:text-white text-xs sm:text-sm transition-colors">Privacy Policy</a>

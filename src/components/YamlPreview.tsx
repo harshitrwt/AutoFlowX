@@ -63,9 +63,9 @@ export const YamlPreview: React.FC<YamlPreviewProps> = ({ yaml }) => {
             size="sm"
             onClick={downloadYaml}
             disabled={!yaml}
-            className="border-gray-600 text-gray-300 hover:bg-gray-700"
+            className="border-gray-600 text-gray-300 hover:bg-gray-700 hidden md:block"
           >
-            <Download className="w-4 h-4 mr-2" />
+            <Download className="w-4 h-4 mr-2 hidden md:block" />
             Download
           </Button>
         </div>

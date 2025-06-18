@@ -413,4 +413,4 @@ export const MultiStepForm: React.FC<MultiStepFormProps> = ({ config, setConfig,
   );
 };
 
-// NOTE: This file is now 415+ lines long. For best maintainability, consider refactoring it into smaller focused components.
+

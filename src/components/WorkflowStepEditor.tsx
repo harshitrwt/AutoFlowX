@@ -51,7 +51,7 @@ export const WorkflowStepEditor: React.FC<WorkflowStepEditorProps> = ({
       {steps.map((step, i) => (
         <div key={i} className="p-3 border border-gray-200 dark:border-gray-800 rounded-lg mb-3">
           <div className="flex justify-between items-center">
-            <Badge className="text-xs bg-orange-500 mr-2">Step {i + 1}</Badge>
+            <Badge className="text-xs bg-blue-500 mr-2">Step {i + 1}</Badge>
             <Button variant="ghost" size="icon" aria-label="Delete step" onClick={() => handleDelete(i)}>
               <Trash className="w-4 h-4 text-red-500" />
             </Button>
@@ -82,7 +82,7 @@ export const WorkflowStepEditor: React.FC<WorkflowStepEditorProps> = ({
 
       <Button
         onClick={handleAdd}
-        className="bg-gradient-to-r from-orange-500 to-orange-600 text-white font-semibold w-full mt-2"
+        className="bg-gradient-to-r from-blue-500 to-blue-600 text-white font-semibold w-full mt-2"
         variant="outline"
       >
         <Plus className="w-4 h-4 mr-2" />

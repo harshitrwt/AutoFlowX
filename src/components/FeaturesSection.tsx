@@ -51,18 +51,18 @@ export const FeaturesSection = () => {
   return (
     <section id="features" className="relative w-full py-16 sm:py-20 bg-transparent">
       <div className="max-w-5xl mx-auto px-4 sm:px-8">
-        {/* Title */}
+      
         <div className="mb-12 text-center">
           <div className="inline-block px-6 py-2 rounded-full font-black text-lg sm:text-2xl tracking-tight bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-300 shadow-xl mb-4 border-2 border-blue-200 dark:border-blue-800">
             Everything You Need
           </div>
-          <h2 className="text-3xl sm:text-5xl font-black text-blue-800 dark:text-blue-100 mb-2">Production-Grade CI/CD—Fast</h2>
-          <p className="mx-auto max-w-xl text-lg text-gray-700 dark:text-gray-300 leading-relaxed mt-4">
-            Start building pipelines in minutes.<br />
+          <h2 className="text-xl md:text-5xl font-black text-blue-800 dark:text-blue-100 mb-2 ">Production-Grade CI/CD Fast 🚀</h2>
+          <p className="mx-auto max-w-xl text-md text-gray-700 dark:text-gray-300 leading-relaxed mt-2 md:mt-4">
+           
             No vendor lock-in. Infinite extensibility. Simplicity for everyone!
           </p>
         </div>
-        {/* Bento Grid */}
+       
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
           {featureData.map((f, i) => (
             <FeatureCard

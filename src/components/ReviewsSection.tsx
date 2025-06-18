@@ -31,7 +31,7 @@ export const ReviewsSection = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6">
         <div ref={titleAnimation.ref} className="text-center mb-12 sm:mb-16">
           <h2 className={`text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white mb-4 ${titleAnimation.isVisible ? 'animate-fade-up' : 'opacity-0'}`}>Trusted by Developers Worldwide</h2>
-          <p className={`text-gray-600 dark:text-gray-300 text-base sm:text-lg max-w-2xl mx-auto ${titleAnimation.isVisible ? 'animate-fade-up animate-delay-200' : 'opacity-0'}`}>
+          <p className={`text-gray-600 dark:text-gray-300 text-base sm:text-lg hidden max-w-2xl mx-auto ${titleAnimation.isVisible ? 'animate-fade-up animate-delay-200' : 'opacity-0'}`}>
             See what engineering teams are saying about our CI/CD pipeline generator
           </p>
         </div>
@@ -39,7 +39,7 @@ export const ReviewsSection = () => {
         <div ref={reviewsAnimation.ref} className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8">
           {reviews.map((review, index) => (
             <div key={index} className={`bg-gray-50 dark:bg-gray-800 rounded-xl p-4 sm:p-6 relative border border-gray-200 dark:border-gray-700 ${reviewsAnimation.isVisible ? `animate-fade-up animate-delay-${(index + 1) * 100}` : 'opacity-0'}`}>
-              <Quote className="w-6 sm:w-8 h-6 sm:h-8 text-blue-600 dark:text-blue-400 mb-4 opacity-50" />
+              
               <div className="flex items-center mb-4">
                 {[...Array(review.rating)].map((_, i) => (
                   <Star key={i} className="w-4 h-4 text-yellow-400 fill-current" />
