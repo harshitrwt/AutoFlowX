@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -50,6 +51,7 @@ export const MultiStepForm: React.FC<MultiStepFormProps> = ({ config, setConfig,
       { id: 'vue', label: 'Vue.js', description: 'Progressive framework' },
       { id: 'angular', label: 'Angular', description: 'TypeScript framework' },
       { id: 'svelte', label: 'Svelte', description: 'Compile-time framework' },
+      { id: 'javascript', label: 'JavaScript', description: 'Programming language' },
       { id: 'tailwind', label: 'Tailwind CSS', description: 'Utility-first CSS' },
       { id: 'typescript', label: 'TypeScript', description: 'Typed JavaScript' }
     ],
@@ -85,6 +87,18 @@ export const MultiStepForm: React.FC<MultiStepFormProps> = ({ config, setConfig,
       ...config,
       features: { ...config.features, [feature]: value }
     });
+  };
+
+  const handleNextStep = () => {
+    setCurrentStep(Math.min(steps.length, currentStep + 1));
+    // Scroll to top of the page
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  const handlePrevStep = () => {
+    setCurrentStep(Math.max(1, currentStep - 1));
+    // Scroll to top of the page
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   const renderTechSelection = (category: keyof typeof techOptions, title: string) => (
@@ -159,7 +173,7 @@ export const MultiStepForm: React.FC<MultiStepFormProps> = ({ config, setConfig,
             <button
               className="text-sm text-blue-600 dark:text-blue-400 font-semibold px-3 py-1 hover:underline rounded"
               type="button"
-              onClick={() => setCurrentStep(currentStep + 1)}
+              onClick={handleNextStep}
             >
               Skip &rarr;
             </button>
@@ -370,7 +384,7 @@ export const MultiStepForm: React.FC<MultiStepFormProps> = ({ config, setConfig,
       <div className="flex justify-between pt-4">
         <Button
           variant="outline"
-          onClick={() => setCurrentStep(Math.max(1, currentStep - 1))}
+          onClick={handlePrevStep}
           disabled={currentStep === 1 || isGenerating}
           className="border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800 h-10 sm:h-12"
         >
@@ -380,7 +394,7 @@ export const MultiStepForm: React.FC<MultiStepFormProps> = ({ config, setConfig,
         
         {currentStep < steps.length ? (
           <Button
-            onClick={() => setCurrentStep(Math.min(steps.length, currentStep + 1))}
+            onClick={handleNextStep}
             className="bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white h-10 sm:h-12"
             disabled={isGenerating}
           >
@@ -412,5 +426,3 @@ export const MultiStepForm: React.FC<MultiStepFormProps> = ({ config, setConfig,
     </div>
   );
 };
-
-
