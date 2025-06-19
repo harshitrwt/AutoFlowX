@@ -18,8 +18,8 @@ export const Header = ({ showLoading=false }: { showLoading?: boolean }) => {
             <Code2 className="w-4 h-4 sm:w-6 sm:h-6 text-white" />
           </div>
           <div className="hidden sm:block">
-            <h1 className="text-gray-900 dark:text-white text-lg sm:text-xl font-bold">Pipeline Builder</h1>
-            <p className="text-gray-500 dark:text-gray-400 text-xs">Professional CI/CD Generator</p>
+            <h1 className="text-gray-900 dark:text-white text-lg sm:text-xl font-bold">AutoFlowX</h1>
+            <p className="text-gray-500 dark:text-gray-400 text-xs">Professional CI/CD Pipelines</p>
           </div>
         </Link>
         

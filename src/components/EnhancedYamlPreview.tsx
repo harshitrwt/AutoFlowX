@@ -121,7 +121,7 @@ export const EnhancedYamlPreview: React.FC<EnhancedYamlPreviewProps> = ({ workfl
               variant="outline"
               size="sm"
               onClick={() => setShowLineNumbers(!showLineNumbers)}
-              className="border-gray-300 text-gray-700 hover:bg-gray-50"
+              className="text-white bg-black"
             >
               {showLineNumbers ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
             </Button>
@@ -129,7 +129,7 @@ export const EnhancedYamlPreview: React.FC<EnhancedYamlPreviewProps> = ({ workfl
               variant="outline"
               size="sm"
               onClick={() => setHighlightSyntax(!highlightSyntax)}
-              className="border-gray-300 text-gray-700 hover:bg-gray-50"
+              className="text-white bg-black"
             >
               <Settings className="w-4 h-4" />
             </Button>
@@ -138,21 +138,12 @@ export const EnhancedYamlPreview: React.FC<EnhancedYamlPreviewProps> = ({ workfl
               size="sm"
               onClick={copyToClipboard}
               disabled={!workflow.yaml}
-              className="border-gray-300 text-gray-700 hover:bg-gray-50"
+              className="border-gray-300 text-white"
             >
               <Copy className="w-4 h-4 mr-2" />
               Copy
             </Button>
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={downloadYaml}
-              disabled={!workflow.yaml}
-              className="border-gray-300 text-gray-700 hover:bg-gray-50"
-            >
-              <Download className="w-4 h-4 mr-2" />
-              Download
-            </Button>
+            
           </div>
         </div>
 
