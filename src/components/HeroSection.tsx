@@ -52,7 +52,7 @@ export const HeroSection = () => {
         <div className="text-center mb-12 sm:mb-16">
           <div className={`inline-flex items-center px-3 sm:px-4 py-2 bg-gradient-to-r from-blue-450 to-blue-500 dark:bg-blue-900/30 border border-blue-200 dark:border-blue-700 rounded-full text-blue-700 dark:text-blue-300 text-sm font-medium mb-6 shadow-lg ${isLoaded ? 'animate-fade-up' : 'opacity-0'}`}>
             <Rocket className="w-4 h-4 mr-2 text-blue-600 " />
-            <span className="font-semibold">Production-Ready CI/CD Pipelines</span>
+            <span className="font-semibold">Production Ready CI/CD Pipelines</span>
             <Star className="w-4 h-4 ml-2 text-blue-600" />
           </div>
           
@@ -90,7 +90,7 @@ export const HeroSection = () => {
               size="lg"
               className="bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white px-6 sm:px-8 py-3 sm:py-4 text-base sm:text-lg font-semibold shadow-xl hover:shadow-2xl transition-all duration-300 hover:-translate-y-1 border-2 border-blue-500 hover:border-blue-600"
             >
-              <Zap className="w-5 h-5 mr-2" />
+              
               Start Building Pipeline
               <ArrowRight className="w-5 h-5 ml-2" />
             </Button>

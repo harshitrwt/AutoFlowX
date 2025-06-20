@@ -14,8 +14,8 @@ export const Header = ({ showLoading=false }: { showLoading?: boolean }) => {
     <header className="fixed top-0 left-0 right-0 z-50 bg-white/90 dark:bg-gray-900/90 backdrop-blur-md border-b border-gray-200 dark:border-gray-700">
       <div className="max-w-7xl mx-auto flex items-center justify-between px-4 sm:px-6 py-4">
         <Link to="/" className="flex items-center space-x-3">
-          <div className="w-8 h-8 sm:w-10 sm:h-10 bg-blue-600 rounded-lg flex items-center justify-center">
-            <Code2 className="w-4 h-4 sm:w-6 sm:h-6 text-white" />
+          <div className="w-8 h-8 sm:w-10 sm:h-10 flex items-center justify-center">
+            <img src='/logo.png' className='rounded-md'/>
           </div>
           <div className="hidden sm:block">
             <h1 className="text-gray-900 dark:text-white text-lg sm:text-xl font-bold">AutoFlowX</h1>
@@ -25,16 +25,16 @@ export const Header = ({ showLoading=false }: { showLoading?: boolean }) => {
         
        
         <nav className="hidden lg:flex items-center space-x-8">
-          <a href="#features" className="text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 font-medium transition-colors">
+          <a href="/" className="text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 font-medium transition-colors">
             Features
           </a>
           <Link to="/generator" className="text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 font-medium transition-colors">
             Generator
           </Link>
-          <a href="#reviews" className="text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 font-medium transition-colors">
+          <a href="/#reviews" className="text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 font-medium transition-colors">
             Reviews
           </a>
-          <a href="#faq" className="text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 font-medium transition-colors">
+          <a href="/#faq" className="text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 font-medium transition-colors">
             FAQ
           </a>
         </nav>

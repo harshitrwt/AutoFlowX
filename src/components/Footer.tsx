@@ -10,11 +10,11 @@ export const Footer = () => {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 mb-8 sm:mb-12 max-w-7xl mx-auto">
           <div className="lg:col-span-2">
             <div className="flex items-center space-x-3 mb-4">
-              <div className="w-8 h-8 sm:w-10 sm:h-10 bg-blue-600 rounded-lg flex items-center justify-center">
-                <Code2 className="w-4 h-4 sm:w-6 sm:h-6 text-white" />
+              <div className="w-8 h-8 sm:w-10 sm:h-10 flex items-center justify-center">
+                <img src='/logo.png' className='rounded-md'/>
               </div>
               <div>
-                <h3 className="text-lg sm:text-xl font-bold">Pipeline Builder</h3>
+                <h3 className="text-lg sm:text-xl font-bold">AutoFlowX</h3>
                 <p className="text-gray-400 text-xs sm:text-sm">Professional CI/CD Generator</p>
               </div>
             </div>
