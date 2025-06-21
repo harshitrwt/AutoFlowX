@@ -150,7 +150,7 @@ export const GeneratorSection = () => {
           {/* Stats Section */}
           <div className="mt-12 grid grid-cols-1 sm:grid-cols-3 gap-6">
             <div className="bg-white dark:bg-gray-900 rounded-lg p-6 text-center border border-gray-200 dark:border-gray-700 shadow-lg">
-              <div className="text-2xl sm:text-3xl font-bold text-blue-600 dark:text-blue-400 mb-2">30+</div>
+              <div className="text-2xl sm:text-3xl font-bold text-blue-600 dark:text-blue-400 mb-2">50+</div>
               <div className="text-gray-600 dark:text-gray-400 text-sm">Pipelines Generated</div>
             </div>
             <div className="bg-white dark:bg-gray-900 rounded-lg p-6 text-center border border-gray-200 dark:border-gray-700 shadow-lg">
