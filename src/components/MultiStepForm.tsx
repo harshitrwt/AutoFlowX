@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Card } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -53,7 +52,8 @@ export const MultiStepForm: React.FC<MultiStepFormProps> = ({ config, setConfig,
       { id: 'svelte', label: 'Svelte', description: 'Compile-time framework' },
       { id: 'javascript', label: 'JavaScript', description: 'Programming language' },
       { id: 'tailwind', label: 'Tailwind CSS', description: 'Utility-first CSS' },
-      { id: 'typescript', label: 'TypeScript', description: 'Typed JavaScript' }
+      { id: 'typescript', label: 'TypeScript', description: 'Typed JavaScript' },
+      { id: 'blazor', label: 'Blazor', description: '.NET web framework' }
     ],
     backend: [
       { id: 'nodejs', label: 'Node.js', description: 'JavaScript runtime' },
@@ -62,14 +62,18 @@ export const MultiStepForm: React.FC<MultiStepFormProps> = ({ config, setConfig,
       { id: 'django', label: 'Django', description: 'Python framework' },
       { id: 'fastapi', label: 'FastAPI', description: 'Modern Python API' },
       { id: 'prisma', label: 'Prisma', description: 'Database toolkit' },
-      { id: 'graphql', label: 'GraphQL', description: 'Query language' }
+      { id: 'graphql', label: 'GraphQL', description: 'Query language' },
+      { id: 'dotnet', label: '.NET', description: 'Microsoft framework' },
+      { id: 'aspnet', label: 'ASP.NET Core', description: '.NET web framework' },
+      { id: 'csharp', label: 'C#', description: 'Microsoft language' }
     ],
     database: [
       { id: 'postgresql', label: 'PostgreSQL', description: 'Relational database' },
       { id: 'mongodb', label: 'MongoDB', description: 'Document database' },
       { id: 'mysql', label: 'MySQL', description: 'Relational database' },
       { id: 'redis', label: 'Redis', description: 'In-memory store' },
-      { id: 'sqlite', label: 'SQLite', description: 'File-based database' }
+      { id: 'sqlite', label: 'SQLite', description: 'File-based database' },
+      { id: 'sqlserver', label: 'SQL Server', description: 'Microsoft database' }
     ]
   };
 
@@ -220,6 +224,7 @@ export const MultiStepForm: React.FC<MultiStepFormProps> = ({ config, setConfig,
                 <SelectItem value="aws">AWS</SelectItem>
                 <SelectItem value="gcp">Google Cloud</SelectItem>
                 <SelectItem value="heroku">Heroku</SelectItem>
+                <SelectItem value="azure">Azure</SelectItem>
               </SelectContent>
             </Select>
           </div>

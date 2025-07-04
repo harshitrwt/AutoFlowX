@@ -37,11 +37,14 @@ export const generateAdvancedYaml = (config: TechStackConfig): WorkflowResult =>
   // Detect project type and requirements
   const hasReact = frontend.includes('react') || frontend.includes('nextjs');
   const hasNextJS = frontend.includes('nextjs');
+  const hasBlazor = frontend.includes('blazor');
   const hasNode = backend.includes('nodejs') || backend.includes('express') || backend.includes('nestjs') || hasReact;
   const hasPython = backend.includes('django') || backend.includes('fastapi');
+  const hasDotNet = backend.includes('dotnet') || backend.includes('aspnet') || backend.includes('csharp') || hasBlazor;
   const hasTypeScript = frontend.includes('typescript') || backend.includes('nestjs');
   const hasPrisma = backend.includes('prisma');
   const needsDatabase = database.length > 0;
+  const hasSqlServer = database.includes('sqlserver');
 
   let yaml = "";
   let filename = "";
@@ -52,6 +55,7 @@ export const generateAdvancedYaml = (config: TechStackConfig): WorkflowResult =>
   const actions = [];
   if (hasNode) actions.push("install Node.js dependencies");
   if (hasPython) actions.push("install Python dependencies");
+  if (hasDotNet) actions.push("restore .NET packages");
   if (features.linting) actions.push("run code linting");
   if (features.testing) actions.push("execute tests");
   if (features.formatting) actions.push("check code formatting");
@@ -88,6 +92,7 @@ export const generateAdvancedYaml = (config: TechStackConfig): WorkflowResult =>
   environment {
     ${hasNode ? 'NODE_VERSION = "18.x"' : ''}
     ${hasPython ? 'PYTHON_VERSION = "3.11"' : ''}
+    ${hasDotNet ? 'DOTNET_VERSION = "8.0.x"' : ''}
     ${features.environmentVars ? `
     // Add your environment variables here
     // DATABASE_URL = credentials('database-url')
@@ -126,11 +131,29 @@ export const generateAdvancedYaml = (config: TechStackConfig): WorkflowResult =>
       }
     }` : ''}
     
+    ${hasDotNet ? `
+    stage('Setup .NET') {
+      steps {
+        sh 'wget https://packages.microsoft.com/config/ubuntu/20.04/packages-microsoft-prod.deb -O packages-microsoft-prod.deb'
+        sh 'sudo dpkg -i packages-microsoft-prod.deb'
+        sh 'sudo apt-get update'
+        sh 'sudo apt-get install -y dotnet-sdk-8.0'
+        sh 'dotnet --version'
+      }
+    }
+    
+    stage('Restore .NET Packages') {
+      steps {
+        sh 'dotnet restore'
+      }
+    }` : ''}
+    
     ${features.linting ? `
     stage('Lint Code') {
       steps {
         ${hasNode ? "sh 'npm run lint'" : ''}
         ${hasPython ? "sh 'flake8 . || true'" : ''}
+        ${hasDotNet ? "sh 'dotnet format --verify-no-changes'" : ''}
       }
     }` : ''}
     
@@ -139,6 +162,7 @@ export const generateAdvancedYaml = (config: TechStackConfig): WorkflowResult =>
       steps {
         ${hasNode ? "sh 'npm run format:check || npx prettier --check .'" : ''}
         ${hasPython ? "sh 'black --check . || true'" : ''}
+        ${hasDotNet ? "sh 'dotnet format --verify-no-changes'" : ''}
       }
     }` : ''}
     
@@ -147,14 +171,16 @@ export const generateAdvancedYaml = (config: TechStackConfig): WorkflowResult =>
       steps {
         ${hasNode ? "sh 'npm test'" : ''}
         ${hasPython ? "sh 'pytest'" : ''}
+        ${hasDotNet ? "sh 'dotnet test'" : ''}
       }
     }` : ''}
     
-    ${hasNode || hasPython ? `
+    ${hasNode || hasPython || hasDotNet ? `
     stage('Build Application') {
       steps {
         ${hasNode ? "sh 'npm run build'" : ''}
         ${hasPython ? "echo 'Python build step if needed'" : ''}
+        ${hasDotNet ? "sh 'dotnet build --configuration Release'" : ''}
       }
     }` : ''}
     
@@ -207,6 +233,7 @@ export const generateAdvancedYaml = (config: TechStackConfig): WorkflowResult =>
 variables:
   ${hasNode ? 'NODE_VERSION: "18"' : ''}
   ${hasPython ? 'PYTHON_VERSION: "3.11"' : ''}
+  ${hasDotNet ? 'DOTNET_VERSION: "8.0.x"' : ''}
 
 ${needsDatabase ? `services:
   ${database.includes('postgresql') ? `
@@ -221,7 +248,13 @@ ${needsDatabase ? `services:
     alias: mongodb` : ''}
   ${database.includes('redis') ? `
   - name: redis:7-alpine
-    alias: redis` : ''}` : ''}
+    alias: redis` : ''}
+  ${hasSqlServer ? `
+  - name: mcr.microsoft.com/mssql/server:2022-latest
+    alias: sqlserver
+    variables:
+      ACCEPT_EULA: Y
+      SA_PASSWORD: YourPassword123!` : ''}` : ''}
 
 ${hasNode ? `
 install_node:
@@ -249,23 +282,37 @@ install_python:
       - venv/
     expire_in: 1 hour` : ''}
 
+${hasDotNet ? `
+install_dotnet:
+  stage: install
+  image: mcr.microsoft.com/dotnet/sdk:8.0
+  script:
+    - dotnet restore
+  artifacts:
+    paths:
+      - bin/
+      - obj/
+    expire_in: 1 hour` : ''}
+
 ${features.linting ? `
 lint:
   stage: lint
-  ${hasNode ? 'image: node:18' : hasPython ? 'image: python:3.11' : 'image: alpine'}
+  ${hasNode ? 'image: node:18' : hasPython ? 'image: python:3.11' : hasDotNet ? 'image: mcr.microsoft.com/dotnet/sdk:8.0' : 'image: alpine'}
   script:
     ${hasNode ? '- npm run lint' : ''}
     ${hasPython ? '- flake8 .' : ''}
-  ${hasNode ? 'dependencies:\n    - install_node' : hasPython ? 'dependencies:\n    - install_python' : ''}` : ''}
+    ${hasDotNet ? '- dotnet format --verify-no-changes' : ''}
+  ${hasNode ? 'dependencies:\n    - install_node' : hasPython ? 'dependencies:\n    - install_python' : hasDotNet ? 'dependencies:\n    - install_dotnet' : ''}` : ''}
 
 ${features.testing ? `
 test:
   stage: test
-  ${hasNode ? 'image: node:18' : hasPython ? 'image: python:3.11' : 'image: alpine'}
+  ${hasNode ? 'image: node:18' : hasPython ? 'image: python:3.11' : hasDotNet ? 'image: mcr.microsoft.com/dotnet/sdk:8.0' : 'image: alpine'}
   script:
     ${hasNode ? '- npm test' : ''}
     ${hasPython ? '- pytest' : ''}
-  ${hasNode ? 'dependencies:\n    - install_node' : hasPython ? 'dependencies:\n    - install_python' : ''}
+    ${hasDotNet ? '- dotnet test' : ''}
+  ${hasNode ? 'dependencies:\n    - install_node' : hasPython ? 'dependencies:\n    - install_python' : hasDotNet ? 'dependencies:\n    - install_dotnet' : ''}
   ${features.coverage ? `
   artifacts:
     reports:
@@ -275,16 +322,18 @@ test:
 
 build:
   stage: build
-  ${hasNode ? 'image: node:18' : hasPython ? 'image: python:3.11' : 'image: alpine'}
+  ${hasNode ? 'image: node:18' : hasPython ? 'image: python:3.11' : hasDotNet ? 'image: mcr.microsoft.com/dotnet/sdk:8.0' : 'image: alpine'}
   script:
     ${hasNode ? '- npm run build' : ''}
     ${hasPython ? '- echo "Python build step"' : ''}
+    ${hasDotNet ? '- dotnet build --configuration Release' : ''}
   artifacts:
     paths:
       ${hasNode ? '- dist/' : ''}
       ${hasPython ? '- build/' : ''}
+      ${hasDotNet ? '- bin/Release/' : ''}
     expire_in: 1 hour
-  ${hasNode ? 'dependencies:\n    - install_node' : hasPython ? 'dependencies:\n    - install_python' : ''}
+  ${hasNode ? 'dependencies:\n    - install_node' : hasPython ? 'dependencies:\n    - install_python' : hasDotNet ? 'dependencies:\n    - install_dotnet' : ''}
 
 ${features.dockerization ? `
 docker_build:
@@ -323,13 +372,14 @@ on:
 env:
   ${hasNode ? 'NODE_VERSION: "18.x"' : ''}
   ${hasPython ? 'PYTHON_VERSION: "3.11"' : ''}
+  ${hasDotNet ? 'DOTNET_VERSION: "8.0.x"' : ''}
   ${features.environmentVars ? `
   # Add your environment variables here
   # DATABASE_URL: \${{ secrets.DATABASE_URL }}
   # API_KEY: \${{ secrets.API_KEY }}` : ''}
 
 jobs:
-  ${features.testing || features.linting || hasNode || hasPython ? `
+  ${features.testing || features.linting || hasNode || hasPython || hasDotNet ? `
   test:
     runs-on: ubuntu-latest
     
@@ -363,6 +413,19 @@ jobs:
           --health-cmd "redis-cli ping"
           --health-interval 10s
           --health-timeout 5s
+          --health-retries 5` : ''}
+      ${hasSqlServer ? `
+      sqlserver:
+        image: mcr.microsoft.com/mssql/server:2022-latest
+        env:
+          ACCEPT_EULA: Y
+          SA_PASSWORD: YourPassword123!
+        ports:
+          - 1433:1433
+        options: >-
+          --health-cmd "/opt/mssql-tools/bin/sqlcmd -S localhost -U sa -P YourPassword123! -Q 'SELECT 1'"
+          --health-interval 10s
+          --health-timeout 5s
           --health-retries 5` : ''}` : ''}
     
     steps:
@@ -391,6 +454,15 @@ jobs:
         python -m pip install --upgrade pip
         pip install -r requirements.txt` : ''}
     
+    ${hasDotNet ? `
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: \${{ env.DOTNET_VERSION }}
+        
+    - name: Restore .NET packages
+      run: dotnet restore` : ''}
+    
     ${hasPrisma ? `
     - name: Setup Prisma
       run: |
@@ -403,13 +475,15 @@ jobs:
     - name: Run linting
       run: |
         ${hasNode ? 'npm run lint' : ''}
-        ${hasPython ? 'flake8 .' : ''}` : ''}
+        ${hasPython ? 'flake8 .' : ''}
+        ${hasDotNet ? 'dotnet format --verify-no-changes' : ''}` : ''}
     
     ${features.formatting ? `
     - name: Check code formatting
       run: |
         ${hasNode ? 'npm run format:check || npx prettier --check .' : ''}
-        ${hasPython ? 'black --check .' : ''}` : ''}
+        ${hasPython ? 'black --check .' : ''}
+        ${hasDotNet ? 'dotnet format --verify-no-changes' : ''}` : ''}
     
     ${hasTypeScript ? `
     - name: Type check
@@ -420,6 +494,7 @@ jobs:
       run: |
         ${hasNode ? 'npm audit --audit-level=moderate' : ''}
         ${hasPython ? 'pip check' : ''}
+        ${hasDotNet ? 'dotnet list package --vulnerable' : ''}
       continue-on-error: true` : ''}
     
     ${features.testing ? `
@@ -427,20 +502,25 @@ jobs:
       run: |
         ${hasNode ? 'npm test' : ''}
         ${hasPython ? 'pytest' : ''}
+        ${hasDotNet ? 'dotnet test' : ''}
       env:
         ${hasNode ? 'NODE_ENV: test' : ''}
-        ${needsDatabase && database.includes('postgresql') ? 'DATABASE_URL: postgresql://postgres:postgres@localhost:5432/test_db' : ''}` : ''}
+        ${needsDatabase && database.includes('postgresql') ? 'DATABASE_URL: postgresql://postgres:postgres@localhost:5432/test_db' : ''}
+        ${hasSqlServer ? 'ConnectionStrings__DefaultConnection: "Server=localhost,1433;Database=TestDb;User Id=sa;Password=YourPassword123!;TrustServerCertificate=true;"' : ''}` : ''}
     
     ${features.coverage ? `
     - name: Upload coverage to Codecov
       uses: codecov/codecov-action@v3
       with:
         token: \${{ secrets.CODECOV_TOKEN }}
+        files: ./coverage.xml,./coverage/lcov.info
+        flags: unittests
+        name: codecov-umbrella
         fail_ci_if_error: false` : ''}` : ''}
 
   build:
     runs-on: ubuntu-latest
-    ${features.testing || features.linting || hasNode || hasPython ? 'needs: test' : ''}
+    ${features.testing || features.linting || hasNode || hasPython || hasDotNet ? 'needs: test' : ''}
     
     steps:
     - name: Checkout code
@@ -473,11 +553,23 @@ jobs:
         pip install -r requirements.txt
         # Add build commands if needed` : ''}
     
+    ${hasDotNet ? `
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: \${{ env.DOTNET_VERSION }}
+        
+    - name: Build .NET application
+      run: |
+        dotnet restore
+        dotnet build --configuration Release
+        dotnet publish --configuration Release --output ./publish` : ''}
+    
     ${features.dockerization ? `
     - name: Build Docker image
       run: |
         docker build -t \${{ github.repository }}:latest .
-        docker tag \${{ github.repository }}:latest \${{ github.repository }}:\${{ github.sha }}` : ''}
+        docker image inspect \${{ github.repository }}:latest` : ''}
     
     ${features.dockerization && deployment === 'docker' ? `
     - name: Login to Docker Hub
@@ -536,6 +628,25 @@ ${deployment && deployment !== 'none' && deployment !== 'docker' ? `
         NETLIFY_AUTH_TOKEN: \${{ secrets.NETLIFY_AUTH_TOKEN }}
         NETLIFY_SITE_ID: \${{ secrets.NETLIFY_SITE_ID }}` : ''}
     
+    ${deployment === 'azure' ? `
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: \${{ env.DOTNET_VERSION }}
+        
+    - name: Build and publish
+      run: |
+        dotnet restore
+        dotnet build --configuration Release
+        dotnet publish --configuration Release --output ./publish
+        
+    - name: Deploy to Azure Web App
+      uses: azure/webapps-deploy@v2
+      with:
+        app-name: \${{ secrets.AZURE_WEBAPP_NAME }}
+        publish-profile: \${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
+        package: ./publish` : ''}
+    
     ${deployment === 'aws' ? `
     - name: Configure AWS credentials
       uses: aws-actions/configure-aws-credentials@v4
@@ -581,6 +692,9 @@ ${deployment && deployment !== 'none' && deployment !== 'docker' ? `
   if (deployment === 'aws') {
     instructions.push('Configure AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, AWS_REGION, S3_BUCKET_NAME, and CLOUDFRONT_DISTRIBUTION_ID in repository secrets');
   }
+  if (deployment === 'azure') {
+    instructions.push('Add AZURE_WEBAPP_NAME and AZURE_WEBAPP_PUBLISH_PROFILE to repository secrets');
+  }
   if (features.coverage) {
     instructions.push('Sign up for Codecov and add CODECOV_TOKEN to repository secrets');
   }
@@ -593,8 +707,17 @@ ${deployment && deployment !== 'none' && deployment !== 'docker' ? `
       instructions.push('Configure pytest in your project (pytest.ini or pyproject.toml)');
     }
   }
+  if (hasDotNet) {
+    instructions.push('Ensure your .NET project has proper project files (.csproj or .sln)');
+    if (features.testing) {
+      instructions.push('Create unit test projects using xUnit, NUnit, or MSTest');
+    }
+  }
   if (needsDatabase) {
     instructions.push('Configure database connection strings in environment variables');
+  }
+  if (hasSqlServer) {
+    instructions.push('Configure SQL Server connection string in your application settings');
   }
 
   return {
