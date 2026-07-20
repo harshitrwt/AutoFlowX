@@ -7,6 +7,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { ChevronLeft, ChevronRight, ArrowRight, Zap } from 'lucide-react';
 import { WorkflowStepEditor } from './WorkflowStepEditor';
 import { CiProviderSelect } from './CiProviderSelect';
+import { toast } from '@/hooks/use-toast';
 
 interface TechStackConfig {
   frontend: string[];
@@ -93,9 +94,32 @@ export const MultiStepForm: React.FC<MultiStepFormProps> = ({ config, setConfig,
     });
   };
 
+  const validateCurrentStep = (): string | null => {
+    if (currentStep === 1) {
+      if (config.frontend.length === 0 && config.backend.length === 0) {
+        return 'Please select at least one Frontend or Backend technology to continue.';
+      }
+    }
+    if (currentStep === 2) {
+      if (!config.ciProvider) {
+        return 'Please choose a CI/CD provider before moving on.';
+      }
+    }
+    if (currentStep === 4) {
+      if (!config.deployment) {
+        return 'Please pick a deployment target to continue.';
+      }
+    }
+    return null;
+  };
+
   const handleNextStep = () => {
+    const err = validateCurrentStep();
+    if (err) {
+      toast({ title: 'Selection required', description: err, variant: 'destructive' });
+      return;
+    }
     setCurrentStep(Math.min(steps.length, currentStep + 1));
-    // Scroll to top of the page
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
@@ -190,24 +214,6 @@ export const MultiStepForm: React.FC<MultiStepFormProps> = ({ config, setConfig,
       description: 'Configure pipeline features',
       content: (
         <div className="space-y-6">
-          <div>
-            <h4 className="text-lg font-semibold text-gray-900 dark:text-white mb-4 flex items-center">
-              <span className="w-2 h-2 bg-blue-500 rounded-full mr-3"></span>
-              CI/CD Provider
-            </h4>
-            <Select value={config.ciProvider} onValueChange={(value) => setConfig({ ...config, ciProvider: value })}>
-              <SelectTrigger className="bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-600 text-gray-900 dark:text-white h-12">
-                <SelectValue placeholder="Select CI/CD provider" />
-              </SelectTrigger>
-              <SelectContent className="bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-600">
-                <SelectItem value="github">GitHub Actions</SelectItem>
-                <SelectItem value="gitlab">GitLab CI</SelectItem>
-                <SelectItem value="jenkins">Jenkins</SelectItem>
-                <SelectItem value="circleci">CircleCI</SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
-
           <div>
             <h4 className="text-lg font-semibold text-gray-900 dark:text-white mb-4 flex items-center">
               <span className="w-2 h-2 bg-blue-500 rounded-full mr-3"></span>
