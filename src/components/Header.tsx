@@ -11,8 +11,8 @@ export const Header = ({ showLoading=false }: { showLoading?: boolean }) => {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 bg-white/90 dark:bg-gray-900/90 backdrop-blur-md border-b border-gray-200 dark:border-gray-700">
-      <div className="max-w-7xl mx-auto flex items-center justify-between px-4 sm:px-6 py-4">
+    <header className="fixed top-3 sm:top-4 left-0 right-0 z-50 px-3 sm:px-6">
+      <div className="max-w-6xl mx-auto flex items-center justify-between px-4 sm:px-6 py-3 rounded-full bg-white/80 dark:bg-gray-900/70 backdrop-blur-xl border border-gray-200/70 dark:border-gray-700/60 shadow-lg shadow-blue-500/5">
         <Link to="/" className="flex items-center space-x-3">
           <div className="w-8 h-8 sm:w-10 sm:h-10 flex items-center justify-center">
             <img src='/logo.png' className='rounded-md'/>
@@ -63,18 +63,18 @@ export const Header = ({ showLoading=false }: { showLoading?: boolean }) => {
       </div>
      
       {isMobileMenuOpen && (
-        <div className="lg:hidden bg-white dark:bg-gray-900 border-t border-gray-200 dark:border-gray-700">
+        <div className="lg:hidden mt-2 max-w-6xl mx-auto bg-white/95 dark:bg-gray-900/95 backdrop-blur-xl rounded-2xl border border-gray-200 dark:border-gray-700 shadow-lg">
           <div className="px-4 py-4 space-y-4">
-            <a href="#features" className="block text-gray-600 dark:text-gray-300 hover:text-orange-600 dark:hover:text-orange-400 font-medium">
+            <a href="#features" className="block text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 font-medium">
               Features
             </a>
-            <Link to="/generator" className="block text-gray-600 dark:text-gray-300 hover:text-orange-600 dark:hover:text-orange-400 font-medium">
+            <Link to="/generator" className="block text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 font-medium">
               Generator
             </Link>
-            <a href="#reviews" className="block text-gray-600 dark:text-gray-300 hover:text-orange-600 dark:hover:text-orange-400 font-medium">
+            <a href="#reviews" className="block text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 font-medium">
               Reviews
             </a>
-            <a href="#faq" className="block text-gray-600 dark:text-gray-300 hover:text-orange-600 dark:hover:text-orange-400 font-medium">
+            <a href="#faq" className="block text-gray-600 dark:text-gray-300 hover:text-blue-600 dark:hover:text-blue-400 font-medium">
               FAQ
             </a>
           </div>

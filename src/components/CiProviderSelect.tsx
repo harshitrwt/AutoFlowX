@@ -19,7 +19,7 @@ interface CiProviderSelectProps {
 export const CiProviderSelect: React.FC<CiProviderSelectProps> = ({ value, onChange }) => (
   <div>
     <label className="flex items-center mb-2 font-semibold text-gray-800 dark:text-gray-100">
-      <Badge className="bg-orange-600 mr-2" /> CI/CD Provider
+      <span className="w-2 h-2 bg-blue-500 rounded-full mr-3" /> CI/CD Provider
     </label>
     <Select value={value} onValueChange={onChange}>
       <SelectTrigger className="bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-600 h-12">
