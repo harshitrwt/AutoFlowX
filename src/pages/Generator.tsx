@@ -8,7 +8,7 @@ const Generator = () => {
   return (
     <div className="min-h-screen bg-white dark:bg-gray-900">
       <Header />
-      <div className="pt-16 sm:pt-20">
+      <div className="pt-24 sm:pt-28">
         <GeneratorSection />
       </div>
       <Footer />

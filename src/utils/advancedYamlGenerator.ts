@@ -721,7 +721,7 @@ ${deployment && deployment !== 'none' && deployment !== 'docker' ? `
   }
 
   return {
-    yaml,
+    yaml: yaml.replace(/[ \t]+$/gm, '').replace(/\n{3,}/g, '\n\n'),
     filename,
     instructions,
     explanation

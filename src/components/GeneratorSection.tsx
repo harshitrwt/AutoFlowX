@@ -87,7 +87,8 @@ export const GeneratorSection = () => {
           {/* Header */}
           <div className="text-center mb-6 sm:mb-8 lg:mb-10">
             <div className="inline-flex items-center px-4 py-2 bg-blue-100 dark:bg-blue-900/30 border border-blue-200 dark:border-blue-700 rounded-full text-blue-700 dark:text-blue-300 text-sm font-medium mb-4">
-              🚀 Advanced Pipeline Generator
+              <span className="w-1.5 h-1.5 rounded-full bg-blue-500 mr-2 animate-pulse" />
+              Advanced Pipeline Generator
             </div>
             <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900 dark:text-white mb-3 sm:mb-4">
               Build Your Perfect CI/CD Pipeline
