@@ -12,6 +12,27 @@
     "paths": {
       "@/*": [
         "./src/*"
+      ],
+      "@/controllers/*": [
+        "./src/controllers/*"
+      ],
+      "@/models/*": [
+        "./src/models/*"
+      ],
+      "@/views/*": [
+        "./src/views/*"
+      ],
+      "@/services/*": [
+        "./src/services/*"
+      ],
+      "@/components/*": [
+        "./src/components/*"
+      ],
+      "@/hooks/*": [
+        "./src/hooks/*"
+      ],
+      "@/lib/*": [
+        "./src/lib/*"
       ]
     },
     "noImplicitAny": false,

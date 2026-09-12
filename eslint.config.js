@@ -4,8 +4,12 @@ import reactHooks from "eslint-plugin-react-hooks";
 import reactRefresh from "eslint-plugin-react-refresh";
 import tseslint from "typescript-eslint";
 
+/**
+ * AutoFlowX ESLint Configuration
+ * Enforces standard TypeScript, React Hooks, and fast refresh guidelines across the codebase.
+ */
 export default tseslint.config(
-  { ignores: ["dist"] },
+  { ignores: ["dist", "node_modules"] },
   {
     extends: [js.configs.recommended, ...tseslint.configs.recommended],
     files: ["**/*.{ts,tsx}"],

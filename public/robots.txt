@@ -1,0 +1,3 @@
+# AutoFlowX Robots Configuration
+User-agent: *
+Allow: /

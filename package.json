@@ -1,13 +1,27 @@
 {
-  "name": "vite_react_shadcn_ts",
+  "name": "autoflowx",
   "private": true,
-  "version": "0.0.0",
+  "version": "1.0.0",
+  "description": "Production-ready CI/CD pipeline generator with MVC architecture",
+  "author": "harshitrwt",
+  "keywords": [
+    "cicd",
+    "pipeline-generator",
+    "github-actions",
+    "devops",
+    "automation",
+    "mvc",
+    "typescript",
+    "react",
+    "vite"
+  ],
   "type": "module",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
     "build:dev": "vite build --mode development",
     "lint": "eslint .",
+    "typecheck": "tsc --noEmit",
     "preview": "vite preview"
   },
   "dependencies": {

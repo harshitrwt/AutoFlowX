@@ -3,7 +3,10 @@ import react from "@vitejs/plugin-react-swc";
 import path from "path";
 import { componentTagger } from "lovable-tagger";
 
-// https://vitejs.dev/config/
+/**
+ * AutoFlowX Vite Configuration
+ * Configures React SWC compiler, development server, and path aliases for MVC architecture.
+ */
 export default defineConfig(({ mode }) => ({
   server: {
     host: "::",
@@ -17,6 +20,13 @@ export default defineConfig(({ mode }) => ({
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./src"),
+      "@/controllers": path.resolve(__dirname, "./src/controllers"),
+      "@/models": path.resolve(__dirname, "./src/models"),
+      "@/views": path.resolve(__dirname, "./src/views"),
+      "@/services": path.resolve(__dirname, "./src/services"),
+      "@/components": path.resolve(__dirname, "./src/components"),
+      "@/hooks": path.resolve(__dirname, "./src/hooks"),
+      "@/lib": path.resolve(__dirname, "./src/lib"),
     },
   },
 }));
