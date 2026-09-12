@@ -4,35 +4,12 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { ChevronLeft, ChevronRight, ArrowRight, Zap } from 'lucide-react';
+import { ChevronLeft, ChevronRight, ArrowRight } from 'lucide-react';
 import { WorkflowStepEditor } from './WorkflowStepEditor';
 import { CiProviderSelect } from './CiProviderSelect';
-import { toast } from '@/hooks/use-toast';
+import { toast } from '@/controllers/useToastController';
 
-interface TechStackConfig {
-  frontend: string[];
-  backend: string[];
-  database: string[];
-  deployment: string;
-  ciProvider: string;
-  workflowType: 'single' | 'multiple' | 'main' | 'staging' | 'development' | 'testing' | 'release';
-  workflows?: {
-    main: boolean;
-    staging: boolean;
-    development: boolean;
-    testing: boolean;
-    release: boolean;
-  };
-  features: {
-    linting: boolean;
-    testing: boolean;
-    security: boolean;
-    formatting: boolean;
-    coverage: boolean;
-    environmentVars: boolean;
-    dockerization: boolean;
-  };
-}
+import { TechStackConfig, WorkflowStep } from '@/models/workflow.model';
 
 interface MultiStepFormProps {
   config: TechStackConfig & { workflowSteps?: { name: string; description: string; script: string; }[]; ciProvider?: string };
@@ -337,10 +314,7 @@ export const MultiStepForm: React.FC<MultiStepFormProps> = ({ config, setConfig,
                 Generating...
               </>
             ) : (
-              <>
-                <Zap className="w-5 h-5 mr-2" />
-                Generate Pipeline Configuration
-              </>
+              "Generate Pipeline Configuration"
             )}
           </Button>
         </div>
@@ -414,26 +388,7 @@ export const MultiStepForm: React.FC<MultiStepFormProps> = ({ config, setConfig,
           </Button>
         ) : null}
       </div>
-      {/* On last step - Generate */}
-      {currentStep === steps.length && (
-        <Button
-          onClick={onGenerate}
-          disabled={config.frontend.length === 0 && config.backend.length === 0 || isGenerating}
-          className="w-full bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white h-12 text-base font-semibold shadow-lg hover:shadow-xl transition-all duration-200 mt-2"
-        >
-          {isGenerating ? (
-            <>
-              <svg width="26" height="26" className="animate-spin text-white mr-2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" strokeWidth="4" strokeDasharray="31.4" strokeDashoffset="20"></circle></svg>
-              Generating...
-            </>
-          ) : (
-            <>
-              <Zap className="w-5 h-5 mr-2" />
-              Generate Pipeline Configuration
-            </>
-          )}
-        </Button>
-      )}
+      
     </div>
   );
 };

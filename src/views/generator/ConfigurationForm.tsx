@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Checkbox } from '@/components/ui/checkbox';
-import { generateYaml } from '@/utils/yamlGenerator';
+import { generateYaml } from '@/services/yamlGenerator.service';
 
 interface ConfigurationFormProps {
   config: any;

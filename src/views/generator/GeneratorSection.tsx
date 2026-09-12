@@ -1,33 +1,10 @@
 import React, { useState } from 'react';
 import { MultiStepForm } from './MultiStepForm';
 import { EnhancedYamlPreview } from './EnhancedYamlPreview';
-import { generateAdvancedYaml } from '@/utils/advancedYamlGenerator';
-import { Header } from "@/components/Header";
+import { generateAdvancedYaml } from '@/services/advancedYamlGenerator.service';
+import { Header } from "@/views/layout/Header";
 
-interface TechStackConfig {
-  frontend: string[];
-  backend: string[];
-  database: string[];
-  deployment: string;
-  ciProvider: string;
-  workflowType: 'single' | 'multiple' | 'main' | 'staging' | 'development' | 'testing' | 'release';
-  workflows?: {
-    main: boolean;
-    staging: boolean;
-    development: boolean;
-    testing: boolean;
-    release: boolean;
-  };
-  features: {
-    linting: boolean;
-    testing: boolean;
-    security: boolean;
-    formatting: boolean;
-    coverage: boolean;
-    environmentVars: boolean;
-    dockerization: boolean;
-  };
-}
+import { TechStackConfig } from '@/models/workflow.model';
 
 export const GeneratorSection = () => {
   const [config, setConfig] = useState<TechStackConfig>({

@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Code2, Moon, Sun, Menu, X } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
-import { useTheme } from './ThemeProvider';
+import { useTheme } from '@/controllers/useThemeController';
 
 export const Header = ({ showLoading=false }: { showLoading?: boolean }) => {
   const navigate = useNavigate();
