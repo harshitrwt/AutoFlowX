@@ -5,7 +5,7 @@ import { componentTagger } from "lovable-tagger";
 
 /**
  * AutoFlowX Vite Configuration
- * Configures React SWC compiler, development server, and path aliases for MVC architecture.
+ * Configures React SWC compiler, development server, and path aliases for root-level MVC architecture.
  */
 export default defineConfig(({ mode }) => ({
   server: {
@@ -19,15 +19,15 @@ export default defineConfig(({ mode }) => ({
   ].filter(Boolean),
   resolve: {
     alias: {
-      "@": path.resolve(__dirname, "./src"),
-      "@/controllers": path.resolve(__dirname, "./src/controllers"),
-      "@/models": path.resolve(__dirname, "./src/models"),
-      "@/views": path.resolve(__dirname, "./src/views"),
+      "@/controllers": path.resolve(__dirname, "./controllers"),
+      "@/models": path.resolve(__dirname, "./models"),
+      "@/views": path.resolve(__dirname, "./views"),
       "@/services": path.resolve(__dirname, "./src/services"),
       "@/context": path.resolve(__dirname, "./src/context"),
       "@/components": path.resolve(__dirname, "./src/components"),
       "@/hooks": path.resolve(__dirname, "./src/hooks"),
       "@/lib": path.resolve(__dirname, "./src/lib"),
+      "@": path.resolve(__dirname, "./src"),
     },
   },
 }));

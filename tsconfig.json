@@ -10,20 +10,32 @@
   ],
   "compilerOptions": {
     "paths": {
-      "@/*": [
-        "./src/*"
+      "@/controllers": [
+        "./controllers"
       ],
       "@/controllers/*": [
-        "./src/controllers/*"
+        "./controllers/*"
+      ],
+      "@/models": [
+        "./models"
       ],
       "@/models/*": [
-        "./src/models/*"
+        "./models/*"
+      ],
+      "@/views": [
+        "./views"
       ],
       "@/views/*": [
-        "./src/views/*"
+        "./views/*"
+      ],
+      "@/services": [
+        "./src/services"
       ],
       "@/services/*": [
         "./src/services/*"
+      ],
+      "@/context": [
+        "./src/context"
       ],
       "@/context/*": [
         "./src/context/*"
@@ -31,11 +43,17 @@
       "@/components/*": [
         "./src/components/*"
       ],
+      "@/hooks": [
+        "./src/hooks"
+      ],
       "@/hooks/*": [
         "./src/hooks/*"
       ],
       "@/lib/*": [
         "./src/lib/*"
+      ],
+      "@/*": [
+        "./src/*"
       ]
     },
     "noImplicitAny": false,
