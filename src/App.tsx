@@ -1,3 +1,7 @@
+/**
+ * AutoFlowX Application Root Component
+ * Sets up global QueryClient, ThemeProvider, Toast notifications, and React Router.
+ */
 import React from 'react';
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
