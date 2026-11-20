@@ -38,8 +38,8 @@ export function useGeneratorController() {
     setIsGenerating(true);
     setHeaderLoading(true);
 
-    // Random delay between 5–10s to simulate optimization & generation
-    const delay = 5000 + Math.floor(Math.random() * 5000);
+    // Realistic compiler delay (1.5–2.5s) to simulate pipeline optimization
+    const delay = 1500 + Math.floor(Math.random() * 1000);
     setTimeout(() => {
       const workflow = generateAdvancedYaml(config);
       setGeneratedWorkflow(workflow);

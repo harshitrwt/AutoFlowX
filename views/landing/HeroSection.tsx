@@ -12,12 +12,7 @@ export const HeroSection = () => {
   }, []);
 
   const scrollToGenerator = () => {
-    const generatorSection = document.getElementById('generator');
-    if (generatorSection) {
-      generatorSection.scrollIntoView({ behavior: 'smooth' });
-    } else {
-      navigate('/generator');
-    }
+    navigate('/generator');
   };
 
   const viewExamples = () => {
@@ -26,29 +21,29 @@ export const HeroSection = () => {
 
   return (
     <section className="relative bg-white dark:bg-gray-900 pt-24 sm:pt-32 pb-12 sm:pb-20 px-4 sm:px-6 overflow-hidden">
-      <div className="absolute inset-0 bg-gradient-to-b from-blue-50/50 via-transparent to-transparent dark:from-blue-950/20 dark:via-transparent pointer-events-none" />
+      <div className="absolute inset-0 bg-gradient-to-b from-blue-50/40 via-transparent to-transparent dark:from-blue-950/20 dark:via-transparent pointer-events-none" />
 
-      {/* Subtle Floating Tech Badges (positioned gracefully on flanks) */}
+      {/* Floating DevOps Tech Badges */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden z-0">
         {[
-          { src: '/docker-svgrepo-com.svg', name: 'Docker', style: 'top-28 left-6 md:left-16 rotate-6' },
-          { src: '/kubernetes-svgrepo-com.svg', name: 'Kubernetes', style: 'top-72 left-4 md:left-24 -rotate-6' },
-          { src: '/terraform-svgrepo-com.svg', name: 'Terraform', style: 'bottom-20 left-8 md:left-20 rotate-12' },
-          { src: '/linux-svgrepo-com.svg', name: 'Linux', style: 'top-44 left-2 md:left-8 -rotate-12' },
-          { src: '/jenkins-svgrepo-com.svg', name: 'Jenkins', style: 'top-28 right-6 md:right-16 -rotate-6' },
-          { src: '/ansible-svgrepo-com.svg', name: 'Ansible', style: 'top-72 right-4 md:right-24 rotate-6' },
-          { src: '/grafana-svgrepo-com.svg', name: 'Grafana', style: 'bottom-20 right-8 md:right-20 -rotate-12' },
-          { src: '/prometheus-svgrepo-com.svg', name: 'Prometheus', style: 'top-44 right-2 md:right-8 rotate-12' },
+          { src: '/docker-svgrepo-com.svg', name: 'Docker', style: 'top-24 left-4 md:left-14 rotate-6' },
+          { src: '/linux-svgrepo-com.svg', name: 'Linux', style: 'top-48 left-2 md:left-8 -rotate-12' },
+          { src: '/kubernetes-svgrepo-com.svg', name: 'Kubernetes', style: 'top-72 left-4 md:left-20 rotate-6' },
+          { src: '/terraform-svgrepo-com.svg', name: 'Terraform', style: 'bottom-24 left-6 md:left-16 -rotate-6' },
+          { src: '/jenkins-svgrepo-com.svg', name: 'Jenkins', style: 'top-24 right-4 md:right-14 -rotate-6' },
+          { src: '/prometheus-svgrepo-com.svg', name: 'Prometheus', style: 'top-48 right-2 md:right-8 rotate-12' },
+          { src: '/ansible-svgrepo-com.svg', name: 'Ansible', style: 'top-72 right-4 md:right-20 rotate-6' },
+          { src: '/grafana-svgrepo-com.svg', name: 'Grafana', style: 'bottom-24 right-6 md:right-16 -rotate-12' },
         ].map(({ src, name, style }, i) => (
           <div
             key={i}
-            className={`hidden lg:flex items-center justify-center absolute p-3 rounded-2xl bg-white/70 dark:bg-gray-800/60 backdrop-blur-md border border-gray-200/50 dark:border-gray-700/50 shadow-sm opacity-40 hover:opacity-80 transition-all duration-700 ${style}`}
+            className={`hidden md:flex items-center justify-center absolute p-2.5 sm:p-3 rounded-2xl bg-white/90 dark:bg-gray-800/80 backdrop-blur-md border border-gray-200/70 dark:border-gray-700/70 shadow-lg shadow-black/5 opacity-80 hover:opacity-100 hover:scale-110 transition-all duration-300 pointer-events-auto cursor-pointer ${style}`}
+            title={name}
           >
             <img
               src={src}
               alt={name}
-              className="w-9 h-9 object-contain"
-              loading="lazy"
+              className="w-8 h-8 sm:w-10 sm:h-10 object-contain"
             />
           </div>
         ))}
@@ -56,7 +51,7 @@ export const HeroSection = () => {
 
       <div className="relative max-w-7xl mx-auto z-10">
         <div className="text-center mb-12 sm:mb-16">
-          <div className={`inline-flex items-center px-4 py-2 bg-blue-50 dark:bg-blue-900/40 border border-blue-200/80 dark:border-blue-700/60 rounded-full text-blue-700 dark:text-blue-300 text-sm font-medium mb-6 shadow-sm transition-all duration-500 ${isLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-2'}`}>
+          <div className={`inline-flex items-center px-4 py-2 bg-gradient-to-r from-blue-50 to-indigo-50 dark:from-blue-900/40 dark:to-indigo-900/30 border border-blue-200 dark:border-blue-700 rounded-full text-blue-700 dark:text-blue-300 text-sm font-medium mb-6 shadow-sm transition-all duration-500 ${isLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-2'}`}>
             <Rocket className="w-4 h-4 mr-2 text-blue-600 dark:text-blue-400" />
             <span className="font-semibold">Production-Ready CI/CD Pipelines</span>
             <Star className="w-4 h-4 ml-2 text-amber-500 fill-amber-500" />
@@ -66,21 +61,27 @@ export const HeroSection = () => {
             <span className="block">Build Production-Ready</span>
             <span className="block mt-1 sm:mt-2">
               CI/CD Pipelines in{' '}
-              <span className="relative inline-block text-transparent bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 bg-clip-text">
+              <span className="relative inline-block text-transparent bg-gradient-to-r from-orange-500 via-amber-500 to-red-600 bg-clip-text">
                 minutes
                 <svg
-                  className="absolute left-0 -bottom-2 w-full h-[8px]"
-                  viewBox="0 0 100 8"
+                  className="absolute left-0 -bottom-2 sm:-bottom-3 w-full h-[10px]"
+                  viewBox="0 0 100 10"
                   preserveAspectRatio="none"
                 >
-                  <path d="M0 4 Q 50 8 100 4" fill="none" stroke="currentColor" strokeWidth="3" className="text-blue-500" />
+                  <path d="M0 5 C20 12, 60 -2, 100 5" fill="none" stroke="url(#orange-gradient)" strokeWidth="3" />
+                  <defs>
+                    <linearGradient id="orange-gradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                      <stop offset="0%" stopColor="#f97316" />
+                      <stop offset="100%" stopColor="#dc2626" />
+                    </linearGradient>
+                  </defs>
                 </svg>
               </span>
             </span>
           </h1>
 
           <p className="text-base sm:text-lg text-gray-600 dark:text-gray-300 mb-8 max-w-2xl mx-auto leading-relaxed px-4 mt-8">
-            Generate battle-tested GitHub Actions, GitLab CI, and deployment workflows with zero manual syntax errors. Auto-detect stacks, enforce security, and ship faster.
+            Generate battle-tested GitHub Actions, GitLab CI, and deployment workflows with zero config. Auto-detect stacks, enforce security, and deploy instantly.
           </p>
 
           <div className={`flex flex-col sm:flex-row gap-4 justify-center mb-16 px-4 transition-all duration-500 delay-200 ${isLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-2'}`}>
