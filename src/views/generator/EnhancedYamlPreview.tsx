@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Copy, Download, Settings, Eye, EyeOff } from 'lucide-react';
-import { toast } from '@/controllers/useToastController';
+import { toast } from '@/hooks/use-toast';
 
 interface EnhancedYamlPreviewProps {
   workflow: {

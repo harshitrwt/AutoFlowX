@@ -1,60 +1,18 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { MultiStepForm } from './MultiStepForm';
 import { EnhancedYamlPreview } from './EnhancedYamlPreview';
-import { generateAdvancedYaml } from '@/services/advancedYamlGenerator.service';
 import { Header } from "@/views/layout/Header";
-
-import { TechStackConfig } from '@/models/workflow.model';
+import { useGeneratorController } from '@/controllers/useGeneratorController';
 
 export const GeneratorSection = () => {
-  const [config, setConfig] = useState<TechStackConfig>({
-    frontend: [],
-    backend: [],
-    database: [],
-    deployment: '',
-    ciProvider: 'github',
-    workflowType: 'single',
-    features: {
-      linting: false,
-      testing: false,
-      security: false,
-      formatting: false,
-      coverage: false,
-      environmentVars: false,
-      dockerization: false
-    }
-  });
-
-  const [generatedWorkflow, setGeneratedWorkflow] = useState<{
-    yaml: string;
-    filename: string;
-    instructions: string[];
-  }>({
-    yaml: '',
-    filename: '',
-    instructions: []
-  });
-
-  // State for pipeline loading UI
-  const [isGenerating, setIsGenerating] = useState(false);
-
-  // Used to trigger header counter animations
-  const [headerLoading, setHeaderLoading] = useState(false);
-
-  // modifies handleGenerate for loader
-  const handleGenerate = () => {
-    setIsGenerating(true);
-    setHeaderLoading(true);
-
-    // Random delay between 5–10s
-    const delay = 5000 + Math.floor(Math.random() * 5000);
-    setTimeout(() => {
-      const workflow = generateAdvancedYaml(config);
-      setGeneratedWorkflow(workflow);
-      setIsGenerating(false);
-      setHeaderLoading(false);
-    }, delay);
-  };
+  const {
+    config,
+    setConfig,
+    generatedWorkflow,
+    isGenerating,
+    headerLoading,
+    handleGenerate,
+  } = useGeneratorController();
 
   return (
     <section id="generator" className="px-4 sm:px-6 py-6 sm:py-8 lg:py-12 bg-gradient-to-br from-blue-50 to-white dark:from-gray-900 dark:to-gray-800 min-h-screen">

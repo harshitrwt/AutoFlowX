@@ -24,6 +24,7 @@ export default defineConfig(({ mode }) => ({
       "@/models": path.resolve(__dirname, "./src/models"),
       "@/views": path.resolve(__dirname, "./src/views"),
       "@/services": path.resolve(__dirname, "./src/services"),
+      "@/context": path.resolve(__dirname, "./src/context"),
       "@/components": path.resolve(__dirname, "./src/components"),
       "@/hooks": path.resolve(__dirname, "./src/hooks"),
       "@/lib": path.resolve(__dirname, "./src/lib"),

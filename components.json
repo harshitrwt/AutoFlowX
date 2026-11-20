@@ -19,6 +19,7 @@
     "controllers": "@/controllers",
     "models": "@/models",
     "views": "@/views",
-    "services": "@/services"
+    "services": "@/services",
+    "context": "@/context"
   }
 }

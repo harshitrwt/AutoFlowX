@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { Star, Quote } from 'lucide-react';
-import { useScrollAnimation } from '@/controllers/useScrollController';
+import { useScrollAnimation } from '@/hooks/useScrollAnimation';
 
 export const ReviewsSection = () => {
   const titleAnimation = useScrollAnimation({ threshold: 0.2, triggerOnce: true });

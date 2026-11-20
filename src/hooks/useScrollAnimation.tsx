@@ -29,13 +29,14 @@ export const useScrollAnimation = (options: UseScrollAnimationOptions = {}) => {
       }
     );
 
-    if (ref.current) {
-      observer.observe(ref.current);
+    const currentElement = ref.current;
+    if (currentElement) {
+      observer.observe(currentElement);
     }
 
     return () => {
-      if (ref.current) {
-        observer.unobserve(ref.current);
+      if (currentElement) {
+        observer.unobserve(currentElement);
       }
     };
   }, [options.threshold, options.rootMargin, options.triggerOnce]);

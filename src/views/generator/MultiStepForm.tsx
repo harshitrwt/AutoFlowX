@@ -7,7 +7,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { ChevronLeft, ChevronRight, ArrowRight } from 'lucide-react';
 import { WorkflowStepEditor } from './WorkflowStepEditor';
 import { CiProviderSelect } from './CiProviderSelect';
-import { toast } from '@/controllers/useToastController';
+import { toast } from '@/hooks/use-toast';
 
 import { TechStackConfig, WorkflowStep } from '@/models/workflow.model';
 

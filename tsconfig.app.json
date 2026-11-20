@@ -36,6 +36,9 @@
       "@/services/*": [
         "./src/services/*"
       ],
+      "@/context/*": [
+        "./src/context/*"
+      ],
       "@/components/*": [
         "./src/components/*"
       ],
