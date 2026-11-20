@@ -1,3 +1,7 @@
+/**
+ * Toast Notification Hook
+ * Manages toast state, dismiss timers, and action dispatchers.
+ */
 import * as React from "react"
 
 import type {

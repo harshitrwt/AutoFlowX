@@ -1,3 +1,7 @@
+/**
+ * Responsive Viewport Hook
+ * Detects whether the current browser viewport is below the mobile breakpoint (768px).
+ */
 import * as React from "react"
 
 const MOBILE_BREAKPOINT = 768
