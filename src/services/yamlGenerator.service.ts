@@ -1,4 +1,8 @@
 
+/**
+ * Base CI/CD Workflow Generator Service
+ * Generates foundational GitHub Actions workflow configurations for standard web applications.
+ */
 export const generateYaml = (config: any): string => {
   const { frontend, backend, database, deployment, addons } = config;
   

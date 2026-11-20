@@ -1,3 +1,7 @@
+/**
+ * Advanced Multi-Cloud CI/CD Workflow Compiler Service
+ * Generates enterprise-ready workflows supporting GitHub Actions, GitLab CI, Azure Pipelines, and more.
+ */
 import { TechStackConfig, WorkflowResult } from '@/models/workflow.model';
 
 export const generateAdvancedYaml = (config: TechStackConfig): WorkflowResult => {
