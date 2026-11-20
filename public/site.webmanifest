@@ -1,11 +1,11 @@
 {
-  "name": "AutoFlowX",
+  "name": "AutoFlowX - Production-Ready CI/CD Pipeline Generator",
   "short_name": "AutoFlowX",
-  "description": "Production-Ready CI/CD Pipeline Generator with MVC Architecture",
+  "description": "Enterprise-grade CI/CD pipeline generator with clean root-level MVC architecture",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#ffffff",
-  "theme_color": "#ea580c",
+  "theme_color": "#2563eb",
   "icons": [
     {
       "src": "/logo.png",

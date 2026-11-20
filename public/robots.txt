@@ -1,3 +1,7 @@
 # AutoFlowX Robots Configuration
 User-agent: *
 Allow: /
+
+# Host
+Host: https://autoflowx.dev
+Sitemap: https://autoflowx.dev/sitemap.xml

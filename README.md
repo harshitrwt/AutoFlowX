@@ -4,7 +4,7 @@
 [![React](https://img.shields.io/badge/React-18-61dafb.svg?style=flat-square)](https://reactjs.org/)
 [![Vite](https://img.shields.io/badge/Vite-5.4-646cff.svg?style=flat-square)](https://vitejs.dev/)
 [![Tailwind CSS](https://img.shields.io/badge/TailwindCSS-3.4-38bdf8.svg?style=flat-square)](https://tailwindcss.com/)
-[![Architecture](https://img.shields.io/badge/Architecture-MVC-brightgreen.svg?style=flat-square)](#architecture)
+[![Architecture](https://img.shields.io/badge/Architecture-Root--Level%20MVC-brightgreen.svg?style=flat-square)](#architecture)
 
 **AutoFlowX** is a modern, enterprise-grade CI/CD pipeline generator designed to streamline workflow authoring for modern software development stacks. By abstracting manual YAML configuration, AutoFlowX enables engineers to configure, preview, validate, and download battle-tested CI/CD workflows in seconds.
 
@@ -23,35 +23,39 @@
 
 ## Architecture
 
-AutoFlowX is built using a clean **Model-View-Controller (MVC)** architectural pattern in TypeScript, separating domain data, user presentation, and application state:
+AutoFlowX follows a clean **Root-Level Model-View-Controller (MVC)** architectural pattern, keeping `src/` independent for the core application runtime, configuration, and design system:
 
-```
-src/
-├── controllers/          # [C] Business state orchestrators & interaction handlers
-│   ├── useThemeController.tsx        # Theme state & provider
-│   ├── useScrollController.tsx       # Scroll animation observer
-│   ├── useCountUpController.tsx      # Metric counter animation
-│   ├── useMobileController.tsx       # Viewport responsiveness
-│   └── useToastController.ts         # User notification dispatch
-│
+```text
+AutoFlowX/
 ├── models/               # [M] Domain models, data contracts & type definitions
-│   └── workflow.model.ts             # Pipeline configuration & step schemas
+│   ├── workflow.model.ts             # Pipeline configuration, step & result schemas
+│   ├── example.model.ts              # Example pipeline interfaces & templates
+│   └── index.ts
 │
-├── services/             # Core business logic & pipeline compiler engines
-│   ├── yamlGenerator.service.ts          # Base YAML template engine
-│   └── advancedYamlGenerator.service.ts  # Multi-stack pipeline compiler
+├── controllers/          # [C] Application state controllers & orchestrators
+│   ├── useGeneratorController.ts     # Pipeline generator state, timer & generation
+│   ├── useExamplesController.tsx     # Example pipelines filtering, search & actions
+│   ├── useThemeController.ts         # Theme switching & toggling controller
+│   └── index.ts
 │
-├── views/                # [V] Presentation & UI layer
+├── views/                # [V] Pure presentation UI layer
 │   ├── layout/                       # Header, navigation & footer views
 │   ├── landing/                      # Landing page sections & marketing views
 │   ├── generator/                    # Multi-step generator & preview views
-│   └── pages/                        # Page views (Home, Generator, Examples, 404)
+│   ├── pages/                        # Page-level views (Home, Generator, Examples, 404)
+│   └── index.ts
 │
-├── components/ui/        # Atomic UI design system primitives (Radix UI / shadcn)
-├── hooks/                # Utility hooks & controllers re-exports
-├── lib/                  # Shared utilities (classnames merge helper)
-├── App.tsx               # Root application router
-└── main.tsx              # Application entry point
+├── src/                  # Independent core application runtime
+│   ├── components/ui/                # Atomic UI design system primitives (Radix UI / shadcn)
+│   ├── context/                      # React context providers (ThemeContext)
+│   ├── hooks/                        # Shared utility hooks (use-toast, use-mobile, etc.)
+│   ├── services/                     # Business logic & CI/CD pipeline compiler engines
+│   ├── lib/                          # Utility functions (cn / clsx)
+│   ├── App.tsx                       # Application root, routing & providers
+│   ├── main.tsx                      # Vite React entrypoint
+│   └── index.css                     # Global styles & Tailwind directives
+│
+└── public/               # Static assets, icons, manifests & robots.txt
 ```
 
 ---
@@ -59,13 +63,14 @@ src/
 ## Getting Started
 
 ### Prerequisites
+
 - Node.js (v18 or higher)
-- npm, pnpm, or bun
+- npm, yarn, pnpm, or bun
 
 ### Installation
 
 ```bash
-# Clone repository
+# Clone the repository
 git clone https://github.com/harshitrwt/AutoFlowX.git
 
 # Navigate to project directory
@@ -73,45 +78,21 @@ cd AutoFlowX
 
 # Install dependencies
 npm install
-```
 
-### Development Server
-
-```bash
-# Start Vite development server
+# Start local development server
 npm run dev
 ```
 
-Visit `http://localhost:8080` in your browser.
+### Available Scripts
 
-### Building for Production
-
-```bash
-# Type check TypeScript files
-npm run typecheck
-
-# Build optimized production bundle
-npm run build
-
-# Preview production build locally
-npm run preview
-```
-
----
-
-## Tech Stack
-
-| Layer | Technology |
-|---|---|
-| **Language** | TypeScript |
-| **Framework** | React 18, Vite |
-| **Styling** | Tailwind CSS, Tailwind Animate |
-| **UI Components** | Radix UI, shadcn/ui, Lucide Icons |
-| **State & Data** | React Router DOM, TanStack Query |
-| **Code Formatting** | ESLint, PostCSS, Autoprefixer |
+- `npm run dev` - Launch local development server with Hot Module Replacement (HMR)
+- `npm run build` - Build production bundle with Vite
+- `npm run preview` - Preview production build locally
+- `npm run typecheck` - Run TypeScript compiler checks across all layers
+- `npm run lint` - Run ESLint verification
 
 ---
 
 ## License
 
-This project is licensed under the MIT License.
+This project is licensed under the MIT License - see the LICENSE file for details.
