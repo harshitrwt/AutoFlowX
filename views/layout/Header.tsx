@@ -14,8 +14,8 @@ export const Header = ({ showLoading=false }: { showLoading?: boolean }) => {
     <header className="fixed top-3 sm:top-4 left-0 right-0 z-50 px-3 sm:px-6">
       <div className="max-w-6xl mx-auto flex items-center justify-between px-4 sm:px-6 py-3 rounded-full bg-white/80 dark:bg-gray-900/70 backdrop-blur-xl border border-gray-200/70 dark:border-gray-700/60 shadow-lg shadow-blue-500/5">
         <Link to="/" className="flex items-center space-x-3">
-          <div className="w-8 h-8 sm:w-10 sm:h-10 flex items-center justify-center">
-            <img src='/logo.png' className='rounded-md'/>
+          <div className="w-8 h-8 sm:w-10 sm:h-10 flex items-center justify-center overflow-hidden rounded-lg">
+            <img src="/logo.png" alt="AutoFlowX" className="w-full h-full object-contain" />
           </div>
           <div className="hidden sm:block">
             <h1 className="text-gray-900 dark:text-white text-lg sm:text-xl font-bold">AutoFlowX</h1>

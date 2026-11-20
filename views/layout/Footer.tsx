@@ -10,8 +10,8 @@ export const Footer = () => {
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 mb-8 sm:mb-12 max-w-7xl mx-auto">
           <div className="lg:col-span-2">
             <div className="flex items-center space-x-3 mb-4">
-              <div className="w-8 h-8 sm:w-10 sm:h-10 flex items-center justify-center">
-                <img src='/logo.png' className='rounded-md'/>
+              <div className="w-8 h-8 sm:w-10 sm:h-10 flex items-center justify-center overflow-hidden rounded-lg">
+                <img src="/logo.png" alt="AutoFlowX" className="w-full h-full object-contain" />
               </div>
               <div>
                 <h3 className="text-lg sm:text-xl font-bold">AutoFlowX</h3>
